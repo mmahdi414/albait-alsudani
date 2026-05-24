@@ -208,6 +208,16 @@ function apiCall(p){
   return fetch(SHEETS_API+'?'+new URLSearchParams(p)).then(function(r){return r.json();});
 }
 
+function validateHijri(h){
+  const p=h.split('/').map(Number);
+  if(p.length!==3)return false;
+  const [y,m,d]=p;
+  if(y<1400||y>1500)return false;
+  if(m<1||m>12)return false;
+  if(d<1||d>30)return false;
+  return true;
+}
+
 function fmtH(v){
   v=v.replace(/[^0-9]/g,'');
   if(v.length>4)v=v.slice(0,4)+'/'+v.slice(4);
@@ -403,7 +413,7 @@ gs('savebtn').addEventListener('click',function(){saveEntry();});
 
 function saveEntry(){
   var hd=gs('hd').value.trim();
-  if(!hd||hd.replace(/\//g,'').length<8){showToast('يرجى إدخال تاريخ هجري صحيح',true);return;}
+  if(!hd||hd.replace(/\//g,'').length<8||!validateHijri(hd)){showToast('يرجى إدخال تاريخ هجري صحيح (مثال: 1446/09/15)',true);return;}
   for(var i=0;i<exps.length;i++){
     var e=exps[i];
     if(!e.cat){showToast('يرجى اختيار نوع لكل مصروف',true);return;}
