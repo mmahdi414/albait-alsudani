@@ -1692,6 +1692,82 @@ var expChart=null, revChart=null;
 var allMovements=[], allPartnerTx=[];
 var docAction=null, docCalType='hijri';
 
+// PART 2 CONFIG
+// ── Demo state (in final app these come from login/sheet) ──────────────────
+var DEMO = {
+  shop:       'Tailor',
+  shopName:   'خياط البيت السوداني',
+  shopEmoji:  '✂️',
+  role:       'admin',
+  user:       'محمد',
+  categories: ['حساب الخياطين','حساب المكوجي','رواتب عمالة','مشتريات بضاعة','إيجارات','سداد فواتير','خطأ محاسبي','تكاليف صيانة','مصروفات حكومية','مخالفات','أخرى'],
+  employees:  [{name:'طارق',defaultSalary:3000},{name:'فيصل',defaultSalary:4000},{name:'خالد',defaultSalary:5000}],
+  partners:   ['محمد مهدي','محمد المزكي']
+};
+
+// ── Entry state ────────────────────────────────────────────────────────────
+var S = {
+  expenses:    [],
+  salaries:    [],
+  partners:    [],
+  tfOpen:      false,
+  tfFrom:      'bank',
+  tfTo:        'cash',
+  expC: 0, salC: 0, prtC: 0,
+  pendingMode: null
+};
+
+var ACCLBL = {bank:'البنك 🏦', cash:'الصندوق 🗄️'};
+var PARTNER_TYPES = ['إيداع','سحب سلفة','توزيع أرباح'];
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function gs(id){return document.getElementById(id);}
+function fmt(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function showToast(msg,isErr){
+  var t=gs('toast');
+  t.textContent=msg;
+  t.style.background=isErr?'#791F1F':'#085041';
+  t.style.display='block';
+  clearTimeout(t._t);
+  t._t=setTimeout(function(){t.style.display='none';},3200);
+}
+
+function apiCall(params){
+  return fetch(API+'?'+new URLSearchParams(params)).then(function(r){return r.json();});
+}
+
+function fmtH(v){
+  v=v.replace(/[^0-9]/g,'');
+  if(v.length>4)v=v.slice(0,4)+'/'+v.slice(4);
+  if(v.length>7)v=v.slice(0,7)+'/'+v.slice(7);
+  return v.slice(0,10);
+}
+function validateHijri(h){
+  var p=h.split('/').map(Number);
+  if(p.length!==3)return false;
+  return p[0]>=1400&&p[0]<=1500&&p[1]>=1&&p[1]<=12&&p[2]>=1&&p[2]<=30;
+}
+function h2gShort(h){
+  try{
+    var p=h.split('/').map(Number),y=p[0],m=p[1],d=p[2];
+    var jd=Math.floor((11*y+3)/30)+354*y+30*m-Math.floor((m-1)/2)+d+1948440-385;
+    var l=jd+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4);
+    var i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31;
+    var j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),jj=Math.floor(j/11);
+    var mo=j+2-12*jj,yr=100*(n-49)+i+jj;
+    return yr+'-'+String(mo).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+  }catch(e){return '';}
+}
+function h2gLong(h){
+  var s=h2gShort(h);if(!s)return '';
+  var p=s.split('-');
+  var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  return parseInt(p[2])+' '+ms[parseInt(p[1])-1]+' '+p[0];
+}
+
+// ── BUILD ENTRY TAB ────────────────────────────────────────────────────────
+
 // ENTRY FUNCTIONS
 function buildEntry(){
   var cnt=gs('cnt');
@@ -2210,11 +2286,7 @@ function compressImage(file){
   });
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
-buildEntry();
-renderExpenses();
-renderSalaries();
-if(DEMO.role==='admin') renderPartners();
+// Part 2 init removed — controlled by Part 1
 
 // SUMMARY+HISTORY FUNCTIONS
 // ── NAV ───────────────────────────────────────────────────────────────────────
