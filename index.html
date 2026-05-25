@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>البيت السوداني</title>
+<meta name="theme-color" content="#1E3A5F">
+<title>البيت السوداني — المحاسبة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <style>
+/* === Part 1 — Shell/Login/Nav === */
+
 /* ═══════════════════════════════════════════════════
    DESIGN SYSTEM — البيت السوداني
 ═══════════════════════════════════════════════════ */
@@ -526,6 +531,9 @@ input[type=file]{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
+
+/* === Part 2 — Entry Tab === */
+
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --navy:#1E3A5F;--navy-d:#152a47;--navy-l:#2a5080;
@@ -703,6 +711,9 @@ input[type=file]{
   display:inline-block;margin-top:4px;cursor:pointer;
 }
 
+
+/* === Part 3 — Summary/History === */
+
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --green:#1D9E75;--green-l:#E8F8F2;--green-d:#085041;
@@ -783,6 +794,9 @@ html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(-
 .loading{text-align:center;color:var(--g400);padding:3rem 1rem;font-size:14px;font-weight:700}
 .loading::after{content:'';display:inline-block;width:18px;height:18px;border:2px solid var(--g300);border-top-color:var(--shop);border-radius:50%;animation:spin 0.8s linear infinite;margin-right:8px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+
+/* === Part 4 — Dashboard === */
 
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -993,9 +1007,11 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .m-btns{display:flex;gap:8px;margin-top:16px}
 .m-btns button{flex:1;padding:11px;border-radius:var(--rmd);font-family:'Almarai',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--g200);background:var(--g50);color:var(--g700)}
 .m-btns .m-primary{background:var(--cur);border-color:var(--cur);color:#fff}
+
 </style>
 </head>
 <body>
+
 <div class="app" id="app">
 <div class="offline-bar" id="offline-bar">⚠️ لا يوجد اتصال بالإنترنت</div>
 
@@ -1059,7 +1075,60 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <div id="pg-entry"  class="pg on"></div>
     <div id="pg-summary" class="pg"></div>
     <div id="pg-history" class="pg"></div>
-    <div id="pg-dashboard" class="pg">
+    <div id="pg-dashboard" class="pg"></div>
+  </div>
+</div>
+
+<!-- ══════════════════ LOGOUT MODAL ══════════════════ -->
+<div class="modal" id="logout-modal">
+  <div class="modal-box">
+    <h3>تسجيل الخروج</h3>
+    <p>هل تريد تسجيل الخروج من حسابك؟</p>
+    <div class="modal-btns">
+      <button id="logout-cancel">إلغاء</button>
+      <button class="btn-danger" id="logout-confirm">تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ DATE WARNING MODAL ══════════════════ -->
+<div class="modal" id="date-modal">
+  <div class="modal-box">
+    <h3>⚠️ تاريخ موجود مسبقاً</h3>
+    <p id="date-modal-msg">يوجد إدخال سابق لهذا التاريخ. ماذا تريد أن تفعل؟</p>
+    <div class="modal-btns">
+      <button id="date-cancel">إلغاء</button>
+      <button id="date-add" class="btn-primary">إضافة</button>
+      <button id="date-replace" class="btn-danger">استبدال</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════ DASHBOARD PAGE ══════════════════ -->
+<div id="pg-dashboard" class="pg">
+<div class="dash">
+
+<div class="hdr" id="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-top">
+      <div>
+        <div class="hdr-logo">Al-Bait Al-Sudani</div>
+        <div class="hdr-title">لوحة المتابعة</div>
+        <div class="hdr-sub">Executive Dashboard</div>
+      </div>
+      <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد</div></div>
+    </div>
+    <div class="shop-pills">
+      <div class="sp on" onclick="setShop('all',this)">كل المحلات</div>
+      <div class="sp" onclick="setShop('Tailor',this)">✂️ الخياط</div>
+      <div class="sp" onclick="setShop('Salon',this)">💇 الصالون</div>
+      <div class="sp" onclick="setShop('Atara',this)">🌿 العطارة</div>
+    </div>
+  </div>
+</div>
+
 <div class="fbar">
   <div class="frow">
     <div class="fg"><div class="flbl">الفترة</div>
@@ -1196,40 +1265,54 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 </div>
 
 </div>
-</div>
-  </div>
+
+<!-- Document Modal -->
 </div>
 
-<!-- ══════════════════ LOGOUT MODAL ══════════════════ -->
-<div class="modal" id="logout-modal">
+<!-- ══════════════════ DOCUMENT MODAL ══════════════════ -->
+<div class="modal" id="doc-modal">
   <div class="modal-box">
-    <h3>تسجيل الخروج</h3>
-    <p>هل تريد تسجيل الخروج من حسابك؟</p>
-    <div class="modal-btns">
-      <button id="logout-cancel">إلغاء</button>
-      <button class="btn-danger" id="logout-confirm">تسجيل الخروج</button>
+    <div class="modal-title" id="doc-modal-title">رفع مستند جديد</div>
+    <div class="m-fg">
+      <label>المحل <span style="color:var(--amber)">*</span></label>
+      <select id="doc-shop-sel">
+        <option value="Tailor">✂️ خياط البيت السوداني</option>
+        <option value="Salon">💇 صالون الخرطوم</option>
+        <option value="Atara">🌿 عطارة البيت السوداني</option>
+      </select>
+    </div>
+    <div class="m-fg">
+      <label>اسم المستند <span style="color:var(--amber)">*</span></label>
+      <input type="text" id="doc-name-inp" placeholder="مثال: السجل التجاري"/>
+    </div>
+    <div class="m-fg">
+      <label>تاريخ الانتهاء</label>
+      <div class="cal-toggle">
+        <button class="cal-btn on" id="doc-cal-hijri" onclick="setDocCal('hijri')">هجري</button>
+        <button class="cal-btn" id="doc-cal-greg" onclick="setDocCal('greg')">ميلادي</button>
+      </div>
+      <input type="text" id="doc-expiry-inp" placeholder="1449/03/15" maxlength="10" oninput="fmtFullDate(this)"/>
+    </div>
+    <div class="m-fg">
+      <label>الملف <span style="color:var(--amber)">*</span></label>
+      <input type="file" id="doc-file-inp" accept="image/*,.pdf"/>
+    </div>
+    <div class="m-btns">
+      <button onclick="document.getElementById('doc-modal').classList.remove('show')">إلغاء</button>
+      <button class="m-primary" id="doc-upload-btn" onclick="doUploadDoc()">رفع المستند</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════ DATE WARNING MODAL ══════════════════ -->
-<div class="modal" id="date-modal">
-  <div class="modal-box">
-    <h3>⚠️ تاريخ موجود مسبقاً</h3>
-    <p id="date-modal-msg">يوجد إدخال سابق لهذا التاريخ. ماذا تريد أن تفعل؟</p>
-    <div class="modal-btns">
-      <button id="date-cancel">إلغاء</button>
-      <button id="date-add" class="btn-primary">إضافة</button>
-      <button id="date-replace" class="btn-danger">استبدال</button>
-    </div>
-  </div>
-</div>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 
-<div class="toast" id="toast"></div>
-
+<!-- App -->
 <script>
 (function(){
 'use strict';
+
+/* ══════════════ PART 1 — Core ══════════════ */
 
 'use strict';
 
@@ -1639,7 +1722,13 @@ function loadDashboard(){
   pg.innerHTML = '<div class="empty">الداشبورد — سيتم بناؤه في الجزء الرابع</div>';
 }
 
-// ════ PART 2 CONFIG ═══
+
+
+/* ══════════════ PART 2 — Entry ══════════════ */
+
+
+
+// ── Demo state (in final app these come from login/sheet) ──────────────────
 var DEMO = {
   shop:       'Tailor',
   shopName:   'خياط البيت السوداني',
@@ -1667,54 +1756,8 @@ var ACCLBL = {bank:'البنك 🏦', cash:'الصندوق 🗄️'};
 var PARTNER_TYPES = ['إيداع','سحب سلفة','توزيع أرباح'];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-function gs(id){return document.getElementById(id);}
-function fmt(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
-
-function showToast(msg,isErr){
-  var t=gs('toast');
-  t.textContent=msg;
-  t.style.background=isErr?'#791F1F':'#085041';
-  t.style.display='block';
-  clearTimeout(t._t);
-  t._t=setTimeout(function(){t.style.display='none';},3200);
 }
-
-function apiCall(params){
-  return fetch(API+'?'+new URLSearchParams(params)).then(function(r){return r.json();});
-}
-
-function fmtH(v){
-  v=v.replace(/[^0-9]/g,'');
-  if(v.length>4)v=v.slice(0,4)+'/'+v.slice(4);
-  if(v.length>7)v=v.slice(0,7)+'/'+v.slice(7);
-  return v.slice(0,10);
-}
-function validateHijri(h){
-  var p=h.split('/').map(Number);
-  if(p.length!==3)return false;
-  return p[0]>=1400&&p[0]<=1500&&p[1]>=1&&p[1]<=12&&p[2]>=1&&p[2]<=30;
-}
-function h2gShort(h){
-  try{
-    var p=h.split('/').map(Number),y=p[0],m=p[1],d=p[2];
-    var jd=Math.floor((11*y+3)/30)+354*y+30*m-Math.floor((m-1)/2)+d+1948440-385;
-    var l=jd+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4);
-    var i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31;
-    var j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),jj=Math.floor(j/11);
-    var mo=j+2-12*jj,yr=100*(n-49)+i+jj;
-    return yr+'-'+String(mo).padStart(2,'0')+'-'+String(day).padStart(2,'0');
-  }catch(e){return '';}
-}
-function h2gLong(h){
-  var s=h2gShort(h);if(!s)return '';
-  var p=s.split('-');
-  var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  return parseInt(p[2])+' '+ms[parseInt(p[1])-1]+' '+p[0];
-}
-
 // ── BUILD ENTRY TAB ────────────────────────────────────────────────────────
-
-// ════ PART 2 ENTRY FUNCTIONS ════
 function buildEntry(){
   var cnt=gs('cnt');
   cnt.innerHTML='';
@@ -2134,9 +2177,9 @@ function handleSave(){
 }
 
 // Date modal buttons
-gs('dm-cancel').addEventListener('click',function(){gs('date-modal').classList.remove('show');});
-gs('dm-add').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('add');});
-gs('dm-replace').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('replace');});
+
+
+
 
 function doSave(mode){
   var btn=gs('save-btn');
@@ -2232,13 +2275,11 @@ function compressImage(file){
   });
 }
 
-// ════ PART 3 RENDER FUNCTIONS ════
-var SHOP = 'Tailor';
-var histCache = [];
 
-function gs(id){ return document.getElementById(id); }
-function fmt(n){ return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function apiCall(p){ return fetch(API+'?'+new URLSearchParams(p)).then(function(r){return r.json();}); }
+
+/* ══════════════ PART 3 — Summary/History ══════════════ */
+
+
 
 function cleanDate(d){
   if(!d) return '';
@@ -2272,9 +2313,11 @@ function getCurrentHijriYear(){
 }
 
 // ── NAV ───────────────────────────────────────────────────────────────────────
+ });
+
+
 
 // ── SUMMARY ───────────────────────────────────────────────────────────────────
-
 function renderSummary(rec,pg){
   var tR=(rec.revCash||0)+(rec.revCard||0);
   var tE=(rec.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
@@ -2317,6 +2360,25 @@ function renderSummary(rec,pg){
 }
 
 // ── HISTORY ───────────────────────────────────────────────────────────────────
+  pg.innerHTML='<div class="loading">جاري التحميل</div>';
+  var hy=getCurrentHijriYear();
+  var fromKey=hy+'/01';
+  var toKey=hy+'/12';
+  apiCall({action:'getHistory',shop:state.currentShop}).then(function(res){
+    if(res.success){
+      var all=res.records||[];
+      histCache=all.filter(function(r){
+        var k=(r.hijri||'').slice(0,7);
+        return k>=fromKey && k<=toKey;
+      });
+      renderHistList(histCache,pg,hy);
+    } else {
+      pg.innerHTML='<div class="empty">تعذر التحميل</div>';
+    }
+  }).catch(function(){
+    pg.innerHTML='<div class="empty">تعذر التحميل — تحقق من الإنترنت</div>';
+  });
+}
 
 function renderHistList(records,pg,hy){
   pg.innerHTML='';
@@ -2487,15 +2549,11 @@ function buildTfCard(tf){
   return c;
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
 
-// ════ PART 4 DASHBOARD FUNCTIONS ════
-'use strict';
 
-var API    = 'https://script.google.com/macros/s/AKfycbzb0l1cdEYAby51Hbl7tfyFI8zXTLgPVZm6DFGjR-fflIDtbzY7h-d4rs6pM8bhVDVF7w/exec';
-var WORKER = 'https://bait-sudani-upload.albyt-alsudani.workers.dev';
-var ROLE   = 'admin';
-var DISPLAY_NAME = 'محمد';
+/* ══════════════ PART 4 — Dashboard ══════════════ */
+
+
 
 var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
 var SHOP_NAMES  = {all:'كل المحلات',Tailor:'✂️ خياط البيت السوداني',Salon:'💇 صالون الخرطوم',Atara:'🌿 عطارة البيت السوداني'};
@@ -2619,7 +2677,6 @@ var expChart=null, revChart=null;
 var allMovements=[], allPartnerTx=[];
 var docAction=null, docCalType='hijri';
 
-
 // ── Date helpers ──────────────────────────────────────────────────────────────
 function fmtFullDate(el){
   var v=el.value.replace(/[^0-9]/g,'');
@@ -2675,7 +2732,7 @@ function applyColor(c){
 }
 
 // ── Shop pills ────────────────────────────────────────────────────────────────
-window.setShop=function(shop,el){
+function setShop(shop,el){
   curShop=shop;
   document.querySelectorAll('.sp').forEach(function(p){p.classList.remove('on');});
   el.classList.add('on');
@@ -2684,7 +2741,7 @@ window.setShop=function(shop,el){
 };
 
 // ── Period/Calendar ───────────────────────────────────────────────────────────
-window.onPeriod=function(){
+function onPeriod(){
   curPeriod=gs('f-period').value;
   var isC=curPeriod==='custom';
   gs('cdates').classList.toggle('show',isC);
@@ -2692,7 +2749,7 @@ window.onPeriod=function(){
   if(!isC) updateDates();
 };
 
-window.onCal=function(){
+function onCal(){
   curCal=gs('f-cal').value;
   var isH=curCal==='hijri';
   gs('from-lbl').textContent=isH?'من (هجري)':'من (ميلادي)';
@@ -2710,7 +2767,7 @@ function updateDates(){
   gs('d-to').textContent=k.t;
 }
 
-window.fmtFullDate=fmtFullDate;
+
 
 function validateDateInput(val, cal){
   if(!val) return false;
@@ -2729,7 +2786,7 @@ function validateDateInput(val, cal){
   return true;
 }
 
-window.applyFilters=function(){
+function applyFilters(){
   if(curPeriod==='custom'){
     var fv=gs('f-from').value.trim(), tv=gs('f-to').value.trim();
     var fEl=gs('f-from'), tEl=gs('f-to');
@@ -3027,7 +3084,7 @@ function loadPartners(p){
   });
 }
 
-window.filterPartners=function(){renderPartnerTx(gs('p-sel').value);};
+function filterPartners(){renderPartnerTx(gs('p-sel').value);};
 
 function renderPartnerTx(filter){
   var list=allPartnerTx.filter(function(t){return filter==='all'||t._partner===filter;});
@@ -3064,7 +3121,7 @@ function renderMovements(acct){
   }).join('');
 }
 
-window.setAcct=function(type,btn){
+function setAcctBtn(type,btn){
   curAcctFilter=type;
   document.querySelectorAll('.at').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
@@ -3072,7 +3129,7 @@ window.setAcct=function(type,btn){
 };
 
 // ── Document Modal ────────────────────────────────────────────────────────────
-window.openDocModal=function(type,shop,idx,name){
+function openDocModal(type,shop,idx,name){
   docAction={type:type,shop:shop||'',idx:idx};
   gs('doc-modal-title').textContent=type==='new'?'رفع مستند جديد':'تحديث: '+(name||'');
   gs('doc-name-inp').value=type==='update'?(name||''):'';
@@ -3086,7 +3143,7 @@ window.openDocModal=function(type,shop,idx,name){
   gs('doc-modal').classList.add('show');
 };
 
-window.setDocCal=function(cal){
+function setDocCal(cal){
   docCalType=cal;
   gs('doc-cal-hijri').classList.toggle('on',cal==='hijri');
   gs('doc-cal-greg').classList.toggle('on',cal==='greg');
@@ -3094,7 +3151,7 @@ window.setDocCal=function(cal){
   gs('doc-expiry-inp').value='';
 };
 
-window.doUploadDoc=function(){
+function doUploadDoc(){
   var shopSel=gs('doc-shop-sel');
   var targetShop = (curShop==='all'&&docAction.type==='new') ? shopSel.value : (docAction.shop||curShop);
   if(!targetShop||targetShop==='all'){alert('يرجى اختيار المحل');return;}
@@ -3147,7 +3204,7 @@ window.doUploadDoc=function(){
 };
 
 // ── PDF Export ────────────────────────────────────────────────────────────────
-window.exportPDF=function(){
+function exportPDF(){
   var withPartners=gs('pdf-p').checked;
   var p=getParams();
   var k=getKeys();
@@ -3268,10 +3325,13 @@ window.exportPDF=function(){
 };
 
 
-// ── Init ──────────────────────────────────────────────────────────────────────
 
 
-// ════ INTEGRATION WRAPPERS ════════════════════════════════════════════════════
+
+/* ═══════════════════════════════════════════════
+   INTEGRATION WRAPPERS — override Part 1 placeholders
+   ═══════════════════════════════════════════════ */
+
 function renderEntry(){
   DEMO.shop      = state.currentShop;
   DEMO.shopName  = SHOPS[state.currentShop] ? SHOPS[state.currentShop].name  : '';
@@ -3291,51 +3351,16 @@ function loadDashboard(){
   var uname = gs('hdr-uname');
   if(uname) uname.textContent = DISPLAY_NAME;
   document.querySelectorAll('.sp').forEach(function(p){ p.classList.remove('on'); });
-  var allPill = document.querySelector('.sp[onclick*=\"all\"]');
+  var allPill = document.querySelector('.sp');
   if(allPill) allPill.classList.add('on');
   applyColor(SHOP_COLORS['all']);
   updateDates();
   loadAll();
 }
 
-
 })();
 
 </script>
-<!-- Document Modal -->
-<div class="modal" id="doc-modal">
-  <div class="modal-box">
-    <div class="modal-title" id="doc-modal-title">رفع مستند جديد</div>
-    <div class="m-fg">
-      <label>المحل <span style="color:var(--amber)">*</span></label>
-      <select id="doc-shop-sel">
-        <option value="Tailor">✂️ خياط البيت السوداني</option>
-        <option value="Salon">💇 صالون الخرطوم</option>
-        <option value="Atara">🌿 عطارة البيت السوداني</option>
-      </select>
-    </div>
-    <div class="m-fg">
-      <label>اسم المستند <span style="color:var(--amber)">*</span></label>
-      <input type="text" id="doc-name-inp" placeholder="مثال: السجل التجاري"/>
-    </div>
-    <div class="m-fg">
-      <label>تاريخ الانتهاء</label>
-      <div class="cal-toggle">
-        <button class="cal-btn on" id="doc-cal-hijri" onclick="setDocCal('hijri')">هجري</button>
-        <button class="cal-btn" id="doc-cal-greg" onclick="setDocCal('greg')">ميلادي</button>
-      </div>
-      <input type="text" id="doc-expiry-inp" placeholder="1449/03/15" maxlength="10" oninput="fmtFullDate(this)"/>
-    </div>
-    <div class="m-fg">
-      <label>الملف <span style="color:var(--amber)">*</span></label>
-      <input type="file" id="doc-file-inp" accept="image/*,.pdf"/>
-    </div>
-    <div class="m-btns">
-      <button onclick="document.getElementById('doc-modal').classList.remove('show')">إلغاء</button>
-      <button class="m-primary" id="doc-upload-btn" onclick="doUploadDoc()">رفع المستند</button>
-    </div>
-  </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
 </body>
 </html>
