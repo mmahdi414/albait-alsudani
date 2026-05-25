@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <style>
-/* === Part 1 — Design System + Shell === */
+/* === Part 1 === */
 
 /* ═══════════════════════════════════════════════════
    DESIGN SYSTEM — البيت السوداني
@@ -531,8 +531,11 @@ input[type=file]{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* Dashboard page — sits outside .cnt, handles own scroll */
+#pg-dashboard.on { display:flex; flex-direction:column; overflow-y:auto; }
 
-/* === Part 2 — Entry Tab Components === */
+
+/* === Part 2 === */
 /* Cards */
 
 .ci-dt{background:#F8F9FA;color:#495057}
@@ -650,7 +653,7 @@ input[type=file]{
   display:inline-block;margin-top:4px;cursor:pointer;
 }
 
-/* === Part 3 — Summary/History Components === */
+/* === Part 3 === */
 .hdr-chip{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:var(--rxl);padding:6px 12px;display:flex;align-items:center;gap:6px}
 .hdr-chip-name{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85)}
 
@@ -704,7 +707,7 @@ input[type=file]{
 
 }
 
-/* === Part 4 — Dashboard Components === */
+/* === Part 4 === */
 .dash{max-width:480px;margin:0 auto;padding-bottom:40px}
 
 /* HEADER */
@@ -897,7 +900,6 @@ input[type=file]{
 </style>
 </head>
 <body>
-
 <div class="app" id="app">
 <div class="offline-bar" id="offline-bar">⚠️ لا يوجد اتصال بالإنترنت</div>
 
@@ -961,10 +963,11 @@ input[type=file]{
     <div id="pg-entry"  class="pg on"></div>
     <div id="pg-summary" class="pg"></div>
     <div id="pg-history" class="pg"></div>
-    <div id="pg-dashboard" class="pg">
+  </div>
+  <div id="pg-dashboard" class="pg">
 <div class="dash">
 
-<div class="hdr" id="hdr">
+<div class="hdr" id="dash-hdr">
   <div class="hdr-inner">
     <div class="hdr-top">
       <div>
@@ -1122,7 +1125,6 @@ input[type=file]{
 
 <!-- Document Modal -->
 </div>
-  </div>
 </div>
 
 <!-- ══════════════════ LOGOUT MODAL ══════════════════ -->
@@ -1151,7 +1153,6 @@ input[type=file]{
 </div>
 
 <div class="toast" id="toast"></div>
-
 <!-- Document Modal -->
 <div class="modal" id="doc-modal">
   <div class="modal-box">
@@ -1186,16 +1187,14 @@ input[type=file]{
     </div>
   </div>
 </div>
-
 <!-- Chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-
 <!-- App -->
 <script>
 (function(){
 'use strict';
 
-/* ══ PART 1 ══ */
+/* ══ P1 ══ */
 
 'use strict';
 
@@ -1451,6 +1450,9 @@ function goTab(tabId){
     if(pg) pg.classList.toggle('on', t === tabId);
     if(nb) nb.classList.toggle('on', t === tabId);
   });
+  // cnt holds entry/summary/history; hide it when dashboard is active
+  var cnt = gs('cnt');
+  if(cnt) cnt.style.display = (tabId === 'dashboard') ? 'none' : '';
   if(tabId === 'entry')     renderEntry();
   if(tabId === 'summary')   loadSummary();
   if(tabId === 'history')   loadHistory();
@@ -1607,7 +1609,7 @@ function loadDashboard(){
 
 
 
-/* ══ PART 2 ══ */
+/* ══ P2 ══ */
 // ── Demo state (in final app these come from login/sheet) ──────────────────
 var DEMO = {
   shop:       'Tailor',
@@ -2155,7 +2157,7 @@ function compressImage(file){
   });
 }
 
-/* ══ PART 3 ══ */
+/* ══ P3 ══ */
 function cleanDate(d){
   if(!d) return '';
   if(String(d).indexOf('T')>-1) d=String(d).split('T')[0];
@@ -2431,7 +2433,7 @@ function buildTfCard(tf){
   return c;
 }
 
-/* ══ PART 4 ══ */
+/* ══ P4 ══ */
 var ROLE='admin', DISPLAY_NAME='', USER_SHOPS='all', curShop='all';
 
 var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
@@ -2592,11 +2594,10 @@ function getParams(){
 
 // ── Color ─────────────────────────────────────────────────────────────────────
 function applyColor(c){
-  gs('hdr').style.background=c;
-  gs('apbtn').style.background=c;
-  gs('pdf-btn').style.background=c;
-  gs('emp-tot').style.background=c;
-  ['sn1','sn2','sn3'].forEach(function(id){gs(id).style.background=c;});
+  var ids=['dash-hdr','apbtn','pdf-btn','emp-tot','sn1','sn2','sn3'];
+  ids.forEach(function(id){ var el=gs(id); if(el) el.style.background=c; });
+  document.documentElement.style.setProperty('--cur',c);
+});
   document.documentElement.style.setProperty('--cur',c);
 }
 
