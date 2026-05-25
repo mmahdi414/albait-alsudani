@@ -72,7 +72,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(-
 .sum-net-row{display:flex;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.12)}
 .sum-net-stat{text-align:center;flex:1}
 .sum-net-stat-lbl{font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;margin-bottom:3px}
-.sum-net-stat-val{font-size:16px;font-weight:800;color:rgba(255,255,255,0.9)}
+.sum-net-stat-val{font-size:17px;font-weight:800;color:rgba(255,255,255,0.9)}
 
 /* KPI grid */
 .kgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
@@ -115,7 +115,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(-
 .hi-left{flex:1;min-width:0}
 .hi-date{font-size:15px;font-weight:800;color:var(--g800);margin-bottom:3px}
 .hi-stats{font-size:12px;color:var(--shop-sub);font-weight:700;margin-bottom:3px}
-.hi-user{font-size:11px;color:var(--g400);font-weight:700}
+.hi-user{font-size:11px;color:var(--g400);font-weight:700;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .hi-right{text-align:left;flex-shrink:0}
 .hi-net{font-size:17px;font-weight:800;line-height:1;margin-bottom:3px}
 .hi-net-pos{color:var(--green-d)}
@@ -127,7 +127,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(-
 .back-btn{background:transparent;border:none;color:var(--shop);font-size:15px;font-family:'Almarai',sans-serif;font-weight:800;cursor:pointer;padding:0;display:flex;align-items:center;gap:5px}
 
 /* Section label */
-.sec-lbl{font-size:11px;font-weight:700;color:var(--shop-sub);text-transform:uppercase;letter-spacing:0.8px;margin:16px 0 8px;padding-right:2px}
+.sec-lbl{font-size:14px;font-weight:800;color:var(--g700);margin:16px 0 8px;padding-right:2px;display:flex;align-items:center;gap:6px}
 
 /* Empty / loading */
 .empty{text-align:center;color:var(--g400);padding:3rem 1rem;font-size:14px;font-weight:700}
@@ -136,7 +136,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(-
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Recorded by */
-.rec-by{font-size:11px;color:var(--g400);font-weight:700;margin-top:4px;padding-right:2px}
+.rec-by{font-size:11px;color:var(--g400);font-weight:700;margin-top:4px;padding-right:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 
 /* Partner row */
 .prt-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f5ede6}
@@ -271,7 +271,7 @@ function renderSummary(rec,pg){
 
   // ── Expenses ──
   (expRows.length?
-    '<div class="sec-lbl">المصروفات</div>'+
+    '<div class="sec-lbl">🧾 المصروفات</div>'+'
     '<div class="card" style="padding:14px 16px">'+
       expRows.map(function(e){
         return '<div class="dr">'+
@@ -290,7 +290,7 @@ function renderSummary(rec,pg){
 
   // ── Salaries ──
   (salRows.length?
-    '<div class="sec-lbl">الرواتب</div>'+
+    '<div class="sec-lbl">💼 الرواتب</div>'+'
     '<div class="card" style="padding:14px 16px">'+
       salRows.map(function(e){
         return '<div class="dr">'+
@@ -312,7 +312,7 @@ function renderSummary(rec,pg){
 
   // ── Transfer ──
   (hasTf?
-    '<div class="sec-lbl">التحويل بين الحسابات</div>'+
+    '<div class="sec-lbl">↔️ التحويل بين الحسابات</div>'+'
     '<div class="card" style="padding:14px 16px">'+
       '<div class="tf-block">'+
         '<div class="tf-dir">'+
@@ -326,7 +326,7 @@ function renderSummary(rec,pg){
     '</div>'
   :'')+
 
-  '<div class="rec-by">أدخله: '+(rec.recordedBy||'')+' — '+cleanDate(rec.recordedAt)+'</div>';
+  '<div class="rec-by"><span>👤 '+(rec.recordedBy||'')+'</span><span style="color:var(--g300)"> · </span><span>'+cleanDate(rec.recordedAt)+'</span></div>';
 
   pg.innerHTML=html;
 }
@@ -334,24 +334,61 @@ function renderSummary(rec,pg){
 // ══════════════════════════════════════════════════
 // HISTORY TAB
 // ══════════════════════════════════════════════════
+function getCurrentHijriYear(){
+  // Approximate current Hijri year from Gregorian
+  var now = new Date();
+  var gy = now.getFullYear();
+  var gm = now.getMonth()+1;
+  var gd = now.getDate();
+  // Simple approximation: Hijri year ≈ (Gregorian - 622) * 1.0307
+  var jd = Math.floor((1461*(gy+4800+Math.floor((gm-14)/12)))/4)
+           + Math.floor((367*(gm-2-12*Math.floor((gm-14)/12)))/12)
+           - Math.floor((3*Math.floor((gy+4900+Math.floor((gm-14)/12))/100))/4)
+           + gd - 32075;
+  var l=jd-1948440+10632, n=Math.floor((l-1)/10631);
+  l=l-10631*n+354;
+  var j=Math.floor((10985-l)/5316)*Math.floor((50*l)/17719)
+        + Math.floor(l/5670)*Math.floor((43*l)/15238);
+  l=l-Math.floor((30-j)/15)*Math.floor((17719*j)/50)
+    - Math.floor(j/16)*Math.floor((15238*j)/43)+29;
+  var hy=19*n+Math.floor((l+458)/177)*Math.floor(j/28)+Math.floor(Math.floor((31-j)/31)/2)+Math.floor(l/29);
+  return hy;
+}
+
 function loadHistory(){
   var pg=gs('pg-history');
   if(histCache.length>0){renderHistList(histCache,pg);return;}
   pg.innerHTML='<div class="loading">جاري التحميل</div>';
+  var hy = getCurrentHijriYear();
+  var fromKey = hy + '/01';
+  var toKey   = hy + '/12';
   apiCall({action:'getHistory',shop:SHOP}).then(function(res){
     if(res.success){
-      histCache=res.records||[];
-      renderHistList(histCache,pg);
+      // Filter to current Hijri year only
+      var all = res.records||[];
+      histCache = all.filter(function(r){
+        var k = (r.hijri||'').slice(0,7);
+        return k >= fromKey && k <= toKey;
+      });
+      renderHistList(histCache,pg,hy);
     } else {
       pg.innerHTML='<div class="empty">تعذر التحميل</div>';
     }
   }).catch(function(){pg.innerHTML='<div class="empty">تعذر التحميل — تحقق من الإنترنت</div>';});
 }
 
-function renderHistList(records,pg){
+function renderHistList(records,pg,hy){
   if(!records.length){pg.innerHTML='<div class="empty">📭 لا توجد سجلات بعد</div>';return;}
 
   var wrap=document.createElement('div');
+
+  // Year label
+  if(hy){
+    var yearLbl=document.createElement('div');
+    yearLbl.style.cssText='font-size:12px;font-weight:700;color:var(--shop-sub);margin-bottom:10px;display:flex;align-items:center;gap:6px';
+    yearLbl.innerHTML='📅 السجل — السنة الهجرية '+hy+' <span style="color:var(--g400);font-size:11px">('+records.length+' يوم)</span>';
+    wrap.appendChild(yearLbl);
+  }
 
   // Stats bar
   var totalRev=0,totalExp=0,count=records.length;
@@ -383,7 +420,7 @@ function renderHistList(records,pg){
           (r.transfer?' · تحويل: '+fmt(r.transfer.amt||0):'')+
           ' ر.س'+
         '</div>'+
-        '<div class="hi-user">👤 '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt)+'</div>'+
+        '<div class="hi-user"><span>👤 '+(r.recordedBy||'')+'</span> <span style="color:var(--g300)">·</span> <span>'+cleanDate(r.recordedAt)+'</span></div>'+'
       '</div>'+
       '<div class="hi-right">'+
         '<div class="hi-net '+(net>=0?'hi-net-pos':'hi-net-neg')+'">'+(net>=0?'+':'')+fmt(net)+'</div>'+
@@ -453,7 +490,7 @@ function showDetail(r,pg){
 
   // Expenses
   if(expRows.length){
-    var expLbl=document.createElement('div');expLbl.className='sec-lbl';expLbl.textContent='المصروفات';wrap.appendChild(expLbl);
+    var expLbl=document.createElement('div');expLbl.className='sec-lbl';expLbl.innerHTML='🧾 المصروفات';wrap.appendChild(expLbl);
     var expCard=document.createElement('div');expCard.className='card';expCard.style.cssText='padding:14px 16px;margin-bottom:12px';
     expCard.innerHTML=expRows.map(function(e){
       return '<div class="dr">'+
@@ -472,7 +509,7 @@ function showDetail(r,pg){
 
   // Salaries
   if(salRows.length){
-    var salLbl=document.createElement('div');salLbl.className='sec-lbl';salLbl.textContent='الرواتب';wrap.appendChild(salLbl);
+    var salLbl=document.createElement('div');salLbl.className='sec-lbl';salLbl.innerHTML='💼 الرواتب';wrap.appendChild(salLbl);
     var salCard=document.createElement('div');salCard.className='card';salCard.style.cssText='padding:14px 16px;margin-bottom:12px';
     salCard.innerHTML=salRows.map(function(e){
       return '<div class="dr">'+
@@ -492,7 +529,7 @@ function showDetail(r,pg){
 
   // Transfer
   if(hasTf){
-    var tfLbl=document.createElement('div');tfLbl.className='sec-lbl';tfLbl.textContent='التحويل بين الحسابات';wrap.appendChild(tfLbl);
+    var tfLbl=document.createElement('div');tfLbl.className='sec-lbl';tfLbl.innerHTML='↔️ التحويل بين الحسابات';wrap.appendChild(tfLbl);
     var tfCard=document.createElement('div');tfCard.className='card';tfCard.style.cssText='padding:14px 16px;margin-bottom:12px';
     tfCard.innerHTML=
       '<div class="tf-block">'+
@@ -511,7 +548,7 @@ function showDetail(r,pg){
   var recBy=document.createElement('div');
   recBy.className='rec-by';
   recBy.style.marginBottom='16px';
-  recBy.textContent='أدخله: '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt);
+  recBy.innerHTML='<span>👤 '+(r.recordedBy||'')+'</span><span style="color:var(--g300)"> · </span><span>'+cleanDate(r.recordedAt)+'</span>';
   wrap.appendChild(recBy);
 
   pg.appendChild(wrap);
