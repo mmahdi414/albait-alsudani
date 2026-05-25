@@ -526,7 +526,6 @@ input[type=file]{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Part2 */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --navy:#1E3A5F;--navy-d:#152a47;--navy-l:#2a5080;
@@ -704,7 +703,6 @@ input[type=file]{
   display:inline-block;margin-top:4px;cursor:pointer;
 }
 
-/* Part3 */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --green:#1D9E75;--green-l:#E8F8F2;--green-d:#085041;
@@ -786,7 +784,6 @@ html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(-
 .loading::after{content:'';display:inline-block;width:18px;height:18px;border:2px solid var(--g300);border-top-color:var(--shop);border-radius:50%;animation:spin 0.8s linear infinite;margin-right:8px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Part4 */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#1E3A5F;--navy-l:#2a5080;
@@ -1230,47 +1227,10 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<!-- Document Modal -->
-<div class="modal" id="doc-modal">
-  <div class="modal-box">
-    <div class="modal-title" id="doc-modal-title">رفع مستند جديد</div>
-    <div class="m-fg">
-      <label>المحل <span style="color:var(--amber)">*</span></label>
-      <select id="doc-shop-sel">
-        <option value="Tailor">✂️ خياط البيت السوداني</option>
-        <option value="Salon">💇 صالون الخرطوم</option>
-        <option value="Atara">🌿 عطارة البيت السوداني</option>
-      </select>
-    </div>
-    <div class="m-fg">
-      <label>اسم المستند <span style="color:var(--amber)">*</span></label>
-      <input type="text" id="doc-name-inp" placeholder="مثال: السجل التجاري"/>
-    </div>
-    <div class="m-fg">
-      <label>تاريخ الانتهاء</label>
-      <div class="cal-toggle">
-        <button class="cal-btn on" id="doc-cal-hijri" onclick="setDocCal('hijri')">هجري</button>
-        <button class="cal-btn" id="doc-cal-greg" onclick="setDocCal('greg')">ميلادي</button>
-      </div>
-      <input type="text" id="doc-expiry-inp" placeholder="1449/03/15" maxlength="10" oninput="fmtFullDate(this)"/>
-    </div>
-    <div class="m-fg">
-      <label>الملف <span style="color:var(--amber)">*</span></label>
-      <input type="file" id="doc-file-inp" accept="image/*,.pdf"/>
-    </div>
-    <div class="m-btns">
-      <button onclick="document.getElementById('doc-modal').classList.remove('show')">إلغاء</button>
-      <button class="m-primary" id="doc-upload-btn" onclick="doUploadDoc()">رفع المستند</button>
-    </div>
-  </div>
-</div>
-
 <script>
 (function(){
 'use strict';
 
-// CONFIG
 'use strict';
 
 // ── Config ───────────────────────────────────────────────────────────────────
@@ -1562,138 +1522,124 @@ function loadEmployees(){
   });
 }
 
-// DASHBOARD CONFIG
-'use strict';
-
-var API    = 'https://script.google.com/macros/s/AKfycbzb0l1cdEYAby51Hbl7tfyFI8zXTLgPVZm6DFGjR-fflIDtbzY7h-d4rs6pM8bhVDVF7w/exec';
-var WORKER = 'https://bait-sudani-upload.albyt-alsudani.workers.dev';
-var ROLE   = 'admin';
-var DISPLAY_NAME = 'محمد';
-
-var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
-var SHOP_NAMES  = {all:'كل المحلات',Tailor:'✂️ خياط البيت السوداني',Salon:'💇 صالون الخرطوم',Atara:'🌿 عطارة البيت السوداني'};
-
-// ── Accurate Umm al-Qura Hijri ↔ Gregorian conversion ──────────────────────
-// Anchor dates: 1 Muharram of each year (Umm al-Qura calendar)
-var UMM_ANCHORS=[
-  {hy:1440,y:2018,m:9,d:11},{hy:1441,y:2019,m:9,d:1},{hy:1442,y:2020,m:8,d:20},
-  {hy:1443,y:2021,m:8,d:9}, {hy:1444,y:2022,m:7,d:30},{hy:1445,y:2023,m:7,d:19},
-  {hy:1446,y:2024,m:7,d:7}, {hy:1447,y:2025,m:6,d:28},{hy:1448,y:2026,m:6,d:17},
-  {hy:1449,y:2027,m:6,d:7}, {hy:1450,y:2028,m:5,d:26}
-];
-// Month lengths per year (Muharram→DhulHijjah) — Umm al-Qura data
-var UMM_MONTHS={
-  1444:[30,29,30,29,30,29,30,29,30,29,30,29],
-  1445:[30,29,30,29,30,29,30,29,30,29,30,29],
-  1446:[30,29,30,30,29,30,29,30,29,30,30,30],
-  1447:[30,29,30,29,30,29,30,29,30,29,29,30],
-  1448:[30,29,30,29,30,29,30,30,29,30,29,30],
-  1449:[29,30,29,30,29,30,29,30,29,30,29,30],
-  1450:[30,29,30,29,30,29,30,29,30,30,29,30]
-};
-function pad2(n){return String(n).padStart(2,'0');}
-function gregLastDay(y,m){return new Date(y,m,0).getDate();}
-function dateMs(y,m,d){return new Date(y,m-1,d).getTime();}
-function greg2hijri(gy,gm,gd){
-  var target=dateMs(gy,gm,gd);
-  var hy=1447,anchorMs=dateMs(2025,6,28);
-  for(var i=0;i<UMM_ANCHORS.length-1;i++){
-    var a=UMM_ANCHORS[i],nb=UMM_ANCHORS[i+1];
-    var aMs=dateMs(a.y,a.m,a.d),nbMs=dateMs(nb.y,nb.m,nb.d);
-    if(target>=aMs&&target<nbMs){hy=a.hy;anchorMs=aMs;break;}
-    if(i===UMM_ANCHORS.length-2&&target>=nbMs){hy=nb.hy;anchorMs=nbMs;}
-  }
-  var doy=Math.round((target-anchorMs)/86400000); // days from 1 Muharram
-  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
-  var hm=1,acc=0;
-  for(var m=0;m<12;m++){if(doy>=acc+lens[m]){acc+=lens[m];}else{hm=m+1;break;}}
-  var hd=doy-acc+1;
-  return {y:hy,m:hm,d:hd};
-}
-function hijri2greg(hy,hm,hd){
-  var anchor=null;
-  for(var i=0;i<UMM_ANCHORS.length;i++){if(UMM_ANCHORS[i].hy===hy){anchor=UMM_ANCHORS[i];break;}}
-  if(!anchor) return null;
-  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
-  var days=0;
-  for(var m=0;m<hm-1;m++) days+=lens[m];
-  days+=hd-1;
-  var d=new Date(anchor.y,anchor.m-1,anchor.d+days);
-  return {y:d.getFullYear(),m:d.getMonth()+1,d:d.getDate()};
-}
-function hijri2isoStr(hy,hm,hd){
-  var g=hijri2greg(hy,hm,hd);
-  if(!g) return '';
-  return g.y+'-'+pad2(g.m)+'-'+pad2(g.d);
-}
-function hijriMonthLen(hy,hm){
-  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
-  return lens[hm-1]||29;
-}
-function getWeekStartEnd(){
-  // Saudi week: Sunday=start, Saturday=end
-  var n=new Date(),day=n.getDay(); // 0=Sun,1=Mon,...,6=Sat
-  var diffToSun=day; // days to go back to reach Sunday
-  var s=new Date(n);s.setDate(n.getDate()-diffToSun);
-  var e=new Date(s);e.setDate(s.getDate()+6);
-  return {sy:s.getFullYear(),sm:s.getMonth()+1,sd:s.getDate(),
-          ey:e.getFullYear(),em:e.getMonth()+1,ed:e.getDate()};
+// ── ENTRY TAB — placeholder (Part 2 will fill this) ──────────────────────────
+function renderEntry(){
+  var pg = gs('pg-entry');
+  if(pg.dataset.built === '1') return;
+  pg.innerHTML = '<div class="empty">قسم الإدخال — سيتم بناؤه في الجزء الثاني</div>';
 }
 
-// Period keys — use accurate Umm al-Qura conversion
-var HIJRI_DATES = {
-  month: function(){
-    var n=new Date(),h=greg2hijri(n.getFullYear(),n.getMonth()+1,n.getDate());
-    var last=hijriMonthLen(h.y,h.m);
-    return {f:h.y+'/'+pad2(h.m)+'/01',t:h.y+'/'+pad2(h.m)+'/'+pad2(last),
-            fKey:h.y+'/'+pad2(h.m),tKey:h.y+'/'+pad2(h.m)};
-  },
-  week: function(){
-    var w=getWeekStartEnd();
-    var hs=greg2hijri(w.sy,w.sm,w.sd),he=greg2hijri(w.ey,w.em,w.ed);
-    return {f:hs.y+'/'+pad2(hs.m)+'/'+pad2(hs.d),t:he.y+'/'+pad2(he.m)+'/'+pad2(he.d),
-            fKey:hs.y+'/'+pad2(hs.m),tKey:he.y+'/'+pad2(he.m)};
-  },
-  year: function(){
-    var n=new Date(),h=greg2hijri(n.getFullYear(),n.getMonth()+1,n.getDate());
-    var lastLen=hijriMonthLen(h.y,12);
-    return {f:h.y+'/01/01',t:h.y+'/12/'+pad2(lastLen),fKey:h.y+'/01',tKey:h.y+'/12'};
-  },
-  all: function(){ return {f:'من البداية',t:'اليوم',fKey:'1400/01',tKey:'1500/12'}; }
-};
-var GREG_DATES = {
-  month: function(){
-    var n=new Date(),gy=n.getFullYear(),gm=n.getMonth()+1;
-    var last=gregLastDay(gy,gm);
-    return {f:gy+'-'+pad2(gm)+'-01',t:gy+'-'+pad2(gm)+'-'+pad2(last),
-            fKey:gy+'-'+pad2(gm),tKey:gy+'-'+pad2(gm)};
-  },
-  week: function(){
-    var w=getWeekStartEnd();
-    return {f:w.sy+'-'+pad2(w.sm)+'-'+pad2(w.sd),t:w.ey+'-'+pad2(w.em)+'-'+pad2(w.ed),
-            fKey:w.sy+'-'+pad2(w.sm),tKey:w.ey+'-'+pad2(w.em)};
-  },
-  year: function(){
-    var gy=new Date().getFullYear();
-    return {f:gy+'-01-01',t:gy+'-12-31',fKey:gy+'-01',tKey:gy+'-12'};
-  },
-  all: function(){ return {f:'من البداية',t:'اليوم',fKey:'2000-01',tKey:'2099-12'}; }
-};
-var PLBLS = {month:'هذا الشهر',week:'هذا الأسبوع',year:'هذا العام',all:'من البداية',custom:'مخصص'};
-var SCFG  = {
-  ok:     {color:'#1D9E75',bg:'#E8F8F2',text:'#085041',label:'ساري'},
-  soon:   {color:'#EF9F27',bg:'#FAEEDA',text:'#854F0B',label:'ينتهي قريباً'},
-  expired:{color:'#E24B4A',bg:'#FEF0F0',text:'#A32D2D',label:'منتهي'}
-};
+// ── SUMMARY TAB — placeholder ─────────────────────────────────────────────────
+function loadSummary(){
+  var pg = gs('pg-summary');
+  pg.innerHTML = '<div class="loading">جاري التحميل</div>';
+  apiCall({ action:'getLatestEntry', shop:state.currentShop }).then(function(res){
+    if(res.success && res.record) renderSummary(res.record);
+    else pg.innerHTML = '<div class="empty">لا توجد بيانات محفوظة بعد</div>';
+  }).catch(function(){ pg.innerHTML = '<div class="empty">تعذر التحميل</div>'; });
+}
 
-var curShop='all', curPeriod='month', curCal='hijri';
-var curAcctFilter='all';
-var expChart=null, revChart=null;
-var allMovements=[], allPartnerTx=[];
-var docAction=null, docCalType='hijri';
+function renderSummary(rec){
+  var pg  = gs('pg-summary');
+  var tR  = (rec.revCash||0) + (rec.revCard||0);
+  var tE  = (rec.expenses||[]).reduce(function(s,e){ return s+(e.amt||0); },0);
+  var net = tR - tE;
+  pg.innerHTML =
+    '<div style="font-size:11px;color:var(--g400);padding-right:2px;font-weight:700;margin-bottom:8px;letter-spacing:0.5px;text-transform:uppercase">آخر إدخال محفوظ</div>' +
+    '<div class="sum-net">' +
+      '<div class="sum-net-lbl">الصافي</div>' +
+      '<div class="sum-net-date">' + (rec.hijri||'') + (rec.greg ? ' — ' + cleanDate(rec.greg) : '') + '</div>' +
+      '<div class="sum-net-val" style="color:' + (net>=0?'#9FE1CB':'#F09595') + '">' +
+        (net>=0?'+':'') + fmt(net) + ' <span class="sum-net-cur">ر.س</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mgrid">' +
+      '<div class="mc"><div class="ml">إيرادات نقداً</div><div class="mv vg">' + fmt(rec.revCash||0) + '<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إيرادات بطاقة</div><div class="mv vg">' + fmt(rec.revCard||0) + '<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي الإيرادات</div><div class="mv va">' + fmt(tR) + '<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي المصروفات</div><div class="mv vr">' + fmt(tE) + '<span class="mcur"> ر.س</span></div></div>' +
+    '</div>' +
+    '<div style="font-size:11px;color:var(--g400);padding-right:2px;font-weight:700">أدخله: ' + (rec.recordedBy||'') + ' — ' + cleanDate(rec.recordedAt) + '</div>';
+}
 
-// PART 2 CONFIG
-// ── Demo state (in final app these come from login/sheet) ──────────────────
+// ── HISTORY TAB — placeholder ─────────────────────────────────────────────────
+function loadHistory(){
+  var pg = gs('pg-history');
+  if(state.histCache.length > 0){ renderHistory(state.histCache, pg); return; }
+  pg.innerHTML = '<div class="loading">جاري التحميل</div>';
+  apiCall({ action:'getHistory', shop:state.currentShop }).then(function(res){
+    if(res.success){ state.histCache = res.records||[]; renderHistory(state.histCache, pg); }
+    else pg.innerHTML = '<div class="empty">تعذر التحميل</div>';
+  }).catch(function(){ pg.innerHTML = '<div class="empty">تعذر التحميل</div>'; });
+}
+
+function renderHistory(records, pg){
+  if(!records.length){ pg.innerHTML = '<div class="empty">لا توجد سجلات بعد</div>'; return; }
+  pg.innerHTML = '<div id="h-list"></div><div id="h-detail" style="display:none"></div>';
+  var list = gs('h-list');
+  records.forEach(function(r){
+    var tR  = (r.revCash||0)+(r.revCard||0);
+    var tE  = (r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+    var net = tR - tE;
+    var div = document.createElement('div');
+    div.className = 'hi';
+    div.innerHTML =
+      '<div class="hi-top"><div class="hi-date">📅 '+(r.hijri||'')+'</div>' +
+      '<div class="'+(net>=0?'hi-net-pos':'hi-net-neg')+'">'+(net>=0?'+':'')+fmt(net)+' ر.س</div></div>' +
+      '<div class="hi-sub">إيرادات: '+fmt(tR)+' | مصروفات: '+fmt(tE)+(r.transfer?' | تحويل: '+fmt(r.transfer.amt||0):'')+' ر.س</div>' +
+      '<div class="hi-user">👤 '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt)+'</div>';
+    div.addEventListener('click', function(){ showHistDetail(r, pg); });
+    list.appendChild(div);
+  });
+}
+
+function showHistDetail(r, pg){
+  gs('h-list').style.display = 'none';
+  var det = gs('h-detail');
+  det.style.display = 'block';
+  var tR  = (r.revCash||0)+(r.revCard||0);
+  var tE  = (r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+  var net = tR - tE;
+  var expHtml = (r.expenses||[]).length ?
+    (r.expenses||[]).map(function(e){
+      return '<div class="dr"><div>' +
+        '<div style="font-size:14px;font-weight:700;color:var(--g800)">' + e.cat + (e.worker?' — '+e.worker:'') + (e.note?' ('+e.note+')':'') + '</div>' +
+        '<span class="tg '+(e.acct==='cash'?'tg-c':'tg-b')+'">'+(e.acct==='cash'?'صندوق':'بنك')+'</span>' +
+        (e.driveLink ? ' <a href="'+e.driveLink+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">📎 عرض المرفق</a>' : '') +
+        '</div><div style="font-weight:800;font-size:15px;white-space:nowrap">'+fmt(e.amt||0)+' ر.س</div></div>';
+    }).join('') :
+    '<div style="color:var(--g400);font-size:13px;padding:8px 0;font-weight:700">لا توجد مصروفات</div>';
+  det.innerHTML =
+    '<button class="back-btn" id="hist-back">→ العودة للسجل</button>' +
+    '<div class="sum-net" style="margin-bottom:12px">' +
+      '<div class="sum-net-date">'+(r.hijri||'')+(r.greg?' — '+cleanDate(r.greg):'')+' </div>' +
+      '<div class="sum-net-val" style="color:'+(net>=0?'#9FE1CB':'#F09595')+'">'+(net>=0?'+':'')+fmt(net)+' <span class="sum-net-cur">ر.س</span></div>' +
+    '</div>' +
+    '<div class="mgrid" style="margin-bottom:12px">' +
+      '<div class="mc"><div class="ml">إيرادات نقداً</div><div class="mv vg">'+fmt(r.revCash||0)+'<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إيرادات بطاقة</div><div class="mv vg">'+fmt(r.revCard||0)+'<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي الإيرادات</div><div class="mv va">'+fmt(tR)+'<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي المصروفات</div><div class="mv vr">'+fmt(tE)+'<span class="mcur"> ر.س</span></div></div>' +
+    '</div>' +
+    '<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ci ci-exp">🧾</div><div class="ct">تفاصيل المصروفات</div></div>'+expHtml+'</div>' +
+    (r.transfer ?
+      '<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ci ci-tf">↔️</div><div class="ct">التحويل</div></div>' +
+      '<div class="dr"><span style="font-size:14px;font-weight:700">'+(r.transfer.from==='cash'?'الصندوق':'البنك')+' ← '+(r.transfer.to==='cash'?'الصندوق':'البنك')+'</span>' +
+      '<span style="font-weight:800;font-size:15px">'+fmt(r.transfer.amt||0)+' ر.س</span></div>' +
+      (r.transfer.note?'<div style="font-size:13px;color:var(--g400);margin-top:6px;font-weight:700">'+r.transfer.note+'</div>':'')+'</div>' : '') +
+    '<div style="font-size:11px;color:var(--g400);font-weight:700;margin-bottom:1rem">أدخله: '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt)+'</div>';
+  gs('hist-back').addEventListener('click', function(){
+    det.style.display='none'; gs('h-list').style.display='block';
+  });
+}
+
+// ── DASHBOARD — placeholder ───────────────────────────────────────────────────
+function loadDashboard(){
+  var pg = gs('pg-dashboard');
+  pg.innerHTML = '<div class="empty">الداشبورد — سيتم بناؤه في الجزء الرابع</div>';
+}
+
+// ════ PART 2 CONFIG ═══
 var DEMO = {
   shop:       'Tailor',
   shopName:   'خياط البيت السوداني',
@@ -1768,7 +1714,7 @@ function h2gLong(h){
 
 // ── BUILD ENTRY TAB ────────────────────────────────────────────────────────
 
-// ENTRY FUNCTIONS
+// ════ PART 2 ENTRY FUNCTIONS ════
 function buildEntry(){
   var cnt=gs('cnt');
   cnt.innerHTML='';
@@ -2188,9 +2134,9 @@ function handleSave(){
 }
 
 // Date modal buttons
-gs('date-cancel').addEventListener('click',function(){gs('date-modal').classList.remove('show');});
-gs('date-add').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('add');});
-gs('date-replace').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('replace');});
+gs('dm-cancel').addEventListener('click',function(){gs('date-modal').classList.remove('show');});
+gs('dm-add').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('add');});
+gs('dm-replace').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('replace');});
 
 function doSave(mode){
   var btn=gs('save-btn');
@@ -2286,18 +2232,393 @@ function compressImage(file){
   });
 }
 
-// Part 2 init removed — controlled by Part 1
+// ════ PART 3 RENDER FUNCTIONS ════
+var SHOP = 'Tailor';
+var histCache = [];
 
-// SUMMARY+HISTORY FUNCTIONS
+function gs(id){ return document.getElementById(id); }
+function fmt(n){ return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function apiCall(p){ return fetch(API+'?'+new URLSearchParams(p)).then(function(r){return r.json();}); }
+
+function cleanDate(d){
+  if(!d) return '';
+  if(String(d).indexOf('T')>-1) d=String(d).split('T')[0];
+  var p=String(d).split('-');
+  if(p.length===3){
+    var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    return parseInt(p[2])+' '+ms[parseInt(p[1])-1]+' '+p[0];
+  }
+  return d;
+}
+
+function getCurrentHijriYear(){
+  // Known anchor: 1 Muharram 1447 = 28 June 2025
+  // 1 Muharram 1448 = 18 June 2026
+  // Use days elapsed from anchor to calculate current Hijri year
+  var now = new Date();
+  var anchors = [
+    {hy:1446, start: new Date('2024-07-07')},
+    {hy:1447, start: new Date('2025-06-28')},
+    {hy:1448, start: new Date('2026-06-18')},
+    {hy:1449, start: new Date('2027-06-07')}
+  ];
+  var result = 1447;
+  for(var i=0; i<anchors.length; i++){
+    if(now >= anchors[i].start){
+      result = anchors[i].hy;
+    }
+  }
+  return result;
+}
+
 // ── NAV ───────────────────────────────────────────────────────────────────────
-// goTab already defined in Part 1
 
-// Part 3 nav init removed — handled by Part 1
+// ── SUMMARY ───────────────────────────────────────────────────────────────────
 
-// DASHBOARD FUNCTIONS
-// gs() already defined above
-// duplicate removed
-function apiCall(p){return fetch(API+'?'+new URLSearchParams(p)).then(function(r){return r.json();});}
+function renderSummary(rec,pg){
+  var tR=(rec.revCash||0)+(rec.revCard||0);
+  var tE=(rec.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+  var tS=(rec.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';}).reduce(function(s,e){return s+(e.amt||0);},0);
+  var net=tR-tE;
+  var expRows=(rec.expenses||[]).filter(function(e){return e.cat!=='رواتب عمالة';});
+  var salRows=(rec.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';});
+  var hasTf=rec.transfer&&rec.transfer.amt;
+
+  pg.innerHTML='';
+
+  // Net card
+  var netDiv=document.createElement('div');
+  netDiv.className='sum-net';
+  netDiv.innerHTML=buildNetCard(rec.hijri,rec.greg,net,tR,tE-tS,tS,'آخر إدخال محفوظ');
+  pg.appendChild(netDiv);
+
+  // KPIs
+  var kg=document.createElement('div');
+  kg.className='kgrid';
+  kg.innerHTML=
+    '<div class="kc kc-rev"><div class="kl">إيرادات نقداً</div><div class="kv vg">'+fmt(rec.revCash||0)+'<span class="kv-cur"> ر.س</span></div></div>'+
+    '<div class="kc kc-rev"><div class="kl">إيرادات بطاقة</div><div class="kv vg">'+fmt(rec.revCard||0)+'<span class="kv-cur"> ر.س</span></div></div>';
+  pg.appendChild(kg);
+
+  // Expenses
+  if(expRows.length){ pg.appendChild(buildSecLabel('🧾 المصروفات')); pg.appendChild(buildExpCard(expRows)); }
+
+  // Salaries
+  if(salRows.length){ pg.appendChild(buildSecLabel('💼 الرواتب')); pg.appendChild(buildSalCard(salRows,tS)); }
+
+  // Transfer
+  if(hasTf){ pg.appendChild(buildSecLabel('↔️ التحويل')); pg.appendChild(buildTfCard(rec.transfer)); }
+
+  // Recorded by
+  var rb=document.createElement('div');
+  rb.className='rec-by';
+  rb.innerHTML='<span>👤 '+(rec.recordedBy||'')+'</span><span style="color:var(--g300)">·</span><span>'+cleanDate(rec.recordedAt)+'</span>';
+  pg.appendChild(rb);
+}
+
+// ── HISTORY ───────────────────────────────────────────────────────────────────
+
+function renderHistList(records,pg,hy){
+  pg.innerHTML='';
+  if(!records.length){ pg.innerHTML='<div class="empty">📭 لا توجد سجلات لهذه السنة</div>'; return; }
+
+  // Year label
+  if(hy){
+    var yl=document.createElement('div');
+    yl.className='yr-label';
+    yl.innerHTML='📅 السجل — السنة الهجرية '+hy+' <span style="color:var(--g400);font-size:11px">('+records.length+' يوم)</span>';
+    pg.appendChild(yl);
+  }
+
+  // Stats
+  var totalRev=0,totalExp=0;
+  records.forEach(function(r){
+    totalRev+=(r.revCash||0)+(r.revCard||0);
+    totalExp+=(r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+  });
+  var kg3=document.createElement('div');
+  kg3.className='kgrid3';
+  kg3.innerHTML=
+    '<div class="kc"><div class="kl">عدد الأيام</div><div class="kv" style="color:var(--g800)">'+records.length+'</div></div>'+
+    '<div class="kc kc-rev"><div class="kl">إجمالي الإيرادات</div><div class="kv vg">'+fmt(totalRev)+'<span class="kv-cur"> ر.س</span></div></div>'+
+    '<div class="kc kc-exp"><div class="kl">إجمالي المصروفات</div><div class="kv vr">'+fmt(totalExp)+'<span class="kv-cur"> ر.س</span></div></div>';
+  pg.appendChild(kg3);
+
+  records.forEach(function(r){
+    var tR=(r.revCash||0)+(r.revCard||0);
+    var tE=(r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+    var net=tR-tE;
+    var div=document.createElement('div');
+    div.className='hi';
+    div.innerHTML=
+      '<div class="hi-left">'+
+        '<div class="hi-date">📅 '+(r.hijri||'')+'</div>'+
+        '<div class="hi-stats">إيرادات: '+fmt(tR)+' · مصروفات: '+fmt(tE)+(r.transfer?' · تحويل: '+fmt(r.transfer.amt||0):'')+' ر.س</div>'+
+        '<div class="hi-user"><span>👤 '+(r.recordedBy||'')+'</span><span style="color:var(--g300)">·</span><span>'+cleanDate(r.recordedAt)+'</span></div>'+
+      '</div>'+
+      '<div class="hi-right">'+
+        '<div class="'+(net>=0?'hi-net-pos':'hi-net-neg')+'">'+(net>=0?'+':'')+fmt(net)+'</div>'+
+        '<div style="font-size:10px;color:var(--g400);font-weight:700;text-align:left">ر.س</div>'+
+      '</div>';
+    div.addEventListener('click',function(){ showDetail(r,pg,hy); });
+    pg.appendChild(div);
+  });
+}
+
+function showDetail(r,pg,hy){
+  pg.innerHTML='';
+  var tR=(r.revCash||0)+(r.revCard||0);
+  var tE=(r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+  var tS=(r.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';}).reduce(function(s,e){return s+(e.amt||0);},0);
+  var net=tR-tE;
+  var expRows=(r.expenses||[]).filter(function(e){return e.cat!=='رواتب عمالة';});
+  var salRows=(r.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';});
+  var hasTf=r.transfer&&r.transfer.amt;
+
+  var back=document.createElement('button');
+  back.className='back-btn';
+  back.innerHTML='→ العودة للسجل';
+  back.addEventListener('click',function(){ renderHistList(histCache,pg,hy); });
+  pg.appendChild(back);
+
+  var netDiv=document.createElement('div');
+  netDiv.className='sum-net';
+  netDiv.style.marginBottom='12px';
+  netDiv.innerHTML=buildNetCard(r.hijri,r.greg,net,tR,tE-tS,tS,null);
+  pg.appendChild(netDiv);
+
+  var kg=document.createElement('div');
+  kg.className='kgrid';
+  kg.style.marginBottom='12px';
+  kg.innerHTML=
+    '<div class="kc kc-rev"><div class="kl">إيرادات نقداً</div><div class="kv vg">'+fmt(r.revCash||0)+'<span class="kv-cur"> ر.س</span></div></div>'+
+    '<div class="kc kc-rev"><div class="kl">إيرادات بطاقة</div><div class="kv vg">'+fmt(r.revCard||0)+'<span class="kv-cur"> ر.س</span></div></div>';
+  pg.appendChild(kg);
+
+  if(expRows.length){ pg.appendChild(buildSecLabel('🧾 المصروفات')); pg.appendChild(buildExpCard(expRows)); }
+  if(salRows.length){ pg.appendChild(buildSecLabel('💼 الرواتب')); pg.appendChild(buildSalCard(salRows,tS)); }
+  if(hasTf){ pg.appendChild(buildSecLabel('↔️ التحويل')); pg.appendChild(buildTfCard(r.transfer)); }
+
+  var rb=document.createElement('div');
+  rb.className='rec-by';
+  rb.innerHTML='<span>👤 '+(r.recordedBy||'')+'</span><span style="color:var(--g300)">·</span><span>'+cleanDate(r.recordedAt)+'</span>';
+  pg.appendChild(rb);
+}
+
+// ── BUILDERS ──────────────────────────────────────────────────────────────────
+function buildNetCard(hijri,greg,net,rev,exp,sal,label){
+  return '<div class="sum-net-inner">'+
+    (label?'<div class="sum-net-label">'+label+'</div>':'')+
+    '<div class="sum-net-date">'+
+      '<span>📅 '+(hijri||'')+'</span>'+
+      (greg?'<span style="color:rgba(255,255,255,0.3)">·</span><span>'+cleanDate(greg)+'</span>':'')+
+    '</div>'+
+    '<div class="sum-net-val" style="color:'+(net>=0?'#9FE1CB':'#F09595')+'">'+(net>=0?'+':'')+fmt(net)+' <span class="sum-net-cur">ر.س</span></div>'+
+    '<div class="sum-net-row">'+
+      '<div class="sum-net-stat"><div class="sum-net-stat-lbl">إيرادات</div><div class="sum-net-stat-val">'+fmt(rev)+'</div></div>'+
+      '<div class="sum-net-stat" style="border-right:1px solid rgba(255,255,255,0.12);border-left:1px solid rgba(255,255,255,0.12)">'+
+        '<div class="sum-net-stat-lbl">مصروفات</div><div class="sum-net-stat-val">'+fmt(exp)+'</div>'+
+      '</div>'+
+      '<div class="sum-net-stat"><div class="sum-net-stat-lbl">رواتب</div><div class="sum-net-stat-val">'+fmt(sal)+'</div></div>'+
+    '</div>'+
+  '</div>';
+}
+
+function buildSecLabel(text){
+  var d=document.createElement('div');
+  d.className='sec-lbl';
+  d.textContent=text;
+  return d;
+}
+
+function buildExpCard(rows){
+  var c=document.createElement('div');
+  c.className='card';
+  c.style.cssText='padding:14px 16px;margin-bottom:12px';
+  c.innerHTML=rows.map(function(e){
+    return '<div class="dr">'+
+      '<div class="dr-left">'+
+        '<div class="dr-title">'+e.cat+(e.note?' ('+e.note+')':'')+'</div>'+
+        '<div class="dr-meta">'+
+          '<span class="tg '+(e.acct==='cash'?'tg-c':'tg-b')+'">'+(e.acct==='cash'?'🗄️ صندوق':'🏦 بنك')+'</span>'+
+          (e.driveLink?'<a class="attach-link" href="'+e.driveLink+'" target="_blank" rel="noopener">📎 عرض المرفق</a>':'')+
+        '</div>'+
+      '</div>'+
+      '<div class="dr-amt vr">'+fmt(e.amt||0)+' ر.س</div>'+
+    '</div>';
+  }).join('');
+  return c;
+}
+
+function buildSalCard(rows,total){
+  var c=document.createElement('div');
+  c.className='card';
+  c.style.cssText='padding:14px 16px;margin-bottom:12px';
+  c.innerHTML=rows.map(function(e){
+    return '<div class="dr">'+
+      '<div class="dr-left">'+
+        '<div class="dr-title">'+(e.worker||'موظف')+'</div>'+
+        '<div class="dr-meta"><span class="tg '+(e.acct==='cash'?'tg-c':'tg-b')+'">'+(e.acct==='cash'?'🗄️ صندوق':'🏦 بنك')+'</span></div>'+
+      '</div>'+
+      '<div class="dr-amt va">'+fmt(e.amt||0)+' ر.س</div>'+
+    '</div>';
+  }).join('')+
+  '<div class="dr" style="border-top:1px solid #f0e8e0;margin-top:4px">'+
+    '<div style="font-size:13px;font-weight:800;color:var(--g700)">الإجمالي</div>'+
+    '<div class="dr-amt va">'+fmt(total)+' ر.س</div>'+
+  '</div>';
+  return c;
+}
+
+function buildTfCard(tf){
+  var c=document.createElement('div');
+  c.className='card';
+  c.style.cssText='padding:14px 16px;margin-bottom:12px';
+  c.innerHTML=
+    '<div class="tf-block">'+
+      '<div class="tf-dir">'+
+        '<span>'+(tf.from==='cash'?'🗄️ الصندوق':'🏦 البنك')+'</span>'+
+        '<span style="color:var(--amber);font-weight:800">←</span>'+
+        '<span>'+(tf.to==='cash'?'🗄️ الصندوق':'🏦 البنك')+'</span>'+
+      '</div>'+
+      '<div style="font-size:15px;font-weight:800;color:var(--blue-d)">'+fmt(tf.amt||0)+' ر.س</div>'+
+    '</div>'+
+    (tf.note?'<div class="tf-note-text">'+tf.note+'</div>':'');
+  return c;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
+// ════ PART 4 DASHBOARD FUNCTIONS ════
+'use strict';
+
+var API    = 'https://script.google.com/macros/s/AKfycbzb0l1cdEYAby51Hbl7tfyFI8zXTLgPVZm6DFGjR-fflIDtbzY7h-d4rs6pM8bhVDVF7w/exec';
+var WORKER = 'https://bait-sudani-upload.albyt-alsudani.workers.dev';
+var ROLE   = 'admin';
+var DISPLAY_NAME = 'محمد';
+
+var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
+var SHOP_NAMES  = {all:'كل المحلات',Tailor:'✂️ خياط البيت السوداني',Salon:'💇 صالون الخرطوم',Atara:'🌿 عطارة البيت السوداني'};
+
+// ── Accurate Umm al-Qura Hijri ↔ Gregorian conversion ──────────────────────
+// Anchor dates: 1 Muharram of each year (Umm al-Qura calendar)
+var UMM_ANCHORS=[
+  {hy:1440,y:2018,m:9,d:11},{hy:1441,y:2019,m:9,d:1},{hy:1442,y:2020,m:8,d:20},
+  {hy:1443,y:2021,m:8,d:9}, {hy:1444,y:2022,m:7,d:30},{hy:1445,y:2023,m:7,d:19},
+  {hy:1446,y:2024,m:7,d:7}, {hy:1447,y:2025,m:6,d:28},{hy:1448,y:2026,m:6,d:17},
+  {hy:1449,y:2027,m:6,d:7}, {hy:1450,y:2028,m:5,d:26}
+];
+// Month lengths per year (Muharram→DhulHijjah) — Umm al-Qura data
+var UMM_MONTHS={
+  1444:[30,29,30,29,30,29,30,29,30,29,30,29],
+  1445:[30,29,30,29,30,29,30,29,30,29,30,29],
+  1446:[30,29,30,30,29,30,29,30,29,30,30,30],
+  1447:[30,29,30,29,30,29,30,29,30,29,29,30],
+  1448:[30,29,30,29,30,29,30,30,29,30,29,30],
+  1449:[29,30,29,30,29,30,29,30,29,30,29,30],
+  1450:[30,29,30,29,30,29,30,29,30,30,29,30]
+};
+function pad2(n){return String(n).padStart(2,'0');}
+function gregLastDay(y,m){return new Date(y,m,0).getDate();}
+function dateMs(y,m,d){return new Date(y,m-1,d).getTime();}
+function greg2hijri(gy,gm,gd){
+  var target=dateMs(gy,gm,gd);
+  var hy=1447,anchorMs=dateMs(2025,6,28);
+  for(var i=0;i<UMM_ANCHORS.length-1;i++){
+    var a=UMM_ANCHORS[i],nb=UMM_ANCHORS[i+1];
+    var aMs=dateMs(a.y,a.m,a.d),nbMs=dateMs(nb.y,nb.m,nb.d);
+    if(target>=aMs&&target<nbMs){hy=a.hy;anchorMs=aMs;break;}
+    if(i===UMM_ANCHORS.length-2&&target>=nbMs){hy=nb.hy;anchorMs=nbMs;}
+  }
+  var doy=Math.round((target-anchorMs)/86400000); // days from 1 Muharram
+  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
+  var hm=1,acc=0;
+  for(var m=0;m<12;m++){if(doy>=acc+lens[m]){acc+=lens[m];}else{hm=m+1;break;}}
+  var hd=doy-acc+1;
+  return {y:hy,m:hm,d:hd};
+}
+function hijri2greg(hy,hm,hd){
+  var anchor=null;
+  for(var i=0;i<UMM_ANCHORS.length;i++){if(UMM_ANCHORS[i].hy===hy){anchor=UMM_ANCHORS[i];break;}}
+  if(!anchor) return null;
+  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
+  var days=0;
+  for(var m=0;m<hm-1;m++) days+=lens[m];
+  days+=hd-1;
+  var d=new Date(anchor.y,anchor.m-1,anchor.d+days);
+  return {y:d.getFullYear(),m:d.getMonth()+1,d:d.getDate()};
+}
+function hijri2isoStr(hy,hm,hd){
+  var g=hijri2greg(hy,hm,hd);
+  if(!g) return '';
+  return g.y+'-'+pad2(g.m)+'-'+pad2(g.d);
+}
+function hijriMonthLen(hy,hm){
+  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
+  return lens[hm-1]||29;
+}
+function getWeekStartEnd(){
+  // Saudi week: Sunday=start, Saturday=end
+  var n=new Date(),day=n.getDay(); // 0=Sun,1=Mon,...,6=Sat
+  var diffToSun=day; // days to go back to reach Sunday
+  var s=new Date(n);s.setDate(n.getDate()-diffToSun);
+  var e=new Date(s);e.setDate(s.getDate()+6);
+  return {sy:s.getFullYear(),sm:s.getMonth()+1,sd:s.getDate(),
+          ey:e.getFullYear(),em:e.getMonth()+1,ed:e.getDate()};
+}
+
+// Period keys — use accurate Umm al-Qura conversion
+var HIJRI_DATES = {
+  month: function(){
+    var n=new Date(),h=greg2hijri(n.getFullYear(),n.getMonth()+1,n.getDate());
+    var last=hijriMonthLen(h.y,h.m);
+    return {f:h.y+'/'+pad2(h.m)+'/01',t:h.y+'/'+pad2(h.m)+'/'+pad2(last),
+            fKey:h.y+'/'+pad2(h.m),tKey:h.y+'/'+pad2(h.m)};
+  },
+  week: function(){
+    var w=getWeekStartEnd();
+    var hs=greg2hijri(w.sy,w.sm,w.sd),he=greg2hijri(w.ey,w.em,w.ed);
+    return {f:hs.y+'/'+pad2(hs.m)+'/'+pad2(hs.d),t:he.y+'/'+pad2(he.m)+'/'+pad2(he.d),
+            fKey:hs.y+'/'+pad2(hs.m),tKey:he.y+'/'+pad2(he.m)};
+  },
+  year: function(){
+    var n=new Date(),h=greg2hijri(n.getFullYear(),n.getMonth()+1,n.getDate());
+    var lastLen=hijriMonthLen(h.y,12);
+    return {f:h.y+'/01/01',t:h.y+'/12/'+pad2(lastLen),fKey:h.y+'/01',tKey:h.y+'/12'};
+  },
+  all: function(){ return {f:'من البداية',t:'اليوم',fKey:'1400/01',tKey:'1500/12'}; }
+};
+var GREG_DATES = {
+  month: function(){
+    var n=new Date(),gy=n.getFullYear(),gm=n.getMonth()+1;
+    var last=gregLastDay(gy,gm);
+    return {f:gy+'-'+pad2(gm)+'-01',t:gy+'-'+pad2(gm)+'-'+pad2(last),
+            fKey:gy+'-'+pad2(gm),tKey:gy+'-'+pad2(gm)};
+  },
+  week: function(){
+    var w=getWeekStartEnd();
+    return {f:w.sy+'-'+pad2(w.sm)+'-'+pad2(w.sd),t:w.ey+'-'+pad2(w.em)+'-'+pad2(w.ed),
+            fKey:w.sy+'-'+pad2(w.sm),tKey:w.ey+'-'+pad2(w.em)};
+  },
+  year: function(){
+    var gy=new Date().getFullYear();
+    return {f:gy+'-01-01',t:gy+'-12-31',fKey:gy+'-01',tKey:gy+'-12'};
+  },
+  all: function(){ return {f:'من البداية',t:'اليوم',fKey:'2000-01',tKey:'2099-12'}; }
+};
+var PLBLS = {month:'هذا الشهر',week:'هذا الأسبوع',year:'هذا العام',all:'من البداية',custom:'مخصص'};
+var SCFG  = {
+  ok:     {color:'#1D9E75',bg:'#E8F8F2',text:'#085041',label:'ساري'},
+  soon:   {color:'#EF9F27',bg:'#FAEEDA',text:'#854F0B',label:'ينتهي قريباً'},
+  expired:{color:'#E24B4A',bg:'#FEF0F0',text:'#A32D2D',label:'منتهي'}
+};
+
+var curShop='all', curPeriod='month', curCal='hijri';
+var curAcctFilter='all';
+var expChart=null, revChart=null;
+var allMovements=[], allPartnerTx=[];
+var docAction=null, docCalType='hijri';
+
 
 // ── Date helpers ──────────────────────────────────────────────────────────────
 function fmtFullDate(el){
@@ -2949,26 +3270,28 @@ window.exportPDF=function(){
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
-// WRAPPERS
 
+// ════ INTEGRATION WRAPPERS ════════════════════════════════════════════════════
 function renderEntry(){
-  DEMO.shop=state.currentShop;
-  DEMO.shopName=SHOPS[state.currentShop]?SHOPS[state.currentShop].name:'';
-  DEMO.shopEmoji=SHOPS[state.currentShop]?SHOPS[state.currentShop].emoji:'';
-  DEMO.role=state.user?state.user.role:'admin';
-  DEMO.user=state.user?state.user.displayName:'';
-  if(state.categories.length) DEMO.categories=state.categories;
-  if(state.employees.length)  DEMO.employees=state.employees;
+  DEMO.shop      = state.currentShop;
+  DEMO.shopName  = SHOPS[state.currentShop] ? SHOPS[state.currentShop].name  : '';
+  DEMO.shopEmoji = SHOPS[state.currentShop] ? SHOPS[state.currentShop].emoji : '';
+  DEMO.role      = state.user ? state.user.role        : 'admin';
+  DEMO.user      = state.user ? state.user.displayName : '';
+  if(state.categories && state.categories.length) DEMO.categories = state.categories;
+  if(state.employees  && state.employees.length)  DEMO.employees  = state.employees;
   buildEntry();
 }
+
 function loadDashboard(){
-  curShop='all';
-  ROLE=state.user?state.user.role:'admin';
-  USER_SHOPS=state.user?state.user.shops:'all';
-  DISPLAY_NAME=state.user?state.user.displayName:'';
-  if(gs('hdr-uname')) gs('hdr-uname').textContent=DISPLAY_NAME;
-  document.querySelectorAll('.sp').forEach(function(p){p.classList.remove('on');});
-  var allPill=document.querySelector('.sp[onclick*="all"]');
+  curShop      = 'all';
+  ROLE         = state.user ? state.user.role        : 'admin';
+  USER_SHOPS   = state.user ? state.user.shops       : 'all';
+  DISPLAY_NAME = state.user ? state.user.displayName : '';
+  var uname = gs('hdr-uname');
+  if(uname) uname.textContent = DISPLAY_NAME;
+  document.querySelectorAll('.sp').forEach(function(p){ p.classList.remove('on'); });
+  var allPill = document.querySelector('.sp[onclick*=\"all\"]');
   if(allPill) allPill.classList.add('on');
   applyColor(SHOP_COLORS['all']);
   updateDates();
@@ -2979,5 +3302,40 @@ function loadDashboard(){
 })();
 
 </script>
+<!-- Document Modal -->
+<div class="modal" id="doc-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="doc-modal-title">رفع مستند جديد</div>
+    <div class="m-fg">
+      <label>المحل <span style="color:var(--amber)">*</span></label>
+      <select id="doc-shop-sel">
+        <option value="Tailor">✂️ خياط البيت السوداني</option>
+        <option value="Salon">💇 صالون الخرطوم</option>
+        <option value="Atara">🌿 عطارة البيت السوداني</option>
+      </select>
+    </div>
+    <div class="m-fg">
+      <label>اسم المستند <span style="color:var(--amber)">*</span></label>
+      <input type="text" id="doc-name-inp" placeholder="مثال: السجل التجاري"/>
+    </div>
+    <div class="m-fg">
+      <label>تاريخ الانتهاء</label>
+      <div class="cal-toggle">
+        <button class="cal-btn on" id="doc-cal-hijri" onclick="setDocCal('hijri')">هجري</button>
+        <button class="cal-btn" id="doc-cal-greg" onclick="setDocCal('greg')">ميلادي</button>
+      </div>
+      <input type="text" id="doc-expiry-inp" placeholder="1449/03/15" maxlength="10" oninput="fmtFullDate(this)"/>
+    </div>
+    <div class="m-fg">
+      <label>الملف <span style="color:var(--amber)">*</span></label>
+      <input type="file" id="doc-file-inp" accept="image/*,.pdf"/>
+    </div>
+    <div class="m-btns">
+      <button onclick="document.getElementById('doc-modal').classList.remove('show')">إلغاء</button>
+      <button class="m-primary" id="doc-upload-btn" onclick="doUploadDoc()">رفع المستند</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </body>
 </html>
