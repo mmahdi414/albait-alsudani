@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <style>
-/* === Part 1 — Shell/Login/Nav === */
+/* === Part 1 — Design System + Shell === */
 
 /* ═══════════════════════════════════════════════════
    DESIGN SYSTEM — البيت السوداني
@@ -532,62 +532,20 @@ input[type=file]{
 @keyframes spin{to{transform:rotate(360deg)}}
 
 
-/* === Part 2 — Entry Tab === */
-
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --navy:#1E3A5F;--navy-d:#152a47;--navy-l:#2a5080;
-  --green:#1D9E75;--green-l:#E8F8F2;--green-d:#085041;
-  --red:#E24B4A;--red-l:#FEF0F0;--red-d:#A32D2D;
-  --amber:#D85A30;--amber-l:#FEF3EE;--amber-d:#993C1D;
-  --blue:#185FA5;--blue-l:#EBF3FC;--blue-d:#0C447C;
-  --purple:#6B21A8;--purple-l:#F3E8FF;
-  --g50:#F8F9FA;--g100:#F1F3F5;--g200:#E9ECEF;--g300:#DEE2E6;
-  --g400:#CED4DA;--g500:#ADB5BD;--g600:#6C757D;--g700:#495057;--g800:#343A40;--g900:#212529;
-  --shop:#2C1810;--shop-l:#F5C4B3;
-  --rmd:10px;--rlg:14px;--rxl:20px;
-  --s1:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.05);
-  --s2:0 4px 16px rgba(0,0,0,0.12);
-}
-html,body{font-family:'Almarai',sans-serif;background:#F7F3EF;color:var(--g900);font-size:14px;-webkit-font-smoothing:antialiased}
-.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;.app{background:#F7F3EF}
-.hdr{background:var(--shop);padding:14px 16px 16px;flex-shrink:0}
-.hdr-inner{display:flex;align-items:center;justify-content:space-between}
-.hdr-title{font-size:19px;font-weight:800;color:#fff}
-.hdr-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
-.nav{display:flex;background:#1e100a;flex-shrink:0}
-.nb{flex:1;padding:10px 4px 12px;border:none;background:transparent;color:rgba(255,255,255,0.35);font-size:11px;font-weight:700;cursor:pointer;font-family:'Almarai',sans-serif;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:4px}
-.nb .ico{font-size:20px}
-.nb.on{color:#fff;border-bottom-color:#D85A30}
-.cnt{flex:1;overflow-y:auto;padding:14px;padding-bottom:30px}
-
+/* === Part 2 — Entry Tab Components === */
 /* Cards */
-.card{background:#FFFFFF;border-radius:var(--rlg);border:1px solid #EDE5DC;padding:16px;margin-bottom:12px;box-shadow:var(--s1)}
-.ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--g100)}
-.ci{width:36px;height:36px;border-radius:var(--rmd);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+
 .ci-dt{background:#F8F9FA;color:#495057}
 .ci-rev{background:#E8F8F2;color:#085041}
 .ci-exp{background:#FEF0F0;color:#A32D2D}
 .ci-sal{background:#FAEEDA;color:#854F0B}
 .ci-tf{background:#EBF3FC;color:#0C447C}
 .ci-prt{background:#F3E8FF;color:#6B21A8}
-.ct{font-size:16px;font-weight:800;color:var(--g800)}
+
 .ct-sub{font-size:11px;color:#7a6a62;font-weight:700;margin-top:1px}
 
 /* Form */
-label{font-size:13px;color:var(--g600);display:block;margin-bottom:5px;font-weight:700}
-input[type=text],input[type=number],select,textarea{
-  width:100%;font-family:'Almarai',sans-serif;font-size:15px;
-  direction:rtl;border:1.5px solid var(--g300);border-radius:var(--rmd);
-  padding:11px 13px;background:#fff;color:var(--g900);transition:border-color 0.2s;
-}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--shop)}
-input[type=file]{
-  font-size:13px;color:var(--g500);border:1.5px dashed var(--g300);
-  border-radius:var(--rmd);padding:9px;width:100%;background:var(--g50);
-  font-family:'Almarai',sans-serif;
-}
-.fg{margin-bottom:12px}
+
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .req{color:var(--amber)}
 .greg-display{font-size:12px;color:var(--amber-d);margin-top:4px;font-weight:700;min-height:18px}
@@ -669,28 +627,9 @@ input[type=file]{
 .save-btn:disabled{opacity:0.55;cursor:not-allowed;transform:none}
 
 /* Toast */
-.toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
-  padding:12px 24px;border-radius:var(--rmd);
-  font-size:14px;font-family:'Almarai',sans-serif;font-weight:700;
-  z-index:9999;display:none;white-space:nowrap;
-  color:#fff;box-shadow:var(--s2);
-}
 
 /* Modal */
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:20px}
-.modal.show{display:flex}
-.modal-box{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:320px;text-align:center;box-shadow:var(--s2)}
-.modal-box h3{font-size:17px;font-weight:800;color:var(--g800);margin-bottom:8px}
-.modal-box p{font-size:13px;color:var(--g600);font-weight:700;margin-bottom:20px;line-height:1.7}
-.modal-btns{display:flex;gap:8px;flex-wrap:wrap}
-.modal-btns button{
-  flex:1;padding:11px 6px;border-radius:var(--rmd);
-  font-family:'Almarai',sans-serif;font-size:13px;font-weight:700;
-  cursor:pointer;border:1.5px solid var(--g300);
-  background:var(--g50);color:var(--g700);transition:all 0.15s;
-  min-width:70px;
-}
+
 .btn-primary{background:var(--shop)!important;border-color:var(--shop)!important;color:#fff!important}
 .btn-danger{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
 
@@ -711,42 +650,14 @@ input[type=file]{
   display:inline-block;margin-top:4px;cursor:pointer;
 }
 
-
-/* === Part 3 — Summary/History === */
-
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --green:#1D9E75;--green-l:#E8F8F2;--green-d:#085041;
-  --red:#E24B4A;--red-l:#FEF0F0;--red-d:#A32D2D;
-  --amber:#D85A30;--amber-l:#FEF3EE;--amber-d:#993C1D;
-  --blue:#185FA5;--blue-l:#EBF3FC;--blue-d:#0C447C;
-  --g300:#DEE2E6;--g400:#CED4DA;--g500:#ADB5BD;--g600:#6C757D;--g700:#495057;--g800:#343A40;--g900:#212529;
-  --shop:#2C1810;--shop-nav:#1e100a;--shop-active:#D85A30;
-  --shop-bg:#F7F3EF;--shop-border:#EDE5DC;--shop-sub:#7a6a62;
-  --rmd:10px;--rlg:14px;--rxl:20px;
-  --s1:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.05);
-  --s2:0 4px 16px rgba(0,0,0,0.12);
-}
-html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(--g900);font-size:14px;-webkit-font-smoothing:antialiased}
-.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--shop-bg)}
-.hdr{background:var(--shop);padding:14px 16px 16px;flex-shrink:0;position:relative;overflow:hidden}
-.hdr::after{content:'';position:absolute;bottom:-30px;left:-10px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
-.hdr-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between}
-.hdr-title{font-size:19px;font-weight:800;color:#fff}
-.hdr-sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:1px}
+/* === Part 3 — Summary/History Components === */
 .hdr-chip{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:var(--rxl);padding:6px 12px;display:flex;align-items:center;gap:6px}
 .hdr-chip-name{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85)}
-.nav{display:flex;background:var(--shop-nav);flex-shrink:0}
-.nb{flex:1;padding:10px 4px 12px;border:none;background:transparent;color:rgba(255,255,255,0.35);font-size:11px;font-weight:700;cursor:pointer;font-family:'Almarai',sans-serif;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:4px}
-.nb .ico{font-size:20px}
-.nb.on{color:#fff;border-bottom-color:var(--shop-active)}
-.cnt{flex:1;overflow-y:auto;padding:14px;padding-bottom:30px}
-.pg{display:none}.pg.on{display:block}
-.card{background:#fff;border-radius:var(--rlg);border:1px solid var(--shop-border);padding:16px;margin-bottom:12px;box-shadow:var(--s1)}
+
 .sum-net{background:var(--shop);border-radius:var(--rlg);padding:22px 20px;margin-bottom:12px;position:relative;overflow:hidden}
 .sum-net::before{content:'';position:absolute;top:-40px;left:-20px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
 .sum-net-inner{position:relative;z-index:1}
-.sum-net-label{font-size:11px;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.sum-net-
 .sum-net-date{font-size:14px;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sum-net-val{font-size:40px;font-weight:800;line-height:1;letter-spacing:-1px}
 .sum-net-cur{font-size:18px;font-weight:400;margin-right:6px;opacity:0.7}
@@ -789,39 +700,18 @@ html,body{font-family:'Almarai',sans-serif;background:var(--shop-bg);color:var(-
 .hi-net-neg{font-size:17px;font-weight:800;color:var(--red-d);line-height:1;margin-bottom:3px}
 .back-btn{background:transparent;border:none;color:var(--shop);font-size:15px;font-family:'Almarai',sans-serif;font-weight:800;cursor:pointer;padding:0;margin-bottom:14px;display:flex;align-items:center;gap:5px}
 .rec-by{font-size:11px;color:var(--g400);font-weight:700;margin-top:4px;padding-right:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:16px}
-.yr-label{font-size:12px;font-weight:700;color:var(--shop-sub);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.empty{text-align:center;color:var(--g400);padding:3rem 1rem;font-size:14px;font-weight:700}
-.loading{text-align:center;color:var(--g400);padding:3rem 1rem;font-size:14px;font-weight:700}
-.loading::after{content:'';display:inline-block;width:18px;height:18px;border:2px solid var(--g300);border-top-color:var(--shop);border-radius:50%;animation:spin 0.8s linear infinite;margin-right:8px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
+.yr-
 
-
-/* === Part 4 — Dashboard === */
-
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#1E3A5F;--navy-l:#2a5080;
-  --green:#1D9E75;--green-l:#E8F8F2;--green-d:#085041;
-  --red:#E24B4A;--red-l:#FEF0F0;--red-d:#A32D2D;
-  --amber:#D85A30;--amber-l:#FEF3EE;--amber-d:#993C1D;
-  --blue:#185FA5;--blue-l:#EBF3FC;--blue-d:#0C447C;
-  --g50:#F8F9FA;--g100:#F1F3F5;--g200:#E9ECEF;--g300:#DEE2E6;
-  --g400:#CED4DA;--g500:#ADB5BD;--g600:#6C757D;--g700:#495057;--g800:#343A40;--g900:#212529;
-  --cur:#1E3A5F;
-  --rmd:10px;--rlg:14px;--rxl:20px;
-  --s1:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
 }
-html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g900);font-size:14px;-webkit-font-smoothing:antialiased}
+
+/* === Part 4 — Dashboard Components === */
 .dash{max-width:480px;margin:0 auto;padding-bottom:40px}
 
 /* HEADER */
-.hdr{background:var(--cur);padding:20px 20px 22px;transition:background 0.35s;position:relative;overflow:hidden}
-.hdr::after{content:'';position:absolute;bottom:-40px;left:-20px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
-.hdr-inner{position:relative;z-index:1}
+
 .hdr-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
 .hdr-logo{font-size:9px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:3px}
-.hdr-title{font-size:21px;font-weight:800;color:#fff;letter-spacing:-0.3px}
-.hdr-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+
 .hdr-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:var(--rxl);padding:6px 13px;display:flex;align-items:center;gap:6px;flex-shrink:0}
 .hdr-dot{width:7px;height:7px;border-radius:50%;background:#1D9E75}
 .hdr-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85)}
@@ -832,7 +722,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 /* FILTER BAR */
 .fbar{background:#fff;border-bottom:1px solid var(--g200);padding:16px 20px;box-shadow:var(--s1)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.fg{display:flex;flex-direction:column;gap:4px}
+
 .flbl{font-size:10px;font-weight:700;color:var(--g500);letter-spacing:0.8px;text-transform:uppercase}
 .fsel{font-family:'Almarai',sans-serif;font-size:13px;font-weight:700;background:var(--g50);border:1.5px solid var(--g200);border-radius:var(--rmd);color:var(--g800);padding:9px 11px;width:100%;direction:rtl;appearance:none}
 .fsel:focus{outline:none;border-color:var(--cur);background:#fff}
@@ -869,7 +759,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .vg{color:var(--green-d)}.vr{color:var(--red-d)}.va{color:var(--amber-d)}.vb{color:var(--blue-d)}
 
 /* CARDS */
-.card{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);padding:18px;margin-bottom:12px;box-shadow:var(--s1)}
+
 .chdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .ctitle{font-size:15px;font-weight:800;color:var(--g800)}
 .cpill{font-size:10px;font-weight:700;background:var(--g100);border:1px solid var(--g200);border-radius:20px;padding:3px 10px;color:var(--g500)}
@@ -987,27 +877,23 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .pdf-btn:active{transform:scale(0.99)}
 
 /* LOADING */
-.loading{text-align:center;color:var(--g400);padding:16px;font-size:13px;font-weight:700}
-.loading::after{content:'';display:inline-block;width:14px;height:14px;border:2px solid var(--g300);border-top-color:var(--cur);border-radius:50%;animation:spin 0.8s linear infinite;margin-right:6px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
+
+}
 
 /* MODAL */
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:20px}
-.modal.show{display:flex}
-.modal-box{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:340px;box-shadow:0 4px 24px rgba(0,0,0,0.18)}
+
 .modal-title{font-size:17px;font-weight:800;color:var(--g800);margin-bottom:16px}
 .m-fg{margin-bottom:12px}
-.m-fg label{font-size:13px;color:var(--g600);font-weight:700;display:block;margin-bottom:5px}
-.m-fg input[type=text],.m-fg select{width:100%;font-family:'Almarai',sans-serif;font-size:14px;border:1.5px solid var(--g200);border-radius:var(--rmd);padding:10px 12px;direction:rtl;color:var(--g900)}
-.m-fg input[type=text]:focus,.m-fg select:focus{outline:none;border-color:var(--cur)}
-.m-fg input[type=file]{width:100%;font-family:'Almarai',sans-serif;font-size:13px;border:1.5px dashed var(--g200);border-radius:var(--rmd);padding:9px;background:var(--g50);color:var(--g500)}
+.m-fg 
+.m-fg 
+.m-fg 
+.m-fg 
 .cal-toggle{display:flex;gap:6px;margin-bottom:8px}
 .cal-btn{flex:1;padding:8px;border-radius:var(--rmd);border:1.5px solid var(--g200);background:var(--g50);font-size:13px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer;color:var(--g600);transition:all 0.15s}
 .cal-btn.on{background:var(--cur);border-color:var(--cur);color:#fff}
 .m-btns{display:flex;gap:8px;margin-top:16px}
 .m-btns button{flex:1;padding:11px;border-radius:var(--rmd);font-family:'Almarai',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--g200);background:var(--g50);color:var(--g700)}
 .m-btns .m-primary{background:var(--cur);border-color:var(--cur);color:#fff}
-
 </style>
 </head>
 <body>
@@ -1075,39 +961,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <div id="pg-entry"  class="pg on"></div>
     <div id="pg-summary" class="pg"></div>
     <div id="pg-history" class="pg"></div>
-    <div id="pg-dashboard" class="pg"></div>
-  </div>
-</div>
-
-<!-- ══════════════════ LOGOUT MODAL ══════════════════ -->
-<div class="modal" id="logout-modal">
-  <div class="modal-box">
-    <h3>تسجيل الخروج</h3>
-    <p>هل تريد تسجيل الخروج من حسابك؟</p>
-    <div class="modal-btns">
-      <button id="logout-cancel">إلغاء</button>
-      <button class="btn-danger" id="logout-confirm">تسجيل الخروج</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════ DATE WARNING MODAL ══════════════════ -->
-<div class="modal" id="date-modal">
-  <div class="modal-box">
-    <h3>⚠️ تاريخ موجود مسبقاً</h3>
-    <p id="date-modal-msg">يوجد إدخال سابق لهذا التاريخ. ماذا تريد أن تفعل؟</p>
-    <div class="modal-btns">
-      <button id="date-cancel">إلغاء</button>
-      <button id="date-add" class="btn-primary">إضافة</button>
-      <button id="date-replace" class="btn-danger">استبدال</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- ══════════════════ DASHBOARD PAGE ══════════════════ -->
-<div id="pg-dashboard" class="pg">
+    <div id="pg-dashboard" class="pg">
 <div class="dash">
 
 <div class="hdr" id="hdr">
@@ -1268,8 +1122,37 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 
 <!-- Document Modal -->
 </div>
+  </div>
+</div>
 
-<!-- ══════════════════ DOCUMENT MODAL ══════════════════ -->
+<!-- ══════════════════ LOGOUT MODAL ══════════════════ -->
+<div class="modal" id="logout-modal">
+  <div class="modal-box">
+    <h3>تسجيل الخروج</h3>
+    <p>هل تريد تسجيل الخروج من حسابك؟</p>
+    <div class="modal-btns">
+      <button id="logout-cancel">إلغاء</button>
+      <button class="btn-danger" id="logout-confirm">تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ DATE WARNING MODAL ══════════════════ -->
+<div class="modal" id="date-modal">
+  <div class="modal-box">
+    <h3>⚠️ تاريخ موجود مسبقاً</h3>
+    <p id="date-modal-msg">يوجد إدخال سابق لهذا التاريخ. ماذا تريد أن تفعل؟</p>
+    <div class="modal-btns">
+      <button id="date-cancel">إلغاء</button>
+      <button id="date-add" class="btn-primary">إضافة</button>
+      <button id="date-replace" class="btn-danger">استبدال</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Document Modal -->
 <div class="modal" id="doc-modal">
   <div class="modal-box">
     <div class="modal-title" id="doc-modal-title">رفع مستند جديد</div>
@@ -1312,7 +1195,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 (function(){
 'use strict';
 
-/* ══════════════ PART 1 — Core ══════════════ */
+/* ══ PART 1 — Core ══ */
 
 'use strict';
 
@@ -1724,7 +1607,7 @@ function loadDashboard(){
 
 
 
-/* ══════════════ PART 2 — Entry ══════════════ */
+/* ══ PART 2 — Entry ══ */
 
 
 
@@ -1756,7 +1639,6 @@ var ACCLBL = {bank:'البنك 🏦', cash:'الصندوق 🗄️'};
 var PARTNER_TYPES = ['إيداع','سحب سلفة','توزيع أرباح'];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-}
 // ── BUILD ENTRY TAB ────────────────────────────────────────────────────────
 function buildEntry(){
   var cnt=gs('cnt');
@@ -2277,7 +2159,7 @@ function compressImage(file){
 
 
 
-/* ══════════════ PART 3 — Summary/History ══════════════ */
+/* ══ PART 3 — Summary/History ══ */
 
 
 
@@ -2551,7 +2433,7 @@ function buildTfCard(tf){
 
 
 
-/* ══════════════ PART 4 — Dashboard ══════════════ */
+/* ══ PART 4 — Dashboard ══ */
 
 
 
