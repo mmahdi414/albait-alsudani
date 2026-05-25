@@ -1078,6 +1078,7 @@ window.exportPDF=function(){
   var p=getParams();
   var k=getKeys();
   var acctFilter=curAcctFilter;
+  var acctTitle=acctFilter==='all'?'الكل':acctFilter==='cash'?'الصندوق':'البنك';
 
   var w=window.open('','_blank');
   w.document.write('<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">');
@@ -1086,119 +1087,112 @@ window.exportPDF=function(){
   w.document.write('*{box-sizing:border-box;margin:0;padding:0}');
   w.document.write('body{font-family:Almarai,sans-serif;direction:rtl;padding:32px;color:#212529;font-size:13px;background:#fff}');
   w.document.write('.pdf-hdr{background:#1E3A5F;color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:24px}');
-  w.document.write('.pdf-hdr h1{font-size:22px;font-weight:800;margin-bottom:6px}');
-  w.document.write('.pdf-hdr .meta{font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:16px;flex-wrap:wrap}');
-  w.document.write('.pdf-hdr .meta span{display:flex;align-items:center;gap:4px}');
+  w.document.write('.pdf-hdr h1{font-size:20px;font-weight:800;margin-bottom:6px}');
+  w.document.write('.pdf-hdr .meta{font-size:11px;color:rgba(255,255,255,0.65);display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}');
   w.document.write('.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}');
   w.document.write('.kpi-box{background:#F8F9FA;border:1px solid #E9ECEF;border-radius:10px;padding:14px}');
   w.document.write('.kpi-lbl{font-size:11px;color:#6C757D;font-weight:700;margin-bottom:4px}');
   w.document.write('.kpi-val{font-size:20px;font-weight:800}');
-  w.document.write('.kpi-val.pos{color:#085041}.kpi-val.neg{color:#A32D2D}.kpi-val.blue{color:#0C447C}.kpi-val.amber{color:#993C1D}');
+  w.document.write('.kpi-val.pos{color:#085041}.kpi-val.neg{color:#A32D2D}.kpi-val.blue{color:#0C447C}');
   w.document.write('h2{font-size:15px;font-weight:800;color:#212529;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #E9ECEF}');
   w.document.write('table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px}');
   w.document.write('th{background:#F1F3F5;padding:9px 12px;font-size:11px;font-weight:700;color:#495057;text-align:right;border-bottom:2px solid #DEE2E6}');
   w.document.write('td{padding:9px 12px;border-bottom:1px solid #F1F3F5;color:#343A40}');
   w.document.write('tr:nth-child(even) td{background:#FAFAFA}');
   w.document.write('.pos{color:#085041;font-weight:700}.neg{color:#A32D2D;font-weight:700}');
-  w.document.write('@media print{body{padding:16px}.pdf-hdr{border-radius:0}}');
+  w.document.write('@media print{body{padding:16px}}');
   w.document.write('</style></head><body>');
 
-  // PDF Header
+  // Header
   var now=new Date();
   var nowStr=now.toLocaleDateString('ar-SA')+' '+now.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
   w.document.write('<div class="pdf-hdr">');
-  w.document.write('<h1>🏛️ البيت السوداني | '+(SHOP_NAMES[curShop]||'كل المحلات')+'</h1>');
+  w.document.write('<h1>\u{1F3DB}\uFE0F \u0627\u0644\u0628\u064A\u062A \u0627\u0644\u0633\u0648\u062F\u0627\u0646\u064A | '+(SHOP_NAMES[curShop]||'\u0643\u0644 \u0627\u0644\u0645\u062D\u0644\u0627\u062A')+'</h1>');
   w.document.write('<div class="meta">');
-  w.document.write('<span>📅 الفترة: '+(k.f||'—')+' — '+(k.t||'—')+'</span>');
-  w.document.write('<span>📆 طُبع في: '+nowStr+'</span>');
+  w.document.write('<span>\u{1F4C5} \u0627\u0644\u0641\u062A\u0631\u0629: '+(k.f||'\u2014')+' \u2014 '+(k.t||'\u2014')+'</span>');
+  w.document.write('<span>\u{1F3E6} \u0627\u0644\u062D\u0633\u0627\u0628: '+acctTitle+'</span>');
+  w.document.write('<span>\u{1F4C6} \u0637\u064F\u0628\u0639 \u0641\u064A: '+nowStr+'</span>');
   w.document.write('</div></div>');
 
-  // Load KPIs then movements then optionally partners
+  // Step 1: KPIs
   apiCall(Object.assign({action:'getDashboardKPIs'},p)).then(function(res){
     if(res.success){
       w.document.write('<div class="kpi-grid">');
       if(acctFilter==='all'||acctFilter==='cash')
-        w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد الصندوق</div><div class="kpi-val pos">'+fmt(res.cashBalance)+' ر.س</div></div>');
+        w.document.write('<div class="kpi-box"><div class="kpi-lbl">\u0631\u0635\u064A\u062F \u0627\u0644\u0635\u0646\u062F\u0648\u0642</div><div class="kpi-val pos">'+fmt(res.cashBalance)+' \u0631.\u0633</div></div>');
       if(acctFilter==='all'||acctFilter==='bank')
-        w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد البنك</div><div class="kpi-val blue">'+fmt(res.bankBalance)+' ر.س</div></div>');
-      w.document.write('<div class="kpi-box"><div class="kpi-lbl">الإيرادات</div><div class="kpi-val pos">'+fmt(res.totalRevenue)+' ر.س</div></div>');
-      w.document.write('<div class="kpi-box"><div class="kpi-lbl">المصروفات</div><div class="kpi-val neg">'+fmt(res.totalExpenses)+' ر.س</div></div>');
+        w.document.write('<div class="kpi-box"><div class="kpi-lbl">\u0631\u0635\u064A\u062F \u0627\u0644\u0628\u0646\u0643</div><div class="kpi-val blue">'+fmt(res.bankBalance)+' \u0631.\u0633</div></div>');
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">\u0627\u0644\u0625\u064A\u0631\u0627\u062F\u0627\u062A</div><div class="kpi-val pos">'+fmt(res.totalRevenue)+' \u0631.\u0633</div></div>');
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">\u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062A</div><div class="kpi-val neg">'+fmt(res.totalExpenses)+' \u0631.\u0633</div></div>');
       var np=res.netProfit||0;
-      w.document.write('<div class="kpi-box"><div class="kpi-lbl">صافي الربح</div><div class="kpi-val '+(np>=0?'pos':'neg')+'">'+(np>=0?'+':'')+fmt(np)+' ر.س</div></div>');
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">\u0635\u0627\u0641\u064A \u0627\u0644\u0631\u0628\u062D</div><div class="kpi-val '+(np>=0?'pos':'neg')+'">'+(np>=0?'+':'')+fmt(np)+' \u0631.\u0633</div></div>');
       w.document.write('</div>');
     }
 
-    // Account Movement — fetch fresh from API with account filter
-    var acctTitle = acctFilter==='all'?'الكل':acctFilter==='cash'?'الصندوق':'البنك';
-    w.document.write('<h2>حركة الحسابات — '+acctTitle+'</h2>');
-    return apiCall(Object.assign({action:'getAccountMovement'},p)).then(function(movRes){
-      var allMov=(movRes.success&&movRes.data)?movRes.data:[];
-      var movList=acctFilter==='all'?allMov:allMov.filter(function(m){return m.account===acctFilter;});
-      if(movList.length){
-        var totalIn=0,totalOut=0;
-        movList.forEach(function(m){if(m.direction===1)totalIn+=m.amount;else totalOut+=m.amount;});
-        w.document.write('<table><tr><th>التاريخ</th><th>النوع</th><th>الحساب</th><th>المبلغ</th><th>الرصيد</th></tr>');
-        movList.forEach(function(m){
-          var isPos=m.direction===1;
-          w.document.write('<tr>'+
-            '<td>'+m.hijri+'</td>'+
-            '<td>'+m.type+'</td>'+
-            '<td>'+(m.account==='cash'?'الصندوق':'البنك')+'</td>'+
-            '<td class="'+(isPos?'pos':'neg')+'">'+(isPos?'+':'-')+fmt(m.amount)+' ر.س</td>'+
-            '<td style="font-weight:700">'+fmt(m.runningBalance)+' ر.س</td>'+
-          '</tr>');
-        });
-        w.document.write('<tr style="background:#F1F3F5;font-weight:800"><td colspan="3">الإجمالي</td>'+
-          '<td><span class="pos">+'+fmt(totalIn)+'</span> / <span class="neg">-'+fmt(totalOut)+'</span> ر.س</td><td></td></tr>');
-        w.document.write('</table>');
-      } else {
-        w.document.write('<p style="color:#6C757D;font-size:13px">لا توجد حركات في هذه الفترة</p>');
-      }
-    }).then(function(){
+    // Step 2: Account movement with filter
+    w.document.write('<h2>\u062D\u0631\u0643\u0629 \u0627\u0644\u062D\u0633\u0627\u0628\u0627\u062A \u2014 '+acctTitle+'</h2>');
+    return apiCall(Object.assign({action:'getAccountMovement'},p));
 
-
-    var promise = Promise.resolve();
-    if(withPartners&&ROLE==='admin'){
-      promise = apiCall(Object.assign({action:'getPartnersBalance'},p)).then(function(pr){
-        if(pr.success&&pr.data&&pr.data.length){
-          w.document.write('<h2>أرصدة الشركاء</h2>');
-          w.document.write('<table><tr><th>الشريك</th><th>إيداعات</th><th>سحوبات</th><th>الرصيد</th><th>الحالة</th></tr>');
-          pr.data.forEach(function(p){
-            w.document.write('<tr>'+
-              '<td style="font-weight:700">'+p.name+'</td>'+
-              '<td class="pos">'+fmt(p.deposits)+' ر.س</td>'+
-              '<td class="neg">'+fmt(p.withdrawals)+' ر.س</td>'+
-              '<td class="'+(p.balance>=0?'pos':'neg')+'">'+fmt(Math.abs(p.balance))+' ر.س</td>'+
-              '<td>'+p.status+'</td>'+
-            '</tr>');
-          });
-          w.document.write('</table>');
-          // Partner transactions
-          if(allPartnerTx.length){
-            w.document.write('<h2>كشف حساب الشركاء</h2>');
-            w.document.write('<table><tr><th>التاريخ</th><th>الشريك</th><th>النوع</th><th>الحساب</th><th>المبلغ</th></tr>');
-            allPartnerTx.forEach(function(t){
-              var isIn=t.type==='إيداع';
-              w.document.write('<tr>'+
-                '<td>'+t.hijriDate+'</td>'+
-                '<td style="font-weight:700">'+t._partner+'</td>'+
-                '<td>'+t.type+'</td>'+
-                '<td>'+(t.acct==='cash'?'الصندوق':'البنك')+'</td>'+
-                '<td class="'+(isIn?'pos':'neg')+'">'+(isIn?'+':'-')+fmt(t.amt)+' ر.س</td>'+
-              '</tr>');
-            });
-            w.document.write('</table>');
-          }
-        }
+  }).then(function(movRes){
+    var allMov=(movRes&&movRes.success&&movRes.data)?movRes.data:[];
+    var movList=acctFilter==='all'?allMov:allMov.filter(function(m){return m.account===acctFilter;});
+    if(movList.length){
+      var totalIn=0,totalOut=0;
+      movList.forEach(function(m){if(m.direction===1)totalIn+=m.amount;else totalOut+=m.amount;});
+      w.document.write('<table><tr><th>\u0627\u0644\u062A\u0627\u0631\u064A\u062E</th><th>\u0627\u0644\u0646\u0648\u0639</th><th>\u0627\u0644\u062D\u0633\u0627\u0628</th><th>\u0627\u0644\u0645\u0628\u0644\u063A</th><th>\u0627\u0644\u0631\u0635\u064A\u062F</th></tr>');
+      movList.forEach(function(m){
+        var isPos=m.direction===1;
+        w.document.write('<tr><td>'+m.hijri+'</td><td>'+m.type+'</td>'+
+          '<td>'+(m.account==='cash'?'\u0627\u0644\u0635\u0646\u062F\u0648\u0642':'\u0627\u0644\u0628\u0646\u0643')+'</td>'+
+          '<td class="'+(isPos?'pos':'neg')+'">'+(isPos?'+':'-')+fmt(m.amount)+' \u0631.\u0633</td>'+
+          '<td style="font-weight:700">'+fmt(m.runningBalance)+' \u0631.\u0633</td></tr>');
       });
+      w.document.write('<tr style="background:#F1F3F5;font-weight:800"><td colspan="3">\u0627\u0644\u0625\u062C\u0645\u0627\u0644\u064A</td>'+
+        '<td><span class="pos">+'+fmt(totalIn)+'</span> / <span class="neg">-'+fmt(totalOut)+'</span> \u0631.\u0633</td><td></td></tr>');
+      w.document.write('</table>');
+    } else {
+      w.document.write('<p style="color:#6C757D;font-size:13px">\u0644\u0627 \u062A\u0648\u062C\u062F \u062D\u0631\u0643\u0627\u062A \u0641\u064A \u0647\u0630\u0647 \u0627\u0644\u0641\u062A\u0631\u0629</p>');
     }
-    return promise;
+
+    // Step 3: Partners (optional)
+    if(withPartners&&ROLE==='admin'){
+      return apiCall(Object.assign({action:'getPartnersBalance'},p));
+    }
+    return null;
+
+  }).then(function(pr){
+    if(pr&&pr.success&&pr.data&&pr.data.length){
+      w.document.write('<h2>\u0623\u0631\u0635\u062F\u0629 \u0627\u0644\u0634\u0631\u0643\u0627\u0621</h2>');
+      w.document.write('<table><tr><th>\u0627\u0644\u0634\u0631\u064A\u0643</th><th>\u0625\u064A\u062F\u0627\u0639\u0627\u062A</th><th>\u0633\u062D\u0648\u0628\u0627\u062A</th><th>\u0627\u0644\u0631\u0635\u064A\u062F</th><th>\u0627\u0644\u062D\u0627\u0644\u0629</th></tr>');
+      pr.data.forEach(function(pt){
+        w.document.write('<tr><td style="font-weight:700">'+pt.name+'</td>'+
+          '<td class="pos">'+fmt(pt.deposits)+' \u0631.\u0633</td>'+
+          '<td class="neg">'+fmt(pt.withdrawals)+' \u0631.\u0633</td>'+
+          '<td class="'+(pt.balance>=0?'pos':'neg')+'">'+fmt(Math.abs(pt.balance))+' \u0631.\u0633</td>'+
+          '<td>'+pt.status+'</td></tr>');
+      });
+      w.document.write('</table>');
+      if(allPartnerTx.length){
+        w.document.write('<h2>\u0643\u0634\u0641 \u062D\u0633\u0627\u0628 \u0627\u0644\u0634\u0631\u0643\u0627\u0621</h2>');
+        w.document.write('<table><tr><th>\u0627\u0644\u062A\u0627\u0631\u064A\u062E</th><th>\u0627\u0644\u0634\u0631\u064A\u0643</th><th>\u0627\u0644\u0646\u0648\u0639</th><th>\u0627\u0644\u062D\u0633\u0627\u0628</th><th>\u0627\u0644\u0645\u0628\u0644\u063A</th></tr>');
+        allPartnerTx.forEach(function(t){
+          var isIn=t.type==='\u0625\u064A\u062F\u0627\u0639';
+          w.document.write('<tr><td>'+t.hijriDate+'</td><td style="font-weight:700">'+t._partner+'</td>'+
+            '<td>'+t.type+'</td>'+
+            '<td>'+(t.acct==='cash'?'\u0627\u0644\u0635\u0646\u062F\u0648\u0642':'\u0627\u0644\u0628\u0646\u0643')+'</td>'+
+            '<td class="'+(isIn?'pos':'neg')+'">'+(isIn?'+':'-')+fmt(t.amt)+' \u0631.\u0633</td></tr>');
+        });
+        w.document.write('</table>');
+      }
+    }
+
   }).then(function(){
-    w.document.write('<script>setTimeout(function(){window.print();},600);<\/script>');
+    w.document.write('<scr'+'ipt>setTimeout(function(){window.print();},600);<\/script>');
     w.document.write('</body></html>');
     w.document.close();
   });
 };
+
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 gs('hdr-uname').textContent = DISPLAY_NAME;
