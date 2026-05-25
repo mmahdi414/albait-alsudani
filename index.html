@@ -96,7 +96,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .exp-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .exp-nm{font-size:12px;font-weight:700;color:var(--g600)}
 .exp-pct{font-size:12px;font-weight:800;color:var(--g800)}
-.exp-amt{font-size:10px;font-weight:700;color:var(--g400)}
+.exp-amt{font-size:11px;font-weight:700;color:var(--g600)}
 .emp-tot{border-radius:var(--rmd);padding:13px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;background:var(--cur);transition:background 0.35s}
 .emp-tot-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase}
 .emp-tot-val{font-size:20px;font-weight:800;color:#fff}
@@ -242,6 +242,10 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <div class="kpi"><div class="kpi-acc" style="background:var(--amber)"></div><div class="kpi-lbl">إجمالي الأصول</div><div class="kpi-v va sm" id="k-assets">—</div><div class="kpi-sub">ر.س</div></div>
     <div class="kpi"><div class="kpi-acc" style="background:var(--green)"></div><div class="kpi-lbl">الإيرادات</div><div class="kpi-v vg sm" id="k-rev">—</div><div class="kpi-sub" id="k-rev-sub">ر.س — الشهر</div></div>
     <div class="kpi"><div class="kpi-acc" style="background:var(--red)"></div><div class="kpi-lbl">المصروفات</div><div class="kpi-v vr sm" id="k-exp">—</div><div class="kpi-sub" id="k-exp-sub">ر.س — الشهر</div></div>
+  </div>
+  <div class="kg2" style="margin-bottom:0">
+    <div class="kpi"><div class="kpi-acc" style="background:var(--navy)"></div><div class="kpi-lbl">صافي الربح</div><div class="kpi-v sm" id="k-net" style="color:var(--navy)">—</div><div class="kpi-sub" id="k-net-sub">ر.س — الفترة المحددة</div></div>
+    <div class="kpi"><div class="kpi-acc" style="background:var(--amber)"></div><div class="kpi-lbl">إجمالي الأصول</div><div class="kpi-v va sm" id="k-assets2">—</div><div class="kpi-sub">ر.س — تراكمي</div></div>
   </div>
 </div>
 
@@ -484,8 +488,15 @@ function loadKPIs(p){
     gs('k-cash').innerHTML=fmt(res.cashBalance)+' <span class="kpi-cur">ر.س</span>';
     gs('k-bank').innerHTML=fmt(res.bankBalance)+' <span class="kpi-cur">ر.س</span>';
     gs('k-assets').textContent=fmt(res.totalAssets);
+    if(gs('k-assets2')) gs('k-assets2').textContent=fmt(res.totalAssets);
     gs('k-rev').textContent=fmt(res.totalRevenue);
     gs('k-exp').textContent=fmt(res.totalExpenses);
+    if(gs('k-net')){
+      var np=res.netProfit||0;
+      gs('k-net').textContent=(np>=0?'+':'')+fmt(np);
+      gs('k-net').style.color=np>=0?'var(--green-d)':'var(--red-d)';
+      gs('k-net').parentElement.querySelector('.kpi-acc').style.background=np>=0?'var(--green)':'var(--red)';
+    }
   }).catch(function(){
     gs('k-cash').textContent='—';
     gs('k-bank').textContent='—';
