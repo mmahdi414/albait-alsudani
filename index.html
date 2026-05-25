@@ -3230,6 +3230,19 @@ function loadDashboard(){
   loadAll();
 }
 
+/* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
+window.setShop       = setShop;
+window.onPeriod      = onPeriod;
+window.onCal         = onCal;
+window.applyFilters  = applyFilters;
+window.filterPartners= filterPartners;
+window.setAcct       = setAcct;
+window.exportPDF     = exportPDF;
+window.doUploadDoc   = doUploadDoc;
+window.setDocCal     = setDocCal;
+window.fmtFullDate   = fmtFullDate;
+window.openDocModal  = openDocModal;
+
 })();
 
 </script>
