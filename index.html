@@ -1608,9 +1608,6 @@ function loadDashboard(){
 
 
 /* ══ PART 2 — Entry ══ */
-
-
-
 // ── Demo state (in final app these come from login/sheet) ──────────────────
 var DEMO = {
   shop:       'Tailor',
@@ -1639,6 +1636,7 @@ var ACCLBL = {bank:'البنك 🏦', cash:'الصندوق 🗄️'};
 var PARTNER_TYPES = ['إيداع','سحب سلفة','توزيع أرباح'];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
+
 // ── BUILD ENTRY TAB ────────────────────────────────────────────────────────
 function buildEntry(){
   var cnt=gs('cnt');
@@ -2059,9 +2057,9 @@ function handleSave(){
 }
 
 // Date modal buttons
-
-
-
+gs('date-cancel').addEventListener('click',function(){gs('date-modal').classList.remove('show');});
+gs('date-add').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('add');});
+gs('date-replace').addEventListener('click',function(){gs('date-modal').classList.remove('show');doSave('replace');});
 
 function doSave(mode){
   var btn=gs('save-btn');
@@ -2157,12 +2155,7 @@ function compressImage(file){
   });
 }
 
-
-
 /* ══ PART 3 — Summary/History ══ */
-
-
-
 function cleanDate(d){
   if(!d) return '';
   if(String(d).indexOf('T')>-1) d=String(d).split('T')[0];
@@ -2195,11 +2188,15 @@ function getCurrentHijriYear(){
 }
 
 // ── NAV ───────────────────────────────────────────────────────────────────────
- });
+function loadSummary(){
+  var pg=gs('pg-summary');
+  pg.innerHTML='<div class="loading">جاري التحميل</div>';
+  apiCall({action:'getLatestEntry',shop:state.currentShop}).then(function(res){
+    if(res.success&&res.record) renderSummary(res.record,pg);
+    else pg.innerHTML='<div class="empty">📭 لا توجد بيانات محفوظة بعد</div>';
+  }).catch(function(){ pg.innerHTML='<div class="empty">تعذر التحميل</div>'; });
+}
 
-
-
-// ── SUMMARY ───────────────────────────────────────────────────────────────────
 function renderSummary(rec,pg){
   var tR=(rec.revCash||0)+(rec.revCard||0);
   var tE=(rec.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
@@ -2242,6 +2239,9 @@ function renderSummary(rec,pg){
 }
 
 // ── HISTORY ───────────────────────────────────────────────────────────────────
+function loadHistory(){
+  var pg=gs('pg-history');
+  if(state.histCache.length>0){ renderHistList(state.histCache,pg); return; }
   pg.innerHTML='<div class="loading">جاري التحميل</div>';
   var hy=getCurrentHijriYear();
   var fromKey=hy+'/01';
@@ -2249,11 +2249,11 @@ function renderSummary(rec,pg){
   apiCall({action:'getHistory',shop:state.currentShop}).then(function(res){
     if(res.success){
       var all=res.records||[];
-      histCache=all.filter(function(r){
+      state.histCache=all.filter(function(r){
         var k=(r.hijri||'').slice(0,7);
         return k>=fromKey && k<=toKey;
       });
-      renderHistList(histCache,pg,hy);
+      renderHistList(state.histCache,pg,hy);
     } else {
       pg.innerHTML='<div class="empty">تعذر التحميل</div>';
     }
@@ -2322,7 +2322,7 @@ function showDetail(r,pg,hy){
   var back=document.createElement('button');
   back.className='back-btn';
   back.innerHTML='→ العودة للسجل';
-  back.addEventListener('click',function(){ renderHistList(histCache,pg,hy); });
+  back.addEventListener('click',function(){ renderHistList(state.histCache,pg,hy); });
   pg.appendChild(back);
 
   var netDiv=document.createElement('div');
@@ -2431,11 +2431,8 @@ function buildTfCard(tf){
   return c;
 }
 
-
-
 /* ══ PART 4 — Dashboard ══ */
-
-
+var ROLE='admin', DISPLAY_NAME='', USER_SHOPS='all', curShop='all';
 
 var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
 var SHOP_NAMES  = {all:'كل المحلات',Tailor:'✂️ خياط البيت السوداني',Salon:'💇 صالون الخرطوم',Atara:'🌿 عطارة البيت السوداني'};
@@ -2559,16 +2556,6 @@ var expChart=null, revChart=null;
 var allMovements=[], allPartnerTx=[];
 var docAction=null, docCalType='hijri';
 
-// ── Date helpers ──────────────────────────────────────────────────────────────
-function fmtFullDate(el){
-  var v=el.value.replace(/[^0-9]/g,'');
-  if(v.length>4) v=v.slice(0,4)+'/'+v.slice(4);
-  if(v.length>7) v=v.slice(0,7)+'/'+v.slice(7);
-  el.value=v.slice(0,10);
-}
-
-
-
 function formatDocDate(hijri, greg){
   var parts = [];
   if(hijri) parts.push('<span class="doc-date-h">'+hijri+'</span>');
@@ -2631,7 +2618,7 @@ function onPeriod(){
   if(!isC) updateDates();
 };
 
-function onCal(){
+window.onCal=function(){
   curCal=gs('f-cal').value;
   var isH=curCal==='hijri';
   gs('from-lbl').textContent=isH?'من (هجري)':'من (ميلادي)';
@@ -2649,7 +2636,7 @@ function updateDates(){
   gs('d-to').textContent=k.t;
 }
 
-
+window.fmtFullDate=fmtFullDate;
 
 function validateDateInput(val, cal){
   if(!val) return false;
@@ -2668,7 +2655,7 @@ function validateDateInput(val, cal){
   return true;
 }
 
-function applyFilters(){
+window.applyFilters=function(){
   if(curPeriod==='custom'){
     var fv=gs('f-from').value.trim(), tv=gs('f-to').value.trim();
     var fEl=gs('f-from'), tEl=gs('f-to');
@@ -2966,7 +2953,7 @@ function loadPartners(p){
   });
 }
 
-function filterPartners(){renderPartnerTx(gs('p-sel').value);};
+window.filterPartners=function(){renderPartnerTx(gs('p-sel').value);};
 
 function renderPartnerTx(filter){
   var list=allPartnerTx.filter(function(t){return filter==='all'||t._partner===filter;});
@@ -3003,7 +2990,7 @@ function renderMovements(acct){
   }).join('');
 }
 
-function setAcctBtn(type,btn){
+window.setAcct=function(type,btn){
   curAcctFilter=type;
   document.querySelectorAll('.at').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
@@ -3011,7 +2998,7 @@ function setAcctBtn(type,btn){
 };
 
 // ── Document Modal ────────────────────────────────────────────────────────────
-function openDocModal(type,shop,idx,name){
+window.openDocModal=function(type,shop,idx,name){
   docAction={type:type,shop:shop||'',idx:idx};
   gs('doc-modal-title').textContent=type==='new'?'رفع مستند جديد':'تحديث: '+(name||'');
   gs('doc-name-inp').value=type==='update'?(name||''):'';
@@ -3025,7 +3012,7 @@ function openDocModal(type,shop,idx,name){
   gs('doc-modal').classList.add('show');
 };
 
-function setDocCal(cal){
+window.setDocCal=function(cal){
   docCalType=cal;
   gs('doc-cal-hijri').classList.toggle('on',cal==='hijri');
   gs('doc-cal-greg').classList.toggle('on',cal==='greg');
@@ -3033,7 +3020,7 @@ function setDocCal(cal){
   gs('doc-expiry-inp').value='';
 };
 
-function doUploadDoc(){
+window.doUploadDoc=function(){
   var shopSel=gs('doc-shop-sel');
   var targetShop = (curShop==='all'&&docAction.type==='new') ? shopSel.value : (docAction.shop||curShop);
   if(!targetShop||targetShop==='all'){alert('يرجى اختيار المحل');return;}
@@ -3206,8 +3193,7 @@ function exportPDF(){
   });
 };
 
-
-
+// ── Init ──────────────────────────────────────────────────────────────────────
 
 
 /* ═══════════════════════════════════════════════
