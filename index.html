@@ -531,7 +531,6 @@ input[type=file]{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Dashboard outside cnt */
 #pg-dashboard.on{display:flex;flex-direction:column;overflow-y:auto;}
 
 
@@ -1641,7 +1640,7 @@ var PARTNER_TYPES = ['إيداع','سحب سلفة','توزيع أرباح'];
 
 // ── BUILD ENTRY TAB ────────────────────────────────────────────────────────
 function buildEntry(){
-  var cnt=gs('cnt');
+  var cnt=gs('pg-entry');
   cnt.innerHTML='';
 
   // ── 1. DATE ──
