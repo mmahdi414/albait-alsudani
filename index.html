@@ -2290,20 +2290,13 @@ function compressImage(file){
 
 // SUMMARY+HISTORY FUNCTIONS
 // ── NAV ───────────────────────────────────────────────────────────────────────
-function goTab(t){
-  ['summary','history'].forEach(function(x){
-    gs('pg-'+x).classList.toggle('on',x===t);
-    gs('nb-'+x).classList.toggle('on',x===t);
-  });
-  gs('nb-entry').classList.remove('on');
-  if(t==='summary') loadSummary();
-  if(t==='history') loadHistory();
-}
-gs('nb-entry').addEventListener('click',function(){ gs('nb-entry').classList.add('on'); ['summary','history'].forEach(function(x){gs('nb-'+x).classList.remove('on');gs('pg-'+x).classList.remove('on');}); });
+// goTab already defined in Part 1
+
+// Part 3 nav init removed — handled by Part 1
 
 // DASHBOARD FUNCTIONS
-function gs(id){return document.getElementById(id);}
-function fmt(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+// gs() already defined above
+// duplicate removed
 function apiCall(p){return fetch(API+'?'+new URLSearchParams(p)).then(function(r){return r.json();});}
 
 // ── Date helpers ──────────────────────────────────────────────────────────────
