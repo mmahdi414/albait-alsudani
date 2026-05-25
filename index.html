@@ -1675,6 +1675,10 @@ function buildEntry(){
     gs('hd').value=td;
     gs('gd').textContent='الموافق: '+h2gLong(td);
   });
+  // Auto-inject today on load
+  var initDate=todayHijriStr();
+  gs('hd').value=initDate;
+  gs('gd').textContent='الموافق: '+h2gLong(initDate);
 
   // ── 2. REVENUE ──
   var revCard=document.createElement('div');
@@ -2069,11 +2073,14 @@ function validate(){
 // ── SAVE ───────────────────────────────────────────────────────────────────
 function handleSave(){
   if(!validate()) return;
+  var btn=gs('save-btn');
+  btn.disabled=true;btn.textContent='⏳ جاري الحفظ...';
   var hd=gs('hd').value.trim();
 
   // Check if date exists
   apiCall({action:'checkDate',shop:DEMO.shop,hijriDate:hd}).then(function(res){
     if(res.success&&res.exists){
+      btn.disabled=false;btn.innerHTML='💾 حفظ البيانات';
       gs('date-modal-msg').textContent='يوجد إدخال سابق للتاريخ '+hd+'. ماذا تريد أن تفعل؟';
       gs('date-modal').classList.add('show');
       S.pendingMode=null;
