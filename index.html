@@ -352,9 +352,9 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
   <div class="card">
     <div class="chdr"><div class="ctitle">حركة الحسابات</div><div class="cpill" id="mov-lbl">هذا الشهر</div></div>
     <div class="acct-tabs">
-      <button class="at on" onclick="setAcct('all',this)">الكل</button>
-      <button class="at" onclick="setAcct('cash',this)">الصندوق</button>
-      <button class="at" onclick="setAcct('bank',this)">البنك</button>
+      <button class="at on" data-acct="all" onclick="setAcct('all',this)">الكل</button>
+      <button class="at" data-acct="cash" onclick="setAcct('cash',this)">الصندوق</button>
+      <button class="at" data-acct="bank" onclick="setAcct('bank',this)">البنك</button>
     </div>
     <div id="tx-list"><div class="loading">جاري التحميل</div></div>
   </div>
@@ -479,9 +479,10 @@ function hijriMonthLen(hy,hm){
   return lens[hm-1]||29;
 }
 function getWeekStartEnd(){
-  var n=new Date(),day=n.getDay();
-  var diff=n.getDate()-(day===0?6:day-1);
-  var s=new Date(n);s.setDate(diff);
+  // Saudi week: Sunday=start, Saturday=end
+  var n=new Date(),day=n.getDay(); // 0=Sun,1=Mon,...,6=Sat
+  var diffToSun=day; // days to go back to reach Sunday
+  var s=new Date(n);s.setDate(n.getDate()-diffToSun);
   var e=new Date(s);e.setDate(s.getDate()+6);
   return {sy:s.getFullYear(),sm:s.getMonth()+1,sd:s.getDate(),
           ey:e.getFullYear(),em:e.getMonth()+1,ed:e.getDate()};
@@ -534,6 +535,7 @@ var SCFG  = {
 };
 
 var curShop='all', curPeriod='month', curCal='hijri';
+var curAcctFilter='all';
 var expChart=null, revChart=null;
 var allMovements=[], allPartnerTx=[];
 var docAction=null, docCalType='hijri';
@@ -725,12 +727,23 @@ function renderDocs(docs){
     var cleanHijri = d.expiryHijri || '';
     if(cleanHijri.indexOf('T')>-1) cleanHijri=cleanHijri.split('T')[0];
     if(cleanHijri.indexOf(' ')>-1) cleanHijri=cleanHijri.split(' ')[0];
+    if(cleanHijri.indexOf('G')>-1) cleanHijri=''; // remove GMT strings
     // Only keep valid hijri format YYYY/MM/DD or YYYY/MM
-    if(!/^\d{4}\/\d{2}/.test(cleanHijri)) cleanHijri='';
-    // Format gregorian nicely
+    if(!cleanHijri.match(/^\d{4}\/\d{2}/)) cleanHijri='';
+    // Calculate gregorian from hijri if expiryGreg is empty
     var gregDisplay = '';
-    if(d.expiryGreg && d.expiryGreg.match && d.expiryGreg.match(/^\d{4}-\d{2}-\d{2}$/)){
-      var gp=d.expiryGreg.split('-');
+    var gregISO = d.expiryGreg || '';
+    if(gregISO.indexOf('T')>-1) gregISO=gregISO.split('T')[0];
+    if(!gregISO.match(/^\d{4}-\d{2}-\d{2}$/) && cleanHijri.length>=10){
+      // Compute from hijri
+      var hp=cleanHijri.split('/').map(Number);
+      if(hp.length===3 && hp[0]>=1440){
+        var gObj=hijri2greg(hp[0],hp[1],hp[2]);
+        if(gObj) gregISO=gObj.y+'-'+pad2(gObj.m)+'-'+pad2(gObj.d);
+      }
+    }
+    if(gregISO.match(/^\d{4}-\d{2}-\d{2}$/)){
+      var gp=gregISO.split('-');
       var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
       gregDisplay=parseInt(gp[2])+' '+ms[parseInt(gp[1])-1]+' '+gp[0];
     }
@@ -976,6 +989,7 @@ function renderMovements(acct){
 }
 
 window.setAcct=function(type,btn){
+  curAcctFilter=type;
   document.querySelectorAll('.at').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   renderMovements(type);
@@ -1061,7 +1075,7 @@ window.exportPDF=function(){
   var withPartners=gs('pdf-p').checked;
   var p=getParams();
   var k=getKeys();
-  var acctFilter=allMovements.length>0?document.querySelector('.at.on').dataset.acct||'all':'all';
+  var acctFilter=curAcctFilter;
 
   var w=window.open('','_blank');
   w.document.write('<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">');
