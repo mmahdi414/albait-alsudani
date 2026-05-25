@@ -2,255 +2,718 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>البيت السوداني</title>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'Almarai',sans-serif;background:#F7F3EF;direction:rtl;text-align:right;font-size:15px}
-.app{max-width:440px;margin:0 auto;min-height:100vh}
-.hdr{background:#2C1810;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
-.hdr-t{color:#F5C4B3;font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
-.hdr-s{color:#9a7060;font-size:12px;margin-top:2px}
-.uchip{background:rgba(255,255,255,0.12);border-radius:20px;padding:6px 13px;display:flex;align-items:center;gap:6px;cursor:pointer;border:none;font-family:'Almarai',sans-serif}
-.uchip span{color:#F5C4B3;font-size:13px;font-weight:700}
-.nav{display:flex;background:#1e100a;padding:4px 6px 0}
-.nb{flex:1;padding:10px 4px 12px;border:none;background:transparent;color:rgba(255,255,255,0.35);font-size:13px;font-weight:700;cursor:pointer;font-family:'Almarai',sans-serif;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:4px}
-.nb .ico{font-size:22px}
-.nb.on{color:#fff;border-bottom-color:#D85A30}
-.cnt{padding:14px}
-.pg{display:none}.pg.on{display:block}
-.card{background:#fff;border-radius:14px;border:0.5px solid #e8ddd5;padding:16px;margin-bottom:12px}
-.ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:0.5px solid #f0e8e0}
-.ci{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.ibr{background:#F5C4B3;color:#712B13}.iam{background:#FAEEDA;color:#854F0B}
-.ird{background:#FCEBEB;color:#A32D2D}.ibl{background:#E6F1FB;color:#185FA5}
-.ct{font-size:17px;font-weight:800;color:#2C1810}
-label{font-size:13px;color:#7a6a62;display:block;margin-bottom:5px;font-weight:700}
-input[type=text],input[type=number],input[type=password],select,textarea{width:100%;font-family:'Almarai',sans-serif;font-size:15px;direction:rtl;border:1.5px solid #e0d5cc;border-radius:10px;padding:11px 13px;background:#fff;color:#2C1810;transition:border-color 0.2s}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#D85A30}
-input[type=file]{font-size:13px;color:#7a6a62;border:1.5px dashed #e0d5cc;border-radius:10px;padding:9px;width:100%;background:#faf7f5;font-family:'Almarai',sans-serif}
-.greg{font-size:13px;color:#D85A30;margin-top:5px;font-weight:700;min-height:20px}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fg{margin-bottom:12px}
-.req{color:#D85A30}
-.atog{display:flex;gap:8px}
-.ab{flex:1;padding:11px 8px;border-radius:10px;border:2px solid #e0d5cc;background:#faf7f5;font-size:14px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer;color:#b0a098;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.15s}
-.ab.con{background:#E1F5EE;border-color:#1D9E75;color:#085041}
-.ab.bon{background:#E6F1FB;border-color:#185FA5;color:#0C447C}
-.ecard{background:#FBF7F4;border-radius:12px;border:1px solid #ecddd5;padding:14px;margin-bottom:10px;position:relative;padding-left:44px}
-.edel{position:absolute;left:10px;top:10px;background:#FCEBEB;border:none;border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#A32D2D;font-size:18px;font-weight:800}
-.addeb{width:100%;padding:12px;border-radius:10px;border:2px dashed #D85A30;background:transparent;color:#993C1D;font-size:15px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px}
-.tftog{width:100%;padding:12px;border-radius:10px;border:1.5px solid #e0d5cc;background:#faf7f5;color:#7a6a62;font-size:15px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;transition:all 0.2s}
-.tfbody{display:none}.tfbody.open{display:block}
-.tfrow{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.tfbox{flex:1;background:#F7F3EF;border-radius:10px;border:2px solid #e0d5cc;padding:12px 8px;text-align:center;font-size:14px;font-weight:700;color:#7a6a62;cursor:pointer;transition:all 0.2s;user-select:none}
-.tf-f{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
-.tf-t{background:#E1F5EE;border-color:#1D9E75;color:#085041}
-.tfarr{color:#D85A30;font-size:26px;flex-shrink:0;font-weight:800}
-.savebtn{width:100%;padding:14px;background:#2C1810;border:none;border-radius:12px;color:#F5C4B3;font-size:18px;font-weight:800;font-family:'Almarai',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
-.savebtn:disabled{background:#7a6a62;cursor:not-allowed}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 28px;border-radius:12px;font-size:15px;font-family:'Almarai',sans-serif;font-weight:700;z-index:9999;display:none;white-space:nowrap;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.mc{background:#fff;border-radius:12px;border:0.5px solid #e8ddd5;padding:12px 14px}
-.ml{font-size:12px;color:#a09088;margin-bottom:4px;font-weight:700}
-.mv{font-size:22px;font-weight:800}
-.mcur{font-size:13px;font-weight:400;color:#a09088}
-.vg{color:#085041}.vr{color:#A32D2D}.va{color:#854F0B}
-.netcard{background:#2C1810;border-radius:14px;padding:18px;margin-bottom:12px;text-align:center}
-.nl{font-size:13px;color:#9a7060;margin-bottom:4px;font-weight:700}
-.nv{font-size:36px;font-weight:800}
-.hi{background:#fff;border-radius:12px;border:0.5px solid #e8ddd5;padding:14px;margin-bottom:10px;cursor:pointer}
-.hi:active{background:#f7f3ef}
-.htop{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.hd2{font-size:15px;font-weight:800;color:#2C1810}
-.hp{font-size:15px;font-weight:800;color:#085041}
-.hn2{font-size:15px;font-weight:800;color:#A32D2D}
-.hs{font-size:12px;color:#a09088;font-weight:700;margin-bottom:3px}
-.hu{font-size:12px;color:#D85A30;font-weight:700}
-.backbtn{display:flex;align-items:center;gap:6px;background:transparent;border:none;color:#D85A30;font-size:16px;font-family:'Almarai',sans-serif;font-weight:800;cursor:pointer;padding:0;margin-bottom:14px}
-.dr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid #f0e8e0}
-.dr:last-child{border-bottom:none}
-.tg{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.tgc{background:#E1F5EE;color:#085041}.tgb{background:#E6F1FB;color:#0C447C}
-.lwrap{padding:28px 16px}
-.llo{text-align:center;margin-bottom:28px}
-.lico{width:76px;height:76px;background:#2C1810;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:38px}
-.ln{font-size:21px;font-weight:800;color:#2C1810}
-.ls{font-size:14px;color:#a09088;margin-top:3px;font-weight:700}
-.lcard{background:#fff;border-radius:16px;border:0.5px solid #e8ddd5;padding:22px}
-.lbtn{width:100%;padding:14px;background:#2C1810;border:none;border-radius:12px;color:#F5C4B3;font-size:17px;font-weight:800;font-family:'Almarai',sans-serif;cursor:pointer;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:8px}
-.lbtn:disabled{background:#7a6a62;cursor:not-allowed}
-.lerr{font-size:13px;color:#A32D2D;text-align:center;margin-top:10px;font-weight:700;min-height:20px}
-.empty{text-align:center;color:#a09088;padding:2rem;font-size:15px;font-weight:700}
-.loading{text-align:center;color:#a09088;padding:2rem;font-size:15px;font-weight:700}
-.loading::after{content:'';display:inline-block;width:20px;height:20px;border:2px solid #e0d5cc;border-top-color:#D85A30;border-radius:50%;animation:spin 0.8s linear infinite;margin-right:8px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-.logout-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
-.logout-modal.show{display:flex}
-.logout-box{background:#fff;border-radius:16px;padding:24px;margin:16px;width:100%;max-width:300px;text-align:center}
-.logout-box h3{font-size:17px;font-weight:800;color:#2C1810;margin-bottom:8px}
-.logout-box p{font-size:14px;color:#7a6a62;font-weight:700;margin-bottom:20px}
-.logout-btns{display:flex;gap:10px}
-.btn-cancel{flex:1;padding:11px;border-radius:10px;border:1.5px solid #e0d5cc;background:#faf7f5;color:#7a6a62;font-size:15px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer}
-.btn-logout{flex:1;padding:11px;border-radius:10px;border:none;background:#2C1810;color:#F5C4B3;font-size:15px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer}
-.offline-bar{background:#854F0B;color:#fff;text-align:center;padding:6px;font-size:12px;font-weight:700;display:none}
+/* ═══════════════════════════════════════════════════
+   DESIGN SYSTEM — البيت السوداني
+═══════════════════════════════════════════════════ */
+:root {
+  /* Brand */
+  --navy:       #1E3A5F;
+  --navy-d:     #152a47;
+  --navy-l:     #2a5080;
+
+  /* Shop colors */
+  --tailor:     #2C1810;
+  --tailor-l:   #F5C4B3;
+  --salon:      #4A1942;
+  --salon-l:    #E8C5E5;
+  --atara:      #1B4D3E;
+  --atara-l:    #B8DDD5;
+
+  /* Semantic */
+  --green:      #1D9E75;
+  --green-l:    #E8F8F2;
+  --green-d:    #085041;
+  --red:        #E24B4A;
+  --red-l:      #FEF0F0;
+  --red-d:      #A32D2D;
+  --amber:      #D85A30;
+  --amber-l:    #FEF3EE;
+  --amber-d:    #993C1D;
+  --blue:       #185FA5;
+  --blue-l:     #EBF3FC;
+  --blue-d:     #0C447C;
+
+  /* Neutrals */
+  --g50:  #F8F9FA;
+  --g100: #F1F3F5;
+  --g200: #E9ECEF;
+  --g300: #DEE2E6;
+  --g400: #CED4DA;
+  --g500: #ADB5BD;
+  --g600: #6C757D;
+  --g700: #495057;
+  --g800: #343A40;
+  --g900: #212529;
+
+  /* Current shop theme (changes dynamically) */
+  --shop:   #1E3A5F;
+  --shop-l: #a8c8f0;
+  --shop-bg:#E6F1FB;
+
+  /* Layout */
+  --rmd:  10px;
+  --rlg:  14px;
+  --rxl:  20px;
+  --s1:   0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --s2:   0 4px 16px rgba(0,0,0,0.12);
+}
+
+/* ── Reset ── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  font-family:'Almarai',sans-serif;
+  background:var(--g100);
+  color:var(--g900);
+  font-size:14px;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+/* ── App shell ── */
+.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+
+/* ── Offline bar ── */
+.offline-bar{background:#854F0B;color:#fff;text-align:center;padding:7px;font-size:12px;font-weight:700;display:none}
 .offline-bar.show{display:block}
+
+/* ═══════════════════════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════════════════════════ */
+.sc-login{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:24px 20px;
+  position:relative;
+  overflow:hidden;
+  background:#0f1f35;
+}
+
+/* Arabic geometric pattern background */
+.sc-login::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:
+    repeating-linear-gradient(
+      60deg,
+      transparent,
+      transparent 30px,
+      rgba(255,255,255,0.018) 30px,
+      rgba(255,255,255,0.018) 31px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent,
+      transparent 30px,
+      rgba(255,255,255,0.018) 30px,
+      rgba(255,255,255,0.018) 31px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 30px,
+      rgba(255,255,255,0.012) 30px,
+      rgba(255,255,255,0.012) 31px
+    );
+  pointer-events:none;
+}
+
+/* Radial glow */
+.sc-login::after{
+  content:'';
+  position:absolute;
+  top:30%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle, rgba(30,58,95,0.6) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.login-inner{position:relative;z-index:1;width:100%;max-width:360px}
+
+/* Logo area */
+.login-logo{text-align:center;margin-bottom:36px}
+.login-icon-wrap{
+  width:90px;height:90px;
+  background:linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:24px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  font-size:44px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  backdrop-filter:blur(4px);
+}
+.login-name{font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.3px}
+.login-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px;font-weight:400;letter-spacing:0.5px}
+
+/* Login card */
+.login-card{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:20px;
+  padding:28px 24px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.4);
+}
+.login-card .fg{margin-bottom:16px}
+.login-card label{
+  font-size:11px;font-weight:700;
+  color:rgba(255,255,255,0.5);
+  letter-spacing:1px;text-transform:uppercase;
+  display:block;margin-bottom:6px;
+}
+.login-card input{
+  width:100%;font-family:'Almarai',sans-serif;
+  font-size:15px;font-weight:700;
+  background:rgba(255,255,255,0.08);
+  border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:var(--rmd);
+  padding:13px 14px;
+  color:#fff;
+  caret-color:#fff;
+  direction:rtl;
+  transition:border-color 0.2s, background 0.2s;
+  -webkit-text-fill-color:#fff;
+}
+.login-card input::placeholder{color:rgba(255,255,255,0.25);-webkit-text-fill-color:rgba(255,255,255,0.25)}
+.login-card input:focus{
+  outline:none;
+  border-color:rgba(255,255,255,0.4);
+  background:rgba(255,255,255,0.12);
+}
+.login-btn{
+  width:100%;padding:14px;
+  background:linear-gradient(135deg, var(--navy-l), var(--navy));
+  border:none;border-radius:var(--rmd);
+  color:#fff;font-size:16px;font-weight:800;
+  font-family:'Almarai',sans-serif;
+  cursor:pointer;margin-top:8px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 4px 20px rgba(30,58,95,0.5);
+  transition:transform 0.15s, box-shadow 0.15s;
+}
+.login-btn:active{transform:scale(0.98)}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed}
+.login-err{
+  font-size:13px;color:#F09595;
+  text-align:center;margin-top:12px;
+  font-weight:700;min-height:20px;
+}
+
+/* ═══════════════════════════════════════════════════
+   SHOP SELECTION SCREEN
+═══════════════════════════════════════════════════ */
+.sc-shops{
+  min-height:100vh;
+  display:none;
+  flex-direction:column;
+  background:#0f1f35;
+  position:relative;
+  overflow:hidden;
+}
+.sc-shops::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(60deg,transparent,transparent 30px,rgba(255,255,255,0.018) 30px,rgba(255,255,255,0.018) 31px),
+    repeating-linear-gradient(-60deg,transparent,transparent 30px,rgba(255,255,255,0.018) 30px,rgba(255,255,255,0.018) 31px);
+  pointer-events:none;
+}
+.shops-inner{position:relative;z-index:1;padding:40px 20px 24px;flex:1;display:flex;flex-direction:column}
+.shops-header{text-align:center;margin-bottom:40px}
+.shops-welcome{font-size:14px;color:rgba(255,255,255,0.45);font-weight:700;margin-bottom:6px;letter-spacing:0.5px}
+.shops-title{font-size:24px;font-weight:800;color:#fff}
+.shops-sub{font-size:13px;color:rgba(255,255,255,0.35);margin-top:4px}
+.shops-grid{display:flex;flex-direction:column;gap:14px;flex:1;justify-content:center;max-width:340px;margin:0 auto;width:100%}
+
+/* Shop card */
+.shop-card{
+  border-radius:18px;
+  padding:22px 20px;
+  display:flex;align-items:center;gap:16px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.1);
+  position:relative;overflow:hidden;
+  transition:transform 0.2s, box-shadow 0.2s;
+  text-align:right;
+}
+.shop-card:active{transform:scale(0.97)}
+.shop-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.shop-card-tailor{background:linear-gradient(135deg, #3d2218, #2C1810);box-shadow:0 8px 30px rgba(44,24,16,0.5)}
+.shop-card-salon {background:linear-gradient(135deg, #5c2052, #4A1942);box-shadow:0 8px 30px rgba(74,25,66,0.5)}
+.shop-card-atara {background:linear-gradient(135deg, #226050, #1B4D3E);box-shadow:0 8px 30px rgba(27,77,62,0.5)}
+.shop-card-emoji{
+  width:56px;height:56px;border-radius:16px;
+  background:rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;flex-shrink:0;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.shop-card-info{flex:1}
+.shop-card-name{font-size:17px;font-weight:800;color:#fff;margin-bottom:4px}
+.shop-card-last{font-size:12px;color:rgba(255,255,255,0.45);font-weight:700}
+.shop-card-arrow{color:rgba(255,255,255,0.35);font-size:20px;flex-shrink:0}
+
+/* ═══════════════════════════════════════════════════
+   MAIN APP SCREEN
+═══════════════════════════════════════════════════ */
+.sc-main{display:none;flex-direction:column;min-height:100vh}
+
+/* Header */
+.hdr{
+  background:var(--shop);
+  padding:14px 16px 16px;
+  transition:background 0.35s;
+  position:relative;overflow:hidden;
+  flex-shrink:0;
+}
+.hdr::after{
+  content:'';position:absolute;
+  bottom:-30px;left:-10px;
+  width:120px;height:120px;border-radius:50%;
+  background:rgba(255,255,255,0.04);pointer-events:none;
+}
+.hdr-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between}
+.hdr-left{}
+.hdr-shop{font-size:11px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.hdr-title{font-size:19px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.hdr-chip{
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:var(--rxl);
+  padding:6px 12px;
+  display:flex;align-items:center;gap:6px;
+  cursor:pointer;
+}
+.hdr-chip-name{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85)}
+.hdr-chip-arrow{font-size:10px;color:rgba(255,255,255,0.4)}
+.hdr-shops-btn{
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px;padding:6px 10px;
+  cursor:pointer;font-size:13px;color:rgba(255,255,255,0.7);
+  font-family:'Almarai',sans-serif;font-weight:700;
+  display:flex;align-items:center;gap:4px;
+}
+
+/* Nav tabs */
+.nav{
+  display:flex;background:#fff;
+  border-bottom:1px solid var(--g200);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.nb{
+  flex:1;padding:10px 4px 12px;
+  border:none;background:transparent;
+  color:var(--g400);font-size:11px;font-weight:700;
+  cursor:pointer;font-family:'Almarai',sans-serif;
+  border-bottom:3px solid transparent;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:color 0.15s;
+}
+.nb .ico{font-size:20px}
+.nb.on{color:var(--shop);border-bottom-color:var(--shop)}
+
+/* Content area */
+.cnt{flex:1;overflow-y:auto;padding:14px;padding-bottom:20px}
+.pg{display:none}.pg.on{display:block}
+
+/* ═══════════════════════════════════════════════════
+   COMMON COMPONENTS
+═══════════════════════════════════════════════════ */
+.card{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);padding:16px;margin-bottom:12px;box-shadow:var(--s1)}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--g100)}
+.ci{width:36px;height:36px;border-radius:var(--rmd);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ci-rev{background:#E8F8F2;color:#085041}
+.ci-exp{background:#FEF0F0;color:#A32D2D}
+.ci-sal{background:#FAEEDA;color:#854F0B}
+.ci-tf {background:#EBF3FC;color:#0C447C}
+.ci-prt{background:#F3E8FF;color:#6B21A8}
+.ci-doc{background:#F0FDF4;color:#166534}
+.ci-dt {background:#F8F9FA;color:#495057}
+.ct{font-size:16px;font-weight:800;color:var(--g800)}
+
+label{font-size:13px;color:var(--g600);display:block;margin-bottom:5px;font-weight:700}
+input[type=text],input[type=number],input[type=password],select,textarea{
+  width:100%;font-family:'Almarai',sans-serif;font-size:15px;
+  direction:rtl;border:1.5px solid var(--g300);border-radius:var(--rmd);
+  padding:11px 13px;background:#fff;color:var(--g900);
+  transition:border-color 0.2s;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--shop)}
+input[type=file]{
+  font-size:13px;color:var(--g500);
+  border:1.5px dashed var(--g300);border-radius:var(--rmd);
+  padding:9px;width:100%;background:var(--g50);
+  font-family:'Almarai',sans-serif;
+}
+.fg{margin-bottom:12px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.req{color:var(--amber)}
+.greg-display{font-size:12px;color:var(--amber);margin-top:4px;font-weight:700;min-height:18px}
+
+/* Account toggle */
+.atog{display:flex;gap:8px}
+.ab{
+  flex:1;padding:10px 8px;border-radius:var(--rmd);
+  border:2px solid var(--g300);background:var(--g50);
+  font-size:13px;font-family:'Almarai',sans-serif;font-weight:700;
+  cursor:pointer;color:var(--g500);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all 0.15s;
+}
+.ab.con{background:#E8F8F2;border-color:var(--green);color:var(--green-d)}
+.ab.bon{background:#EBF3FC;border-color:var(--blue);color:var(--blue-d)}
+
+/* Entry card (expense/salary row) */
+.ecard{
+  background:var(--g50);border-radius:var(--rmd);
+  border:1px solid var(--g200);padding:14px;
+  margin-bottom:10px;position:relative;
+}
+.edel{
+  position:absolute;left:10px;top:10px;
+  background:var(--red-l);border:none;border-radius:8px;
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--red-d);font-size:16px;font-weight:800;
+}
+.add-btn{
+  width:100%;padding:11px;border-radius:var(--rmd);
+  border:2px dashed var(--g300);background:transparent;
+  color:var(--g500);font-size:14px;font-family:'Almarai',sans-serif;
+  font-weight:700;cursor:pointer;margin-top:4px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all 0.2s;
+}
+.add-btn:hover{border-color:var(--shop);color:var(--shop)}
+
+/* Transfer toggle */
+.tf-toggle{
+  width:100%;padding:12px;border-radius:var(--rmd);
+  border:1.5px solid var(--g300);background:var(--g50);
+  color:var(--g600);font-size:14px;font-family:'Almarai',sans-serif;
+  font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:12px;transition:all 0.2s;
+}
+.tf-toggle.active{border-color:var(--red);background:var(--red-l);color:var(--red-d)}
+.tf-body{display:none}.tf-body.open{display:block}
+.tf-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tf-box{
+  flex:1;background:var(--g50);border-radius:var(--rmd);
+  border:2px solid var(--g300);padding:12px 8px;
+  text-align:center;font-size:14px;font-weight:700;
+  color:var(--g500);cursor:pointer;transition:all 0.2s;user-select:none;
+}
+.tf-box.tf-from{background:var(--red-l);border-color:var(--red);color:#791F1F}
+.tf-box.tf-to{background:var(--green-l);border-color:var(--green);color:var(--green-d)}
+.tf-arrow{color:var(--amber);font-size:24px;flex-shrink:0;font-weight:800}
+
+/* Save button */
+.save-btn{
+  width:100%;padding:15px;background:var(--shop);
+  border:none;border-radius:var(--rmd);
+  color:#fff;font-size:17px;font-weight:800;
+  font-family:'Almarai',sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:8px;transition:background 0.35s, transform 0.15s;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+}
+.save-btn:active{transform:scale(0.99)}
+.save-btn:disabled{opacity:0.6;cursor:not-allowed}
+
+/* Summary cards */
+.sum-net{
+  background:var(--shop);border-radius:var(--rlg);
+  padding:20px;margin-bottom:12px;text-align:center;
+  transition:background 0.35s;
+}
+.sum-net-lbl{font-size:12px;color:rgba(255,255,255,0.5);font-weight:700;margin-bottom:4px}
+.sum-net-date{font-size:13px;color:rgba(255,255,255,0.6);font-weight:700;margin-bottom:6px}
+.sum-net-val{font-size:38px;font-weight:800;line-height:1;letter-spacing:-1px}
+.sum-net-cur{font-size:16px;font-weight:400;margin-right:4px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.mc{background:#fff;border-radius:var(--rmd);border:1px solid var(--g200);padding:12px 14px;box-shadow:var(--s1)}
+.ml{font-size:11px;color:var(--g500);margin-bottom:4px;font-weight:700}
+.mv{font-size:20px;font-weight:800}
+.mcur{font-size:12px;font-weight:400;color:var(--g400)}
+.vg{color:var(--green-d)}.vr{color:var(--red-d)}.va{color:var(--amber-d)}.vb{color:var(--blue-d)}
+
+/* History */
+.hi{background:#fff;border-radius:var(--rmd);border:1px solid var(--g200);padding:14px;margin-bottom:10px;cursor:pointer;box-shadow:var(--s1);transition:box-shadow 0.15s}
+.hi:active{box-shadow:none}
+.hi-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.hi-date{font-size:15px;font-weight:800;color:var(--g800)}
+.hi-net-pos{font-size:15px;font-weight:800;color:var(--green-d)}
+.hi-net-neg{font-size:15px;font-weight:800;color:var(--red-d)}
+.hi-sub{font-size:12px;color:var(--g500);font-weight:700;margin-bottom:3px}
+.hi-user{font-size:12px;color:var(--amber-d);font-weight:700}
+.back-btn{
+  display:flex;align-items:center;gap:6px;
+  background:transparent;border:none;
+  color:var(--shop);font-size:15px;font-family:'Almarai',sans-serif;
+  font-weight:800;cursor:pointer;padding:0;margin-bottom:14px;
+}
+.dr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--g100)}
+.dr:last-child{border-bottom:none}
+.tg{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.tg-c{background:var(--green-l);color:var(--green-d)}
+.tg-b{background:var(--blue-l);color:var(--blue-d)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  padding:12px 24px;border-radius:var(--rmd);
+  font-size:14px;font-family:'Almarai',sans-serif;font-weight:700;
+  z-index:9999;display:none;white-space:nowrap;
+  color:#fff;box-shadow:var(--s2);
+}
+
+/* Modal */
+.modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.55);z-index:1000;
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal.show{display:flex}
+.modal-box{
+  background:#fff;border-radius:20px;
+  padding:24px;width:100%;max-width:320px;
+  text-align:center;box-shadow:var(--s2);
+}
+.modal-box h3{font-size:17px;font-weight:800;color:var(--g800);margin-bottom:8px}
+.modal-box p{font-size:14px;color:var(--g600);font-weight:700;margin-bottom:20px;line-height:1.6}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap}
+.modal-btns button{
+  flex:1;padding:11px 8px;border-radius:var(--rmd);
+  font-family:'Almarai',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;border:1.5px solid var(--g300);
+  background:var(--g50);color:var(--g700);transition:all 0.15s;
+  min-width:80px;
+}
+.modal-btns .btn-primary{background:var(--shop);border-color:var(--shop);color:#fff}
+.modal-btns .btn-danger{background:var(--red);border-color:var(--red);color:#fff}
+
+/* Empty / Loading states */
+.empty{text-align:center;color:var(--g400);padding:3rem 1rem;font-size:14px;font-weight:700}
+.loading{text-align:center;color:var(--g400);padding:3rem 1rem;font-size:14px;font-weight:700}
+.loading::after{
+  content:'';display:inline-block;
+  width:18px;height:18px;
+  border:2px solid var(--g300);border-top-color:var(--shop);
+  border-radius:50%;animation:spin 0.8s linear infinite;
+  margin-right:8px;vertical-align:middle;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="app">
 <div class="offline-bar" id="offline-bar">⚠️ لا يوجد اتصال بالإنترنت</div>
 
-<div id="sc-login">
-  <div class="lwrap">
-    <div class="llo">
-      <div class="lico">✂️</div>
-      <div class="ln">البيت السوداني</div>
-      <div class="ls">نظام المحاسبة اليومية</div>
+<!-- ══════════════════ LOGIN ══════════════════ -->
+<div class="sc-login" id="sc-login">
+  <div class="login-inner">
+    <div class="login-logo">
+      <div class="login-icon-wrap">🏛️</div>
+      <div class="login-name">البيت السوداني</div>
+      <div class="login-sub">نظام المحاسبة اليومية</div>
     </div>
-    <div class="lcard">
-      <div class="fg"><label>اسم المستخدم</label><input type="text" id="lu" placeholder="أدخل اسم المستخدم"/></div>
-      <div class="fg" style="margin-bottom:0"><label>كلمة المرور</label><input type="password" id="lp" placeholder="••••••••"/></div>
-      <button class="lbtn" id="lbtn">🔐 تسجيل الدخول</button>
-      <div class="lerr" id="lerr"></div>
+    <div class="login-card">
+      <div class="fg">
+        <label>اسم المستخدم</label>
+        <input type="text" id="lu" placeholder="أدخل اسم المستخدم" autocomplete="username"/>
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label>كلمة المرور</label>
+        <input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <button class="login-btn" id="lbtn">🔐 تسجيل الدخول</button>
+      <div class="login-err" id="lerr"></div>
     </div>
   </div>
 </div>
 
-<div id="sc-main" style="display:none">
-  <div class="hdr">
-    <div>
-      <div class="hdr-t">✂️ البيت السوداني</div>
-      <div class="hdr-s">نظام المحاسبة اليومية</div>
+<!-- ══════════════════ SHOP SELECTION ══════════════════ -->
+<div class="sc-shops" id="sc-shops">
+  <div class="shops-inner">
+    <div class="shops-header">
+      <div class="shops-welcome" id="shops-welcome">مرحباً</div>
+      <div class="shops-title">اختر المحل</div>
+      <div class="shops-sub">حدد المحل الذي تريد العمل عليه</div>
     </div>
-    <button class="uchip" id="uchip"><span>👤</span><span id="ulbl"></span><span style="color:#9a7060;font-size:11px">▼</span></button>
-  </div>
-  <div class="nav">
-    <button class="nb on" id="nb-entry"><span class="ico">✏️</span><span>إدخال</span></button>
-    <button class="nb" id="nb-summary"><span class="ico">📊</span><span>ملخص</span></button>
-    <button class="nb" id="nb-history"><span class="ico">📋</span><span>السجل</span></button>
-  </div>
-  <div class="cnt">
-    <div id="pg-entry" class="pg on">
-      <div class="card">
-        <div class="ch"><div class="ci ibr">📅</div><div class="ct">تاريخ المعاملة</div></div>
-        <div class="fg">
-          <label>التاريخ الهجري <span class="req">*</span></label>
-          <input type="text" id="hd" placeholder="1446/09/15" maxlength="10"/>
-          <div class="greg" id="gd"></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><div class="ci iam">💰</div><div class="ct">الإيرادات</div></div>
-        <div class="r2">
-          <div class="fg" style="margin-bottom:0"><label>نقداً (ر.س)</label><input type="number" id="rc" placeholder="0.00" min="0" step="0.01"/></div>
-          <div class="fg" style="margin-bottom:0"><label>بطاقة (ر.س)</label><input type="number" id="rk" placeholder="0.00" min="0" step="0.01"/></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><div class="ci ird">🧾</div><div class="ct">المصروفات</div></div>
-        <div id="elist"></div>
-        <button class="addeb" id="addexp-btn">＋ إضافة مصروف</button>
-      </div>
-      <div class="card">
-        <div class="ch"><div class="ci ibl">↔️</div><div class="ct">التحويل بين الحسابات</div></div>
-        <button class="tftog" id="tftog">➕ تفعيل التحويل</button>
-        <div class="tfbody" id="tfbody">
-          <div class="tfrow">
-            <div class="tfbox tf-f" id="tf-from">🏦<br>البنك</div>
-            <div class="tfarr">⇄</div>
-            <div class="tfbox tf-t" id="tf-to">🗄️<br>الصندوق</div>
-          </div>
-          <div style="font-size:12px;color:#a09088;text-align:center;margin-bottom:12px;font-weight:700">اضغط على أي حساب لتبديل الاتجاه</div>
-          <div class="fg"><label>المبلغ (ر.س) <span class="req">*</span></label><input type="number" id="tfamt" placeholder="0.00" min="0" step="0.01"/></div>
-          <div class="fg" style="margin-bottom:0"><label>ملاحظات التحويل</label><textarea id="tfnote" rows="2" placeholder="تفاصيل التحويل أو أي ملاحظة..."></textarea></div>
-        </div>
-      </div>
-      <button class="savebtn" id="savebtn">💾 حفظ البيانات</button>
-    </div>
-    <div id="pg-summary" class="pg">
-      <div id="sumbody"><div class="loading">جاري التحميل</div></div>
-    </div>
-    <div id="pg-history" class="pg">
-      <div id="hlist"></div>
-      <div id="hdetail" style="display:none"></div>
-    </div>
+    <div class="shops-grid" id="shops-grid"></div>
   </div>
 </div>
 
-<div class="logout-modal" id="logout-modal">
-  <div class="logout-box">
+<!-- ══════════════════ MAIN APP ══════════════════ -->
+<div class="sc-main" id="sc-main">
+  <div class="hdr" id="hdr">
+    <div class="hdr-inner">
+      <div class="hdr-left">
+        <div class="hdr-shop" id="hdr-shop-label">المحل</div>
+        <div class="hdr-title" id="hdr-title">🏛️ البيت السوداني</div>
+      </div>
+      <div class="hdr-right">
+        <button class="hdr-shops-btn" id="hdr-switch-btn" style="display:none">⇄ تبديل</button>
+        <div class="hdr-chip" id="uchip">
+          <span style="font-size:16px">👤</span>
+          <span class="hdr-chip-name" id="ulbl"></span>
+          <span class="hdr-chip-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav" id="nav"></div>
+
+  <div class="cnt" id="cnt">
+    <div id="pg-entry"  class="pg on"></div>
+    <div id="pg-summary" class="pg"></div>
+    <div id="pg-history" class="pg"></div>
+    <div id="pg-dashboard" class="pg"></div>
+  </div>
+</div>
+
+<!-- ══════════════════ LOGOUT MODAL ══════════════════ -->
+<div class="modal" id="logout-modal">
+  <div class="modal-box">
     <h3>تسجيل الخروج</h3>
     <p>هل تريد تسجيل الخروج من حسابك؟</p>
-    <div class="logout-btns">
-      <button class="btn-cancel" id="btn-cancel">إلغاء</button>
-      <button class="btn-logout" id="btn-logout">تسجيل الخروج</button>
+    <div class="modal-btns">
+      <button id="logout-cancel">إلغاء</button>
+      <button class="btn-danger" id="logout-confirm">تسجيل الخروج</button>
     </div>
   </div>
 </div>
+
+<!-- ══════════════════ DATE WARNING MODAL ══════════════════ -->
+<div class="modal" id="date-modal">
+  <div class="modal-box">
+    <h3>⚠️ تاريخ موجود مسبقاً</h3>
+    <p id="date-modal-msg">يوجد إدخال سابق لهذا التاريخ. ماذا تريد أن تفعل؟</p>
+    <div class="modal-btns">
+      <button id="date-cancel">إلغاء</button>
+      <button id="date-add" class="btn-primary">إضافة</button>
+      <button id="date-replace" class="btn-danger">استبدال</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 (function(){
-var SHEETS_API='https://script.google.com/macros/s/AKfycbzb0l1cdEYAby51Hbl7tfyFI8zXTLgPVZm6DFGjR-fflIDtbzY7h-d4rs6pM8bhVDVF7w/exec';
-var WORKER='https://bait-sudani-upload.albyt-alsudani.workers.dev';
-var CATS=['حساب الخياطين','حساب المكوجي','رواتب عمالة','مشتريات بضاعة','إيجارات','سداد فواتير','خطأ محاسبي','تكاليف صيانة','مصروفات حكومية','مخالفات','أخرى'];
-var ACCLBL={bank:'البنك',cash:'الصندوق'};
-var ACCICO={bank:'🏦',cash:'🗄️'};
-var curUser='',curRole='',EC=0,exps=[],tfIsOpen=false,tfState={from:'bank',to:'cash'},cache=[];
+'use strict';
 
-function gs(id){return document.getElementById(id);}
+// ── Config ───────────────────────────────────────────────────────────────────
+var API    = 'https://script.google.com/macros/s/AKfycbzb0l1cdEYAby51Hbl7tfyFI8zXTLgPVZm6DFGjR-fflIDtbzY7h-d4rs6pM8bhVDVF7w/exec';
+var WORKER = 'https://bait-sudani-upload.albyt-alsudani.workers.dev';
 
-window.addEventListener('online',function(){gs('offline-bar').classList.remove('show');});
-window.addEventListener('offline',function(){gs('offline-bar').classList.add('show');});
+var SHOPS = {
+  Tailor: { name: 'خياط البيت السوداني', emoji: '✂️', color: '#2C1810', colorL: '#F5C4B3', cls: 'shop-card-tailor' },
+  Salon:  { name: 'صالون الخرطوم',        emoji: '💇', color: '#4A1942', colorL: '#E8C5E5', cls: 'shop-card-salon'  },
+  Atara:  { name: 'عطارة البيت السوداني', emoji: '🌿', color: '#1B4D3E', colorL: '#B8DDD5', cls: 'shop-card-atara'  }
+};
 
-function apiCall(p){
-  return fetch(SHEETS_API+'?'+new URLSearchParams(p)).then(function(r){return r.json();});
+// ── State ────────────────────────────────────────────────────────────────────
+var state = {
+  user:        null,   // { displayName, role, shops }
+  currentShop: null,   // 'Tailor' | 'Salon' | 'Atara'
+  categories:  [],
+  employees:   [],
+  expenseRows: [],
+  salaryRows:  [],
+  partnerRows: [],
+  tfOpen:      false,
+  tfFrom:      'bank',
+  tfTo:        'cash',
+  expCounter:  0,
+  salCounter:  0,
+  prtCounter:  0,
+  histCache:   [],
+  pendingSave: null    // stores payload when date conflict detected
+};
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function gs(id){ return document.getElementById(id); }
+function fmt(n){ return Number(n||0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function fmtInt(n){ return Number(n||0).toLocaleString('en-US'); }
+
+function apiCall(params){
+  return fetch(API + '?' + new URLSearchParams(params)).then(function(r){ return r.json(); });
 }
 
-function validateHijri(h){
-  const p=h.split('/').map(Number);
-  if(p.length!==3)return false;
-  const [y,m,d]=p;
-  if(y<1400||y>1500)return false;
-  if(m<1||m>12)return false;
-  if(d<1||d>30)return false;
-  return true;
+function showToast(msg, isErr){
+  var t = gs('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#791F1F' : '#085041';
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.style.display = 'none'; }, 3000);
 }
 
+function setShopTheme(shopId){
+  var s = SHOPS[shopId];
+  if(!s) return;
+  document.documentElement.style.setProperty('--shop', s.color);
+  document.documentElement.style.setProperty('--shop-l', s.colorL);
+  gs('hdr').style.background = s.color;
+  gs('hdr-title').textContent = s.emoji + ' ' + s.name;
+  gs('hdr-shop-label').textContent = 'البيت السوداني';
+}
+
+// Hijri helpers
 function fmtH(v){
-  v=v.replace(/[^0-9]/g,'');
-  if(v.length>4)v=v.slice(0,4)+'/'+v.slice(4);
-  if(v.length>7)v=v.slice(0,7)+'/'+v.slice(7);
+  v = v.replace(/[^0-9]/g,'');
+  if(v.length > 4) v = v.slice(0,4) + '/' + v.slice(4);
+  if(v.length > 7) v = v.slice(0,7) + '/' + v.slice(7);
   return v.slice(0,10);
 }
-
-function h2g(h){
-  try{
-    var p=h.split('/').map(Number);
-    if(p.length<3||!p[0]||!p[1]||!p[2])return null;
-    var y=p[0],m=p[1],d=p[2];
-    var jd=Math.floor((11*y+3)/30)+354*y+30*m-Math.floor((m-1)/2)+d+1948440-385;
-    var l=jd+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4),i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31,j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),jj=Math.floor(j/11),mo=j+2-12*jj,yr=100*(n-49)+i+jj;
-    var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-    return day+' '+ms[mo-1]+' '+yr;
-  }catch(e){return null;}
+function validateHijri(h){
+  var p = h.split('/').map(Number);
+  if(p.length !== 3) return false;
+  return p[0]>=1400 && p[0]<=1500 && p[1]>=1 && p[1]<=12 && p[2]>=1 && p[2]<=30;
 }
-
 function h2gShort(h){
   try{
-    var p=h.split('/').map(Number);
-    var y=p[0],m=p[1],d=p[2];
+    var p=h.split('/').map(Number),y=p[0],m=p[1],d=p[2];
     var jd=Math.floor((11*y+3)/30)+354*y+30*m-Math.floor((m-1)/2)+d+1948440-385;
-    var l=jd+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4),i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31,j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),jj=Math.floor(j/11),mo=j+2-12*jj,yr=100*(n-49)+i+jj;
+    var l=jd+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4);
+    var i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31;
+    var j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),jj=Math.floor(j/11);
+    var mo=j+2-12*jj,yr=100*(n-49)+i+jj;
     return yr+'-'+String(mo).padStart(2,'0')+'-'+String(day).padStart(2,'0');
   }catch(e){return '';}
 }
-
+function h2gLong(h){
+  var s = h2gShort(h);
+  if(!s) return '';
+  var p = s.split('-');
+  var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  return parseInt(p[2]) + ' ' + ms[parseInt(p[1])-1] + ' ' + p[0];
+}
 function cleanDate(d){
-  if(!d)return '';
-  if(String(d).includes('T'))d=String(d).split('T')[0];
-  var p=String(d).split('-');
+  if(!d) return '';
+  if(String(d).includes('T')) d = String(d).split('T')[0];
+  var p = String(d).split('-');
   if(p.length===3){
     var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
     return parseInt(p[2])+' '+ms[parseInt(p[1])-1]+' '+p[0];
@@ -258,285 +721,312 @@ function cleanDate(d){
   return d;
 }
 
-function showToast(msg,err){
-  var t=gs('toast');
-  t.textContent=msg;
-  t.style.background=err?'#791F1F':'#085041';
-  t.style.display='block';
-  setTimeout(function(){t.style.display='none';},3000);
-}
+// ── Connectivity ─────────────────────────────────────────────────────────────
+window.addEventListener('online',  function(){ gs('offline-bar').classList.remove('show'); });
+window.addEventListener('offline', function(){ gs('offline-bar').classList.add('show'); });
 
-function goTab(t){
-  ['entry','summary','history'].forEach(function(x){
-    gs('pg-'+x).classList.toggle('on',x===t);
-    gs('nb-'+x).classList.toggle('on',x===t);
-  });
-  if(t==='summary')loadSummary();
-  if(t==='history'){loadHistory();gs('hdetail').style.display='none';gs('hlist').style.display='block';}
-}
-gs('nb-entry').addEventListener('click',function(){goTab('entry');});
-gs('nb-summary').addEventListener('click',function(){goTab('summary');});
-gs('nb-history').addEventListener('click',function(){goTab('history');});
-
-gs('lbtn').addEventListener('click',doLogin);
-gs('lp').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+// ── LOGIN ────────────────────────────────────────────────────────────────────
+gs('lbtn').addEventListener('click', doLogin);
+gs('lp').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
 
 function doLogin(){
-  var u=gs('lu').value.trim(),p=gs('lp').value;
-  if(!u||!p){gs('lerr').textContent='يرجى إدخال اسم المستخدم وكلمة المرور';return;}
-  gs('lbtn').disabled=true;gs('lbtn').textContent='⏳ جاري التحقق...';gs('lerr').textContent='';
-  apiCall({action:'login',username:u,password:p}).then(function(res){
+  var u = gs('lu').value.trim();
+  var p = gs('lp').value;
+  if(!u || !p){ gs('lerr').textContent = 'يرجى إدخال اسم المستخدم وكلمة المرور'; return; }
+  gs('lbtn').disabled = true;
+  gs('lbtn').innerHTML = '⏳ جاري التحقق...';
+  gs('lerr').textContent = '';
+
+  apiCall({ action:'login', username:u, password:p }).then(function(res){
     if(res.success){
-      curUser=res.displayName;curRole=res.role;
-      gs('ulbl').textContent=curUser;
-      gs('sc-login').style.display='none';
-      gs('sc-main').style.display='block';
-      goTab('entry');
-    }else{gs('lerr').textContent=res.message||'اسم المستخدم أو كلمة المرور غير صحيحة';}
-    gs('lbtn').disabled=false;gs('lbtn').innerHTML='🔐 تسجيل الدخول';
+      state.user = { displayName: res.displayName, role: res.role, shops: res.shops };
+      gs('ulbl').textContent = res.displayName;
+      gs('sc-login').style.display = 'none';
+      afterLogin();
+    } else {
+      gs('lerr').textContent = res.message || 'اسم المستخدم أو كلمة المرور غير صحيحة';
+    }
+    gs('lbtn').disabled = false;
+    gs('lbtn').innerHTML = '🔐 تسجيل الدخول';
   }).catch(function(){
-    gs('lerr').textContent='تعذر الاتصال — تحقق من الإنترنت';
-    gs('lbtn').disabled=false;gs('lbtn').innerHTML='🔐 تسجيل الدخول';
+    gs('lerr').textContent = 'تعذر الاتصال — تحقق من الإنترنت';
+    gs('lbtn').disabled = false;
+    gs('lbtn').innerHTML = '🔐 تسجيل الدخول';
   });
 }
 
-gs('uchip').addEventListener('click',function(){gs('logout-modal').classList.add('show');});
-gs('btn-cancel').addEventListener('click',function(){gs('logout-modal').classList.remove('show');});
-gs('btn-logout').addEventListener('click',function(){
-  gs('logout-modal').classList.remove('show');
-  gs('sc-main').style.display='none';
-  gs('sc-login').style.display='block';
-  gs('lu').value='';gs('lp').value='';gs('lerr').textContent='';
-  curUser='';curRole='';exps=[];EC=0;cache=[];
-  goTab('entry');
-});
-
-gs('hd').addEventListener('input',function(){
-  this.value=fmtH(this.value);
-  var g=this.value.replace(/\//g,'').length>=8?h2g(this.value):null;
-  gs('gd').textContent=g?'الموافق: '+g:'';
-});
-
-gs('addexp-btn').addEventListener('click',function(){
-  exps.push({id:++EC,cat:'',amt:'',note:'',acct:'cash',file:'',worker:'',fileObj:null,driveLink:''});
-  renderExps();
-});
-
-function renderExps(){
-  var c=gs('elist');c.innerHTML='';
-  exps.forEach(function(e){
-    var opts=CATS.map(function(cat){return '<option value="'+cat+'"'+(e.cat===cat?' selected':'')+'>'+cat+'</option>';}).join('');
-    var isOther=e.cat==='أخرى',isWorker=e.cat==='رواتب عمالة';
-    var div=document.createElement('div');
-    div.className='ecard';
-    div.innerHTML='<button class="edel">✕</button>'+
-      '<div class="r2" style="margin-bottom:10px">'+
-        '<div class="fg" style="margin-bottom:0"><label>النوع <span class="req">*</span></label>'+
-          '<select class="catsel"><option value="">اختر...</option>'+opts+'</select></div>'+
-        '<div class="fg" style="margin-bottom:0"><label>المبلغ (ر.س) <span class="req">*</span></label>'+
-          '<input type="number" value="'+e.amt+'" placeholder="0.00" min="0" step="0.01" class="amtinp"/></div>'+
-      '</div>'+
-      (isWorker?'<div class="fg" style="margin-bottom:10px"><label>اسم العامل <span class="req">*</span></label><input type="text" value="'+e.worker+'" placeholder="أدخل اسم العامل..." class="wkinp"/></div>':'')+
-      '<div class="fg" style="margin-bottom:10px"><label>ملاحظة'+(isOther?' <span class="req">* (إلزامي)</span>':'')+
-        '</label><input type="text" value="'+e.note+'" placeholder="'+(isOther?'اكتب نوع المصروف هنا...':'تفاصيل إضافية...')+'" class="noteinp"/></div>'+
-      '<div class="fg" style="margin-bottom:10px"><label>الحساب المستخدم <span class="req">*</span></label>'+
-        '<div class="atog">'+
-          '<button class="ab'+(e.acct==='cash'?' con':'')+'" data-acct="cash">🗄️ الصندوق</button>'+
-          '<button class="ab'+(e.acct==='bank'?' bon':'')+'" data-acct="bank">🏦 البنك</button>'+
-        '</div></div>'+
-      '<div class="fg" style="margin-bottom:0"><label>مرفق (فاتورة/إيصال)</label>'+
-        '<input type="file" accept="image/*,.pdf" class="fileinp"/>'+
-        (e.file?'<div style="font-size:12px;color:#a09088;margin-top:4px;font-weight:700">📎 '+e.file+'</div>':'')+
-      '</div>';
-    c.appendChild(div);
-    div.querySelector('.edel').addEventListener('click',function(){exps=exps.filter(function(x){return x.id!==e.id;});renderExps();});
-    div.querySelector('.catsel').addEventListener('change',function(){e.cat=this.value;renderExps();});
-    div.querySelector('.amtinp').addEventListener('input',function(){e.amt=this.value;});
-    if(isWorker)div.querySelector('.wkinp').addEventListener('input',function(){e.worker=this.value;});
-    div.querySelector('.noteinp').addEventListener('input',function(){e.note=this.value;});
-    div.querySelectorAll('.ab').forEach(function(btn){
-      btn.addEventListener('click',function(){
-        e.acct=this.dataset.acct;
-        div.querySelectorAll('.ab').forEach(function(b){b.classList.remove('con','bon');});
-        this.classList.add(e.acct==='cash'?'con':'bon');
-      });
-    });
-    div.querySelector('.fileinp').addEventListener('change',function(){
-      if(this.files&&this.files[0]){
-        var f=this.files[0];
-        if(f.type==='application/pdf'&&f.size>20*1024*1024){showToast('حجم الملف يتجاوز 20MB',true);this.value='';return;}
-        e.file=f.name;e.fileObj=f;
-      }
-    });
-  });
-}
-
-gs('tftog').addEventListener('click',function(){
-  tfIsOpen=!tfIsOpen;
-  gs('tfbody').classList.toggle('open',tfIsOpen);
-  if(tfIsOpen){this.style.cssText='width:100%;padding:12px;border-radius:10px;border:1.5px solid #E24B4A;background:#FCEBEB;color:#A32D2D;font-size:15px;font-family:Almarai,sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px';this.textContent='✕ إلغاء التحويل';}
-  else{this.style.cssText='width:100%;padding:12px;border-radius:10px;border:1.5px solid #e0d5cc;background:#faf7f5;color:#7a6a62;font-size:15px;font-family:Almarai,sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px';this.textContent='➕ تفعيل التحويل';}
-});
-function swapTf(){var tmp=tfState.from;tfState.from=tfState.to;tfState.to=tmp;gs('tf-from').innerHTML=ACCICO[tfState.from]+'<br>'+ACCLBL[tfState.from];gs('tf-to').innerHTML=ACCICO[tfState.to]+'<br>'+ACCLBL[tfState.to];}
-gs('tf-from').addEventListener('click',swapTf);
-gs('tf-to').addEventListener('click',swapTf);
-
-function compressImage(file){
-  if(file.type==='application/pdf')return Promise.resolve({blob:file,ext:'pdf'});
-  return new Promise(function(resolve){
-    var img=new Image(),url=URL.createObjectURL(file);
-    img.onload=function(){
-      var canvas=document.createElement('canvas');
-      canvas.width=img.width;canvas.height=img.height;
-      canvas.getContext('2d').drawImage(img,0,0);
-      canvas.toBlob(function(blob){URL.revokeObjectURL(url);resolve({blob:blob,ext:'jpg'});}, 'image/jpeg', 0.80);
-    };
-    img.src=url;
-  });
-}
-
-function uploadToWorker(file,hijriDate,category,workerName){
-  return compressImage(file).then(function(result){
-    var form=new FormData();
-    form.append('file',result.blob,'upload.'+result.ext);
-    form.append('hijriDate',hijriDate);
-    form.append('category',category||'مرفق');
-    form.append('workerName',workerName||'');
-    return fetch(WORKER,{method:'POST',body:form});
-  }).then(function(r){return r.json();}).then(function(data){
-    if(data.success)return{driveLink:data.driveLink,fileName:data.fileName};
-    console.warn('Worker failed:',data.message);return null;
-  }).catch(function(err){console.warn('Upload error:',err);return null;});
-}
-
-gs('savebtn').addEventListener('click',function(){saveEntry();});
-
-function saveEntry(){
-  var hd=gs('hd').value.trim();
-  if(!hd||hd.replace(/\//g,'').length<8||!validateHijri(hd)){showToast('يرجى إدخال تاريخ هجري صحيح (مثال: 1446/09/15)',true);return;}
-  for(var i=0;i<exps.length;i++){
-    var e=exps[i];
-    if(!e.cat){showToast('يرجى اختيار نوع لكل مصروف',true);return;}
-    if(!e.amt||parseFloat(e.amt)<=0){showToast('يرجى إدخال مبلغ صحيح للمصروف',true);return;}
-    if(e.cat==='أخرى'&&!e.note.trim()){showToast('الملاحظة إلزامية عند اختيار "أخرى"',true);return;}
-    if(e.cat==='رواتب عمالة'&&!e.worker.trim()){showToast('يرجى إدخال اسم العامل',true);return;}
+function afterLogin(){
+  var shops = state.user.shops;
+  // If only one shop — go directly
+  if(shops !== 'all'){
+    var list = shops.split(',').map(function(s){ return s.trim(); });
+    if(list.length === 1){
+      enterShop(list[0]);
+      return;
+    }
   }
-  if(tfIsOpen&&(!gs('tfamt').value||parseFloat(gs('tfamt').value)<=0)){showToast('يرجى إدخال مبلغ التحويل',true);return;}
-  gs('savebtn').disabled=true;gs('savebtn').textContent='⏳ جاري الحفظ...';
-  var gregDate=h2gShort(hd);
-  var uploads=exps.filter(function(e){return e.fileObj;}).map(function(e){
-    showToast('⏳ جاري رفع المرفقات...');
-    return uploadToWorker(e.fileObj,hd,e.cat,e.worker||'').then(function(res){
-      if(res){e.driveLink=res.driveLink;e.file=res.fileName;}
+  // Multiple shops — show selection screen
+  showShopSelection();
+}
+
+// ── SHOP SELECTION ────────────────────────────────────────────────────────────
+function showShopSelection(){
+  gs('shops-welcome').textContent = 'مرحباً ' + state.user.displayName;
+  var grid = gs('shops-grid');
+  grid.innerHTML = '';
+
+  var allowed = getAllowedShops();
+  allowed.forEach(function(shopId){
+    var s = SHOPS[shopId];
+    if(!s) return;
+    var card = document.createElement('div');
+    card.className = 'shop-card ' + s.cls;
+    card.innerHTML =
+      '<div class="shop-card-emoji">' + s.emoji + '</div>' +
+      '<div class="shop-card-info">' +
+        '<div class="shop-card-name">' + s.name + '</div>' +
+        '<div class="shop-card-last" id="last-' + shopId + '">جاري التحميل...</div>' +
+      '</div>' +
+      '<div class="shop-card-arrow">←</div>';
+    card.addEventListener('click', function(){ enterShop(shopId); });
+    grid.appendChild(card);
+
+    // Load last entry date for this shop
+    apiCall({ action:'getLatestEntry', shop:shopId }).then(function(res){
+      var el = gs('last-' + shopId);
+      if(el){
+        if(res.success && res.record && res.record.hijri){
+          el.textContent = 'آخر إدخال: ' + res.record.hijri;
+        } else {
+          el.textContent = 'لا توجد إدخالات بعد';
+        }
+      }
+    }).catch(function(){
+      var el = gs('last-' + shopId);
+      if(el) el.textContent = 'تعذر التحميل';
     });
   });
-  Promise.all(uploads).then(function(){
-    var payload={
-      action:'saveEntry',
-      hijriDate:hd,gregorianDate:gregDate,recordedBy:curUser,
-      revCash:parseFloat(gs('rc').value)||0,
-      revCard:parseFloat(gs('rk').value)||0,
-      expenses:exps.map(function(e){return{cat:e.cat,amt:parseFloat(e.amt)||0,acct:e.acct,worker:e.worker||'',note:e.note||'',file:e.file||'',driveLink:e.driveLink||''};}),
-      transfer:tfIsOpen?{from:tfState.from,to:tfState.to,amt:parseFloat(gs('tfamt').value)||0,note:gs('tfnote').value.trim()}:null
-    };
-    return apiCall({action:'saveEntry',data:encodeURIComponent(JSON.stringify(payload))});
-  }).then(function(res){
-    if(res.success){
-      exps=[];EC=0;renderExps();
-      ['rc','rk','hd'].forEach(function(id){gs(id).value='';});
-      gs('gd').textContent='';
-      if(tfIsOpen)gs('tftog').click();
-      gs('tfamt').value='';gs('tfnote').value='';
-      cache=[];
-      showToast('تم الحفظ في Google Sheets بنجاح ✓');
-    }else{showToast('حدث خطأ: '+res.message,true);}
-    gs('savebtn').disabled=false;gs('savebtn').innerHTML='💾 حفظ البيانات';
-  }).catch(function(){
-    showToast('تعذر الاتصال — تحقق من الإنترنت',true);
-    gs('savebtn').disabled=false;gs('savebtn').innerHTML='💾 حفظ البيانات';
+
+  gs('sc-login').style.display  = 'none';
+  gs('sc-shops').style.display  = 'flex';
+  gs('sc-main').style.display   = 'none';
+}
+
+function getAllowedShops(){
+  if(state.user.shops === 'all') return Object.keys(SHOPS);
+  return state.user.shops.split(',').map(function(s){ return s.trim(); }).filter(function(s){ return SHOPS[s]; });
+}
+
+// ── ENTER SHOP ────────────────────────────────────────────────────────────────
+function enterShop(shopId){
+  state.currentShop = shopId;
+  state.histCache   = [];
+  state.expenseRows = [];
+  state.salaryRows  = [];
+  state.partnerRows = [];
+  state.expCounter  = 0;
+  state.salCounter  = 0;
+  state.prtCounter  = 0;
+
+  setShopTheme(shopId);
+  buildNav();
+
+  // Show switch button if user has multiple shops
+  var allowed = getAllowedShops();
+  gs('hdr-switch-btn').style.display = allowed.length > 1 ? 'flex' : 'none';
+
+  gs('sc-shops').style.display = 'none';
+  gs('sc-main').style.display  = 'flex';
+
+  // Load dynamic data
+  loadCategories();
+  loadEmployees();
+
+  goTab('entry');
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function buildNav(){
+  var role = state.user.role;
+  var hasDash = (role === 'admin' || role === 'area_manager');
+  var nav = gs('nav');
+  nav.innerHTML = '';
+
+  var tabs = [];
+  if(hasDash) tabs.push({ id:'dashboard', ico:'📊', lbl:'داشبورد' });
+  tabs.push({ id:'entry',    ico:'✏️',  lbl:'إدخال' });
+  tabs.push({ id:'summary',  ico:'📋',  lbl:'ملخص'   });
+  tabs.push({ id:'history',  ico:'🗂️', lbl:'السجل'  });
+
+  tabs.forEach(function(t){
+    var btn = document.createElement('button');
+    btn.className = 'nb';
+    btn.id = 'nb-' + t.id;
+    btn.innerHTML = '<span class="ico">' + t.ico + '</span><span>' + t.lbl + '</span>';
+    btn.addEventListener('click', function(){ goTab(t.id); });
+    nav.appendChild(btn);
   });
 }
 
+function goTab(tabId){
+  ['entry','summary','history','dashboard'].forEach(function(t){
+    var pg = gs('pg-' + t);
+    var nb = gs('nb-' + t);
+    if(pg) pg.classList.toggle('on', t === tabId);
+    if(nb) nb.classList.toggle('on', t === tabId);
+  });
+  if(tabId === 'entry')     renderEntry();
+  if(tabId === 'summary')   loadSummary();
+  if(tabId === 'history')   loadHistory();
+  if(tabId === 'dashboard') loadDashboard();
+}
+
+// ── HEADER ACTIONS ────────────────────────────────────────────────────────────
+gs('uchip').addEventListener('click',    function(){ gs('logout-modal').classList.add('show'); });
+gs('logout-cancel').addEventListener('click',  function(){ gs('logout-modal').classList.remove('show'); });
+gs('logout-confirm').addEventListener('click', doLogout);
+gs('hdr-switch-btn').addEventListener('click', function(){ showShopSelection(); });
+
+function doLogout(){
+  gs('logout-modal').classList.remove('show');
+  gs('sc-main').style.display  = 'none';
+  gs('sc-shops').style.display = 'none';
+  gs('sc-login').style.display = 'flex';
+  gs('lu').value = '';
+  gs('lp').value = '';
+  gs('lerr').textContent = '';
+  state.user = null;
+  state.currentShop = null;
+  state.histCache   = [];
+}
+
+// ── LOAD CATEGORIES & EMPLOYEES ───────────────────────────────────────────────
+function loadCategories(){
+  apiCall({ action:'getCategories', shop:state.currentShop }).then(function(res){
+    if(res.success) state.categories = res.categories || [];
+  });
+}
+function loadEmployees(){
+  apiCall({ action:'getEmployees', shop:state.currentShop }).then(function(res){
+    if(res.success) state.employees = res.employees || [];
+  });
+}
+
+// ── ENTRY TAB — placeholder (Part 2 will fill this) ──────────────────────────
+function renderEntry(){
+  var pg = gs('pg-entry');
+  if(pg.dataset.built === '1') return;
+  pg.innerHTML = '<div class="empty">قسم الإدخال — سيتم بناؤه في الجزء الثاني</div>';
+}
+
+// ── SUMMARY TAB — placeholder ─────────────────────────────────────────────────
 function loadSummary(){
-  gs('sumbody').innerHTML='<div class="loading">جاري التحميل</div>';
-  apiCall({action:'getLatestEntry'}).then(function(res){
-    if(res.success&&res.record)renderSummary(res.record);
-    else gs('sumbody').innerHTML='<div class="empty">لا توجد بيانات محفوظة بعد</div>';
-  }).catch(function(){gs('sumbody').innerHTML='<div class="empty">تعذر التحميل — تحقق من الإنترنت</div>';});
+  var pg = gs('pg-summary');
+  pg.innerHTML = '<div class="loading">جاري التحميل</div>';
+  apiCall({ action:'getLatestEntry', shop:state.currentShop }).then(function(res){
+    if(res.success && res.record) renderSummary(res.record);
+    else pg.innerHTML = '<div class="empty">لا توجد بيانات محفوظة بعد</div>';
+  }).catch(function(){ pg.innerHTML = '<div class="empty">تعذر التحميل</div>'; });
 }
 
 function renderSummary(rec){
-  var tR=(rec.revCash||0)+(rec.revCard||0);
-  var tE=(rec.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
-  var net=tR-tE;
-  var tfBlock=rec.transfer?'<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ci ibl">↔️</div><div class="ct">التحويل</div></div><div class="dr"><span style="font-size:15px;font-weight:700;color:#2C1810">'+(ACCLBL[rec.transfer.from]||rec.transfer.from)+' ← '+(ACCLBL[rec.transfer.to]||rec.transfer.to)+'</span><span style="font-weight:800;font-size:16px;color:#2C1810">'+((rec.transfer.amt||0).toFixed(2))+' ر.س</span></div>'+(rec.transfer.note?'<div style="font-size:13px;color:#a09088;margin-top:6px;font-weight:700">'+rec.transfer.note+'</div>':'')+'</div>':'';
-  gs('sumbody').innerHTML='<div style="font-size:12px;color:#a09088;padding-right:4px;font-weight:700;margin-bottom:8px">آخر إدخال محفوظ</div>'+
-    '<div class="netcard"><div class="nl">'+(rec.hijri||'')+(rec.greg?' — '+cleanDate(rec.greg):'')+
-    '</div><div class="nv" style="color:'+(net>=0?'#9FE1CB':'#F09595')+'">'+(net>=0?'+':'')+net.toFixed(2)+' <span style="font-size:18px;font-weight:400">ر.س</span></div></div>'+
-    '<div class="mgrid">'+
-      '<div class="mc"><div class="ml">إيرادات نقداً</div><div class="mv vg">'+((rec.revCash||0).toFixed(2))+'<span class="mcur"> ر.س</span></div></div>'+
-      '<div class="mc"><div class="ml">إيرادات بطاقة</div><div class="mv vg">'+((rec.revCard||0).toFixed(2))+'<span class="mcur"> ر.س</span></div></div>'+
-      '<div class="mc"><div class="ml">إجمالي الإيرادات</div><div class="mv va">'+tR.toFixed(2)+'<span class="mcur"> ر.س</span></div></div>'+
-      '<div class="mc"><div class="ml">إجمالي المصروفات</div><div class="mv vr">'+tE.toFixed(2)+'<span class="mcur"> ر.س</span></div></div>'+
-    '</div>'+tfBlock+
-    '<div style="font-size:12px;color:#a09088;padding-right:4px;font-weight:700">أدخله: '+(rec.recordedBy||'')+' — '+cleanDate(rec.recordedAt)+'</div>';
+  var pg  = gs('pg-summary');
+  var tR  = (rec.revCash||0) + (rec.revCard||0);
+  var tE  = (rec.expenses||[]).reduce(function(s,e){ return s+(e.amt||0); },0);
+  var net = tR - tE;
+  pg.innerHTML =
+    '<div style="font-size:11px;color:var(--g400);padding-right:2px;font-weight:700;margin-bottom:8px;letter-spacing:0.5px;text-transform:uppercase">آخر إدخال محفوظ</div>' +
+    '<div class="sum-net">' +
+      '<div class="sum-net-lbl">الصافي</div>' +
+      '<div class="sum-net-date">' + (rec.hijri||'') + (rec.greg ? ' — ' + cleanDate(rec.greg) : '') + '</div>' +
+      '<div class="sum-net-val" style="color:' + (net>=0?'#9FE1CB':'#F09595') + '">' +
+        (net>=0?'+':'') + fmt(net) + ' <span class="sum-net-cur">ر.س</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mgrid">' +
+      '<div class="mc"><div class="ml">إيرادات نقداً</div><div class="mv vg">' + fmt(rec.revCash||0) + '<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إيرادات بطاقة</div><div class="mv vg">' + fmt(rec.revCard||0) + '<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي الإيرادات</div><div class="mv va">' + fmt(tR) + '<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي المصروفات</div><div class="mv vr">' + fmt(tE) + '<span class="mcur"> ر.س</span></div></div>' +
+    '</div>' +
+    '<div style="font-size:11px;color:var(--g400);padding-right:2px;font-weight:700">أدخله: ' + (rec.recordedBy||'') + ' — ' + cleanDate(rec.recordedAt) + '</div>';
 }
 
+// ── HISTORY TAB — placeholder ─────────────────────────────────────────────────
 function loadHistory(){
-  if(cache.length>0){renderHist(cache);return;}
-  gs('hlist').innerHTML='<div class="loading">جاري التحميل</div>';
-  apiCall({action:'getHistory'}).then(function(res){
-    if(res.success){cache=res.records||[];renderHist(cache);}
-    else gs('hlist').innerHTML='<div class="empty">تعذر التحميل</div>';
-  }).catch(function(){gs('hlist').innerHTML='<div class="empty">تعذر التحميل — تحقق من الإنترنت</div>';});
+  var pg = gs('pg-history');
+  if(state.histCache.length > 0){ renderHistory(state.histCache, pg); return; }
+  pg.innerHTML = '<div class="loading">جاري التحميل</div>';
+  apiCall({ action:'getHistory', shop:state.currentShop }).then(function(res){
+    if(res.success){ state.histCache = res.records||[]; renderHistory(state.histCache, pg); }
+    else pg.innerHTML = '<div class="empty">تعذر التحميل</div>';
+  }).catch(function(){ pg.innerHTML = '<div class="empty">تعذر التحميل</div>'; });
 }
 
-function renderHist(records){
-  var c=gs('hlist');
-  if(!records.length){c.innerHTML='<div class="empty">لا توجد سجلات بعد</div>';return;}
-  c.innerHTML='';
+function renderHistory(records, pg){
+  if(!records.length){ pg.innerHTML = '<div class="empty">لا توجد سجلات بعد</div>'; return; }
+  pg.innerHTML = '<div id="h-list"></div><div id="h-detail" style="display:none"></div>';
+  var list = gs('h-list');
   records.forEach(function(r){
-    var tR=(r.revCash||0)+(r.revCard||0);
-    var tE=(r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
-    var net=tR-tE;
-    var div=document.createElement('div');
-    div.className='hi';
-    div.innerHTML='<div class="htop"><div class="hd2">📅 '+(r.hijri||'')+'</div><div class="'+(net>=0?'hp':'hn2')+'">'+(net>=0?'+':'')+net.toFixed(2)+' ر.س</div></div>'+
-      '<div class="hs">إيرادات: '+tR.toFixed(2)+' | مصروفات: '+tE.toFixed(2)+(r.transfer?' | تحويل: '+(r.transfer.amt||0).toFixed(0):'')+' </div>'+
-      '<div class="hu">👤 '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt)+'</div>';
-    div.addEventListener('click',function(){showDetail(r);});
-    c.appendChild(div);
+    var tR  = (r.revCash||0)+(r.revCard||0);
+    var tE  = (r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+    var net = tR - tE;
+    var div = document.createElement('div');
+    div.className = 'hi';
+    div.innerHTML =
+      '<div class="hi-top"><div class="hi-date">📅 '+(r.hijri||'')+'</div>' +
+      '<div class="'+(net>=0?'hi-net-pos':'hi-net-neg')+'">'+(net>=0?'+':'')+fmt(net)+' ر.س</div></div>' +
+      '<div class="hi-sub">إيرادات: '+fmt(tR)+' | مصروفات: '+fmt(tE)+(r.transfer?' | تحويل: '+fmt(r.transfer.amt||0):'')+' ر.س</div>' +
+      '<div class="hi-user">👤 '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt)+'</div>';
+    div.addEventListener('click', function(){ showHistDetail(r, pg); });
+    list.appendChild(div);
   });
 }
 
-function showDetail(r){
-  gs('hlist').style.display='none';
-  var d=gs('hdetail');d.style.display='block';
-  var tR=(r.revCash||0)+(r.revCard||0);
-  var tE=(r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
-  var net=tR-tE;
-  var expRows=(r.expenses||[]).length?(r.expenses||[]).map(function(e){
-    return '<div class="dr"><div>'+
-      '<div style="font-size:14px;font-weight:700;color:#2C1810">'+e.cat+(e.worker?' — '+e.worker:'')+(e.note?' ('+e.note+')':'')+'</div>'+
-      '<span class="tg '+(e.acct==='cash'?'tgc':'tgb')+'">'+(e.acct==='cash'?'صندوق':'بنك')+'</span>'+
-      (e.driveLink?' <a href="'+e.driveLink+'" target="_blank" style="font-size:12px;color:#185FA5;font-weight:700;text-decoration:none">📎 عرض المرفق</a>':
-       e.file?' <span style="font-size:11px;color:#a09088;font-weight:700">📎 '+e.file+'</span>':'')+
-    '</div><div style="font-weight:800;color:#2C1810;font-size:15px;white-space:nowrap">'+((e.amt||0).toFixed(2))+' ر.س</div></div>';
-  }).join(''):'<div style="color:#a09088;font-size:14px;padding:8px 0;font-weight:700">لا توجد مصروفات</div>';
-  var tfBlock=r.transfer?'<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ci ibl">↔️</div><div class="ct">التحويل</div></div><div class="dr"><span style="font-size:15px;font-weight:700;color:#2C1810">'+(ACCLBL[r.transfer.from]||r.transfer.from)+' ← '+(ACCLBL[r.transfer.to]||r.transfer.to)+'</span><span style="font-weight:800;font-size:16px;color:#2C1810">'+((r.transfer.amt||0).toFixed(2))+' ر.س</span></div>'+(r.transfer.note?'<div style="font-size:13px;color:#a09088;margin-top:6px;font-weight:700">'+r.transfer.note+'</div>':'')+'</div>':'';
-  d.innerHTML='<button class="backbtn" id="backbtn">→ العودة للسجل</button>'+
-    '<div class="netcard" style="margin-bottom:12px"><div class="nl">'+(r.hijri||'')+(r.greg?' — '+cleanDate(r.greg):'')+
-    '</div><div class="nv" style="color:'+(net>=0?'#9FE1CB':'#F09595')+'">'+(net>=0?'+':'')+net.toFixed(2)+' <span style="font-size:18px;font-weight:400">ر.س</span></div></div>'+
-    '<div class="mgrid" style="margin-bottom:12px">'+
-      '<div class="mc"><div class="ml">إيرادات نقداً</div><div class="mv vg">'+((r.revCash||0).toFixed(2))+'<span class="mcur"> ر.س</span></div></div>'+
-      '<div class="mc"><div class="ml">إيرادات بطاقة</div><div class="mv vg">'+((r.revCard||0).toFixed(2))+'<span class="mcur"> ر.س</span></div></div>'+
-      '<div class="mc"><div class="ml">إجمالي الإيرادات</div><div class="mv va">'+tR.toFixed(2)+'<span class="mcur"> ر.س</span></div></div>'+
-      '<div class="mc"><div class="ml">إجمالي المصروفات</div><div class="mv vr">'+tE.toFixed(2)+'<span class="mcur"> ر.س</span></div></div>'+
-    '</div>'+
-    '<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ci ird">🧾</div><div class="ct">تفاصيل المصروفات</div></div>'+expRows+'</div>'+
-    tfBlock+
-    '<div style="font-size:12px;color:#a09088;padding-right:4px;font-weight:700;margin-bottom:1rem">أدخله: '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt)+'</div>';
-  gs('backbtn').addEventListener('click',function(){gs('hdetail').style.display='none';gs('hlist').style.display='block';});
+function showHistDetail(r, pg){
+  gs('h-list').style.display = 'none';
+  var det = gs('h-detail');
+  det.style.display = 'block';
+  var tR  = (r.revCash||0)+(r.revCard||0);
+  var tE  = (r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
+  var net = tR - tE;
+  var expHtml = (r.expenses||[]).length ?
+    (r.expenses||[]).map(function(e){
+      return '<div class="dr"><div>' +
+        '<div style="font-size:14px;font-weight:700;color:var(--g800)">' + e.cat + (e.worker?' — '+e.worker:'') + (e.note?' ('+e.note+')':'') + '</div>' +
+        '<span class="tg '+(e.acct==='cash'?'tg-c':'tg-b')+'">'+(e.acct==='cash'?'صندوق':'بنك')+'</span>' +
+        (e.driveLink ? ' <a href="'+e.driveLink+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">📎 عرض المرفق</a>' : '') +
+        '</div><div style="font-weight:800;font-size:15px;white-space:nowrap">'+fmt(e.amt||0)+' ر.س</div></div>';
+    }).join('') :
+    '<div style="color:var(--g400);font-size:13px;padding:8px 0;font-weight:700">لا توجد مصروفات</div>';
+  det.innerHTML =
+    '<button class="back-btn" id="hist-back">→ العودة للسجل</button>' +
+    '<div class="sum-net" style="margin-bottom:12px">' +
+      '<div class="sum-net-date">'+(r.hijri||'')+(r.greg?' — '+cleanDate(r.greg):'')+' </div>' +
+      '<div class="sum-net-val" style="color:'+(net>=0?'#9FE1CB':'#F09595')+'">'+(net>=0?'+':'')+fmt(net)+' <span class="sum-net-cur">ر.س</span></div>' +
+    '</div>' +
+    '<div class="mgrid" style="margin-bottom:12px">' +
+      '<div class="mc"><div class="ml">إيرادات نقداً</div><div class="mv vg">'+fmt(r.revCash||0)+'<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إيرادات بطاقة</div><div class="mv vg">'+fmt(r.revCard||0)+'<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي الإيرادات</div><div class="mv va">'+fmt(tR)+'<span class="mcur"> ر.س</span></div></div>' +
+      '<div class="mc"><div class="ml">إجمالي المصروفات</div><div class="mv vr">'+fmt(tE)+'<span class="mcur"> ر.س</span></div></div>' +
+    '</div>' +
+    '<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ci ci-exp">🧾</div><div class="ct">تفاصيل المصروفات</div></div>'+expHtml+'</div>' +
+    (r.transfer ?
+      '<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ci ci-tf">↔️</div><div class="ct">التحويل</div></div>' +
+      '<div class="dr"><span style="font-size:14px;font-weight:700">'+(r.transfer.from==='cash'?'الصندوق':'البنك')+' ← '+(r.transfer.to==='cash'?'الصندوق':'البنك')+'</span>' +
+      '<span style="font-weight:800;font-size:15px">'+fmt(r.transfer.amt||0)+' ر.س</span></div>' +
+      (r.transfer.note?'<div style="font-size:13px;color:var(--g400);margin-top:6px;font-weight:700">'+r.transfer.note+'</div>':'')+'</div>' : '') +
+    '<div style="font-size:11px;color:var(--g400);font-weight:700;margin-bottom:1rem">أدخله: '+(r.recordedBy||'')+' — '+cleanDate(r.recordedAt)+'</div>';
+  gs('hist-back').addEventListener('click', function(){
+    det.style.display='none'; gs('h-list').style.display='block';
+  });
+}
+
+// ── DASHBOARD — placeholder ───────────────────────────────────────────────────
+function loadDashboard(){
+  var pg = gs('pg-dashboard');
+  pg.innerHTML = '<div class="empty">الداشبورد — سيتم بناؤه في الجزء الرابع</div>';
 }
 
 })();
