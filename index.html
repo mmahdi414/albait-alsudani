@@ -239,13 +239,9 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <div class="kpi"><div class="kpi-acc" style="background:var(--blue)"></div><div class="kpi-ico" style="background:#EBF3FC">🏦</div><div class="kpi-lbl">رصيد البنك</div><div class="kpi-v vb" id="k-bank"><span class="loading" style="padding:0;font-size:12px"></span></div><div class="kpi-sub">الرصيد الفعلي الحالي</div></div>
   </div>
   <div class="kg3">
-    <div class="kpi"><div class="kpi-acc" style="background:var(--amber)"></div><div class="kpi-lbl">إجمالي الأصول</div><div class="kpi-v va sm" id="k-assets">—</div><div class="kpi-sub">ر.س</div></div>
+    <div class="kpi"><div class="kpi-acc" style="background:var(--navy)"></div><div class="kpi-lbl">صافي الربح</div><div class="kpi-v sm" id="k-net" style="color:var(--navy)">—</div><div class="kpi-sub" id="k-net-sub">ر.س — الفترة</div></div>
     <div class="kpi"><div class="kpi-acc" style="background:var(--green)"></div><div class="kpi-lbl">الإيرادات</div><div class="kpi-v vg sm" id="k-rev">—</div><div class="kpi-sub" id="k-rev-sub">ر.س — الشهر</div></div>
     <div class="kpi"><div class="kpi-acc" style="background:var(--red)"></div><div class="kpi-lbl">المصروفات</div><div class="kpi-v vr sm" id="k-exp">—</div><div class="kpi-sub" id="k-exp-sub">ر.س — الشهر</div></div>
-  </div>
-  <div class="kg2" style="margin-bottom:0">
-    <div class="kpi"><div class="kpi-acc" style="background:var(--navy)"></div><div class="kpi-lbl">صافي الربح</div><div class="kpi-v sm" id="k-net" style="color:var(--navy)">—</div><div class="kpi-sub" id="k-net-sub">ر.س — الفترة المحددة</div></div>
-    <div class="kpi"><div class="kpi-acc" style="background:var(--amber)"></div><div class="kpi-lbl">إجمالي الأصول</div><div class="kpi-v va sm" id="k-assets2">—</div><div class="kpi-sub">ر.س — تراكمي</div></div>
   </div>
 </div>
 
@@ -487,8 +483,7 @@ function loadKPIs(p){
     if(!res.success) return;
     gs('k-cash').innerHTML=fmt(res.cashBalance)+' <span class="kpi-cur">ر.س</span>';
     gs('k-bank').innerHTML=fmt(res.bankBalance)+' <span class="kpi-cur">ر.س</span>';
-    gs('k-assets').textContent=fmt(res.totalAssets);
-    if(gs('k-assets2')) gs('k-assets2').textContent=fmt(res.totalAssets);
+    // assets removed from display
     gs('k-rev').textContent=fmt(res.totalRevenue);
     gs('k-exp').textContent=fmt(res.totalExpenses);
     if(gs('k-net')){
