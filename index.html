@@ -182,14 +182,17 @@ html,body{
   color:#fff;
   caret-color:#fff;
   direction:rtl;
-  transition:border-color 0.2s, background 0.2s;
+  transition:border-color 0.2s;
   -webkit-text-fill-color:#fff;
+  -webkit-box-shadow:0 0 0px 1000px rgba(30,40,60,0.85) inset;
+  box-shadow:0 0 0px 1000px rgba(30,40,60,0.85) inset;
 }
 .login-card input::placeholder{color:rgba(255,255,255,0.25);-webkit-text-fill-color:rgba(255,255,255,0.25)}
 .login-card input:focus{
   outline:none;
   border-color:rgba(255,255,255,0.4);
-  background:rgba(255,255,255,0.12);
+  -webkit-box-shadow:0 0 0px 1000px rgba(30,40,60,0.95) inset;
+  box-shadow:0 0 0px 1000px rgba(30,40,60,0.95) inset;
 }
 .login-btn{
   width:100%;padding:14px;
