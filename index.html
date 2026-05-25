@@ -1616,7 +1616,7 @@ var DEMO = {
   shopEmoji:  '✂️',
   role:       'admin',
   user:       'محمد',
-  categories: ['حساب الخياطين','حساب المكوجي','رواتب عمالة','مشتريات بضاعة','إيجارات','سداد فواتير','خطأ محاسبي','تكاليف صيانة','مصروفات حكومية','مخالفات','أخرى'],
+  categories: ['حساب الخياطين','حساب المكوجي','رواتب الموظفين','مشتريات بضاعة','إيجارات','سداد فواتير','خطأ محاسبي','تكاليف صيانة','مصروفات حكومية','مخالفات','أخرى'],
   employees:  [{name:'طارق',defaultSalary:3000},{name:'فيصل',defaultSalary:4000},{name:'خالد',defaultSalary:5000}],
   partners:   ['محمد مهدي','محمد المزكي']
 };
@@ -1638,6 +1638,13 @@ var PARTNER_TYPES = ['إيداع','سحب سلفة','توزيع أرباح'];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
+// ── TODAY HIJRI ────────────────────────────────────────────────────────────
+function todayHijriStr(){
+  var n=new Date();
+  var h=greg2hijri(n.getFullYear(),n.getMonth()+1,n.getDate());
+  return h.y+'/'+pad2(h.m)+'/'+pad2(h.d);
+}
+
 // ── BUILD ENTRY TAB ────────────────────────────────────────────────────────
 function buildEntry(){
   var cnt=gs('pg-entry');
@@ -1650,7 +1657,10 @@ function buildEntry(){
     '<div class="ch"><div class="ci ci-dt">📅</div><div><div class="ct">تاريخ المعاملة</div></div></div>'+
     '<div class="fg">'+
       '<label>التاريخ الهجري <span class="req">*</span></label>'+
-      '<input type="text" id="hd" placeholder="1446/09/15" maxlength="10" inputmode="numeric"/>'+
+      '<div style="display:flex;gap:8px;align-items:center">'+
+        '<input type="text" id="hd" placeholder="1446/09/15" maxlength="10" inputmode="numeric" style="flex:1"/>'+
+        '<button id="today-btn" style="white-space:nowrap;padding:0 14px;height:44px;background:var(--shop);color:#fff;border:none;border-radius:var(--rmd);font-family:Almarai,sans-serif;font-size:13px;font-weight:700;cursor:pointer">اليوم</button>'+
+      '</div>'+
       '<div class="greg-display" id="gd"></div>'+
     '</div>';
   cnt.appendChild(dateCard);
@@ -1659,6 +1669,11 @@ function buildEntry(){
     this.value=fmtH(this.value);
     var h=this.value;
     gs('gd').textContent=(h.replace(/\//g,'').length>=8&&validateHijri(h))?'الموافق: '+h2gLong(h):'';
+  });
+  gs('today-btn').addEventListener('click',function(){
+    var td=todayHijriStr();
+    gs('hd').value=td;
+    gs('gd').textContent='الموافق: '+h2gLong(td);
   });
 
   // ── 2. REVENUE ──
@@ -1757,7 +1772,7 @@ function renderExpenses(){
     div.className='ecard';
 
     var catOpts=DEMO.categories
-      .filter(function(c){return c!=='رواتب عمالة';})
+      .filter(function(c){return c!=='رواتب الموظفين';})
       .map(function(c){return '<option value="'+c+'"'+(e.cat===c?' selected':'')+'>'+c+'</option>';}).join('');
 
     var isOther  = e.cat==='أخرى';
@@ -2001,38 +2016,51 @@ function validate(){
   var hd=gs('hd').value.trim();
   if(!hd||!validateHijri(hd)){showToast('يرجى إدخال تاريخ هجري صحيح (مثال: 1446/09/15)',true);return false;}
 
-  // At least one entry
   var rc=parseFloat(gs('rc').value)||0;
   var rk=parseFloat(gs('rk').value)||0;
-  var hasEntry = rc>0||rk>0||S.expenses.length>0||S.salaries.length>0||(S.tfOpen&&(parseFloat(gs('tf-amt').value)||0)>0)||S.partners.length>0;
-  if(!hasEntry){showToast('يرجى إدخال إيرادات أو مصروف أو راتب أو تحويل على الأقل',true);return false;}
 
-  // Expenses
+  // Block negative revenue
+  if(rc<0||rk<0){showToast('مبلغ الإيرادات لا يمكن أن يكون سالباً',true);return false;}
+
+  // Validate expense rows — fully empty rows are skipped silently
   for(var i=0;i<S.expenses.length;i++){
     var e=S.expenses[i];
-    if(!e.cat){showToast('يرجى اختيار فئة لكل مصروف',true);return false;}
-    if(!e.amt||parseFloat(e.amt)<=0){showToast('يرجى إدخال مبلغ صحيح للمصروف',true);return false;}
-    if(e.cat==='أخرى'&&!e.note.trim()){showToast('الملاحظة إلزامية عند اختيار "أخرى"',true);return false;}
+    if(!e.cat&&(!e.amt||parseFloat(e.amt)===0)) continue;
+    if(!e.cat){showToast('يرجى اختيار فئة للمصروف رقم '+(i+1),true);return false;}
+    if(!e.amt||parseFloat(e.amt)<=0){showToast('يرجى إدخال مبلغ صحيح للمصروف رقم '+(i+1),true);return false;}
+    if(e.cat==='أخرى'&&!e.note.trim()){showToast('الملاحظة إلزامية عند اختيار "أخرى" في المصروف رقم '+(i+1),true);return false;}
   }
 
-  // Salaries
+  // Validate salary rows — fully empty rows are skipped silently
   for(var j=0;j<S.salaries.length;j++){
     var s=S.salaries[j];
-    if(!s.empName){showToast('يرجى اختيار موظف لكل راتب',true);return false;}
-    if(!s.amount||parseFloat(s.amount)<=0){showToast('يرجى إدخال مبلغ صحيح للراتب',true);return false;}
+    if(!s.empName&&(!s.amount||parseFloat(s.amount)===0)) continue;
+    if(!s.empName){showToast('يرجى اختيار موظف للراتب رقم '+(j+1),true);return false;}
+    if(!s.amount||parseFloat(s.amount)<=0){showToast('يرجى إدخال مبلغ صحيح للراتب رقم '+(j+1),true);return false;}
   }
 
-  // Transfer
+  // Validate transfer if open
   if(S.tfOpen&&(!gs('tf-amt').value||parseFloat(gs('tf-amt').value)<=0)){
     showToast('يرجى إدخال مبلغ التحويل',true);return false;
   }
 
-  // Partners
+  // Validate partner rows — fully empty rows are skipped silently
   for(var k=0;k<S.partners.length;k++){
     var p=S.partners[k];
-    if(!p.partnerName){showToast('يرجى اختيار شريك',true);return false;}
-    if(!p.type){showToast('يرجى اختيار نوع عملية الشريك',true);return false;}
-    if(!p.amount||parseFloat(p.amount)<=0){showToast('يرجى إدخال مبلغ صحيح لعملية الشريك',true);return false;}
+    if(!p.partnerName&&(!p.amount||parseFloat(p.amount)===0)) continue;
+    if(!p.partnerName){showToast('يرجى اختيار شريك للعملية رقم '+(k+1),true);return false;}
+    if(!p.type){showToast('يرجى اختيار نوع عملية الشريك رقم '+(k+1),true);return false;}
+    if(!p.amount||parseFloat(p.amount)<=0){showToast('يرجى إدخال مبلغ صحيح لعملية الشريك رقم '+(k+1),true);return false;}
+  }
+
+  // At least one valid data point required
+  var validExp=S.expenses.filter(function(e){return e.cat&&parseFloat(e.amt)>0;}).length>0;
+  var validSal=S.salaries.filter(function(s){return s.empName&&parseFloat(s.amount)>0;}).length>0;
+  var validPrt=S.partners.filter(function(p){return p.partnerName&&p.type&&parseFloat(p.amount)>0;}).length>0;
+  var validTf=S.tfOpen&&parseFloat(gs('tf-amt').value)>0;
+
+  if(!(rc>0||rk>0||validExp||validSal||validTf||validPrt)){
+    showToast('يرجى إدخال بيانات قبل الحفظ',true);return false;
   }
 
   return true;
@@ -2095,15 +2123,21 @@ function doSave(mode){
       mode:mode,
       revCash:parseFloat(gs('rc').value)||0,
       revCard:parseFloat(gs('rk').value)||0,
-      expenses:S.expenses.map(function(e){return{cat:e.cat,amt:parseFloat(e.amt)||0,acct:e.acct,worker:'',note:e.note||'',file:e.file||'',driveLink:e.driveLink||''};}),
-      salaries:S.salaries.map(function(s){return{employeeName:s.empName,amount:parseFloat(s.amount)||0,acct:s.acct,note:s.note||''};}),
+      expenses:S.expenses
+        .filter(function(e){return e.cat&&parseFloat(e.amt)>0;})
+        .map(function(e){return{cat:e.cat,amt:parseFloat(e.amt)||0,acct:e.acct,worker:'',note:e.note||'',file:e.file||'',driveLink:e.driveLink||''};}),
+      salaries:S.salaries
+        .filter(function(s){return s.empName&&parseFloat(s.amount)>0;})
+        .map(function(s){return{employeeName:s.empName,amount:parseFloat(s.amount)||0,acct:s.acct,note:s.note||''};}),
       transfer:S.tfOpen?{from:S.tfFrom,to:S.tfTo,amt:parseFloat(gs('tf-amt').value)||0,note:gs('tf-note').value.trim()}:null
     };
     return apiCall({action:'saveEntry',data:encodeURIComponent(JSON.stringify(payload))});
   }).then(function(res){
     if(res.success){
       // Save partners separately
-      var prtSaves=S.partners.map(function(p){
+      var prtSaves=S.partners
+        .filter(function(p){return p.partnerName&&p.type&&parseFloat(p.amount)>0;})
+        .map(function(p){
         return apiCall({
           action:'savePartner',
           data:encodeURIComponent(JSON.stringify({
@@ -2132,10 +2166,12 @@ function doSave(mode){
 }
 
 function resetForm(){
+  gs('pg-entry').dataset.built = '';
   gs('hd').value='';gs('gd').textContent='';
   gs('rc').value='';gs('rk').value='';
   S.expenses=[];S.salaries=[];S.partners=[];
   S.expC=0;S.salC=0;S.prtC=0;
+  S.tfOpen=false;S.tfFrom='bank';S.tfTo='cash';
   renderExpenses();renderSalaries();renderPartners();
   if(S.tfOpen) toggleTransfer();
   gs('tf-amt').value='';gs('tf-note').value='';
@@ -2201,10 +2237,10 @@ function loadSummary(){
 function renderSummary(rec,pg){
   var tR=(rec.revCash||0)+(rec.revCard||0);
   var tE=(rec.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
-  var tS=(rec.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';}).reduce(function(s,e){return s+(e.amt||0);},0);
+  var tS=(rec.expenses||[]).filter(function(e){return e.cat==='رواتب الموظفين';}).reduce(function(s,e){return s+(e.amt||0);},0);
   var net=tR-tE;
-  var expRows=(rec.expenses||[]).filter(function(e){return e.cat!=='رواتب عمالة';});
-  var salRows=(rec.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';});
+  var expRows=(rec.expenses||[]).filter(function(e){return e.cat!=='رواتب الموظفين';});
+  var salRows=(rec.expenses||[]).filter(function(e){return e.cat==='رواتب الموظفين';});
   var hasTf=rec.transfer&&rec.transfer.amt;
 
   pg.innerHTML='';
@@ -2314,10 +2350,10 @@ function showDetail(r,pg,hy){
   pg.innerHTML='';
   var tR=(r.revCash||0)+(r.revCard||0);
   var tE=(r.expenses||[]).reduce(function(s,e){return s+(e.amt||0);},0);
-  var tS=(r.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';}).reduce(function(s,e){return s+(e.amt||0);},0);
+  var tS=(r.expenses||[]).filter(function(e){return e.cat==='رواتب الموظفين';}).reduce(function(s,e){return s+(e.amt||0);},0);
   var net=tR-tE;
-  var expRows=(r.expenses||[]).filter(function(e){return e.cat!=='رواتب عمالة';});
-  var salRows=(r.expenses||[]).filter(function(e){return e.cat==='رواتب عمالة';});
+  var expRows=(r.expenses||[]).filter(function(e){return e.cat!=='رواتب الموظفين';});
+  var salRows=(r.expenses||[]).filter(function(e){return e.cat==='رواتب الموظفين';});
   var hasTf=r.transfer&&r.transfer.amt;
 
   var back=document.createElement('button');
@@ -3204,6 +3240,8 @@ function exportPDF(){
    ═══════════════════════════════════════════════ */
 
 function renderEntry(){
+  var pg = gs('pg-entry');
+  if(pg.dataset.built === '1') return;
   DEMO.shop      = state.currentShop;
   DEMO.shopName  = SHOPS[state.currentShop] ? SHOPS[state.currentShop].name  : '';
   DEMO.shopEmoji = SHOPS[state.currentShop] ? SHOPS[state.currentShop].emoji : '';
@@ -3212,6 +3250,7 @@ function renderEntry(){
   if(state.categories && state.categories.length) DEMO.categories = state.categories;
   if(state.employees  && state.employees.length)  DEMO.employees  = state.employees;
   buildEntry();
+  pg.dataset.built = '1';
 }
 
 function loadDashboard(){
