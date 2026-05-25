@@ -55,9 +55,11 @@
   --g900: #212529;
 
   /* Current shop theme (changes dynamically) */
-  --shop:   #1E3A5F;
-  --shop-l: #a8c8f0;
-  --shop-bg:#E6F1FB;
+  --shop:     #1E3A5F;
+  --shop-l:   #a8c8f0;
+  --shop-bg:  #E6F1FB;
+  --shop-page:#F1F3F5;
+  --shop-card:#E9ECEF;
 
   /* Layout */
   --rmd:  10px;
@@ -71,7 +73,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{
   font-family:'Almarai',sans-serif;
-  background:var(--g100);
+  background:var(--shop-page);
   color:var(--g900);
   font-size:14px;
   -webkit-font-smoothing:antialiased;
@@ -567,8 +569,8 @@ input[type=file]{
 
 /* Entry rows (expenses / salaries / partners) */
 .ecard{
-  background:#F7F3EF;border-radius:var(--rmd);
-  border:1px solid #EDE5DC;padding:14px 14px 14px 46px;
+  background:var(--shop-card);border-radius:var(--rmd);
+  border:1px solid var(--shop-card-border,#EDE5DC);padding:14px 14px 14px 46px;
   margin-bottom:10px;position:relative;
 }
 .ecard:last-of-type{margin-bottom:0}
@@ -1244,11 +1246,20 @@ function showToast(msg, isErr){
   t._timer = setTimeout(function(){ t.style.display = 'none'; }, 3000);
 }
 
+var SHOP_PAGE_COLORS = {
+  Tailor: {page:'#F5EDE4', card:'#EDE0D3', cardBorder:'#DFD0BF'},
+  Salon:  {page:'#F3EAF5', card:'#E9DBEE', cardBorder:'#DACCDF'},
+  Atara:  {page:'#E8F2EE', card:'#D9EAE3', cardBorder:'#C8DDD5'}
+};
 function setShopTheme(shopId){
   var s = SHOPS[shopId];
   if(!s) return;
+  var pc = SHOP_PAGE_COLORS[shopId] || {page:'#F1F3F5', card:'#E9ECEF', cardBorder:'#DEE2E6'};
   document.documentElement.style.setProperty('--shop', s.color);
   document.documentElement.style.setProperty('--shop-l', s.colorL);
+  document.documentElement.style.setProperty('--shop-page', pc.page);
+  document.documentElement.style.setProperty('--shop-card', pc.card);
+  document.documentElement.style.setProperty('--shop-card-border', pc.cardBorder);
   gs('hdr').style.background = s.color;
   gs('hdr-title').textContent = s.emoji + ' ' + s.name;
   gs('hdr-shop-label').textContent = 'البيت السوداني';
@@ -1707,7 +1718,7 @@ function buildEntry(){
   salCard.className='card';
   salCard.id='sal-card';
   salCard.innerHTML=
-    '<div class="ch"><div class="ci ci-sal">💼</div><div><div class="ct">رواتب العمالة</div><div class="ct-sub">اختر الموظف والمبلغ والحساب</div></div></div>'+
+    '<div class="ch"><div class="ci ci-sal">💼</div><div><div class="ct">رواتب الموظفين</div><div class="ct-sub">اختر الموظف والمبلغ والحساب</div></div></div>'+
     '<div id="sal-list"></div>'+
     '<button class="add-row-btn" id="add-sal">＋ إضافة راتب</button>';
   cnt.appendChild(salCard);
