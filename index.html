@@ -1195,7 +1195,7 @@ input[type=file]{
 (function(){
 'use strict';
 
-/* ══ PART 1 — Core ══ */
+/* ══ PART 1 ══ */
 
 'use strict';
 
@@ -1607,7 +1607,7 @@ function loadDashboard(){
 
 
 
-/* ══ PART 2 — Entry ══ */
+/* ══ PART 2 ══ */
 // ── Demo state (in final app these come from login/sheet) ──────────────────
 var DEMO = {
   shop:       'Tailor',
@@ -2155,7 +2155,7 @@ function compressImage(file){
   });
 }
 
-/* ══ PART 3 — Summary/History ══ */
+/* ══ PART 3 ══ */
 function cleanDate(d){
   if(!d) return '';
   if(String(d).indexOf('T')>-1) d=String(d).split('T')[0];
@@ -2431,7 +2431,7 @@ function buildTfCard(tf){
   return c;
 }
 
-/* ══ PART 4 — Dashboard ══ */
+/* ══ PART 4 ══ */
 var ROLE='admin', DISPLAY_NAME='', USER_SHOPS='all', curShop='all';
 
 var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
@@ -2618,7 +2618,7 @@ function onPeriod(){
   if(!isC) updateDates();
 };
 
-window.onCal=function(){
+function onCal(){
   curCal=gs('f-cal').value;
   var isH=curCal==='hijri';
   gs('from-lbl').textContent=isH?'من (هجري)':'من (ميلادي)';
@@ -2636,7 +2636,12 @@ function updateDates(){
   gs('d-to').textContent=k.t;
 }
 
-window.fmtFullDate=fmtFullDate;
+function fmtFullDate(el){
+  var v=el.value.replace(/[^0-9]/g,'');
+  if(v.length>4) v=v.slice(0,4)+'/'+v.slice(4);
+  if(v.length>7) v=v.slice(0,7)+'/'+v.slice(7);
+  el.value=v.slice(0,10);
+}
 
 function validateDateInput(val, cal){
   if(!val) return false;
@@ -2655,7 +2660,7 @@ function validateDateInput(val, cal){
   return true;
 }
 
-window.applyFilters=function(){
+function applyFilters(){
   if(curPeriod==='custom'){
     var fv=gs('f-from').value.trim(), tv=gs('f-to').value.trim();
     var fEl=gs('f-from'), tEl=gs('f-to');
@@ -2953,7 +2958,7 @@ function loadPartners(p){
   });
 }
 
-window.filterPartners=function(){renderPartnerTx(gs('p-sel').value);};
+function filterPartners(){renderPartnerTx(gs('p-sel').value);};
 
 function renderPartnerTx(filter){
   var list=allPartnerTx.filter(function(t){return filter==='all'||t._partner===filter;});
@@ -2990,7 +2995,7 @@ function renderMovements(acct){
   }).join('');
 }
 
-window.setAcct=function(type,btn){
+function setAcct(type,btn){
   curAcctFilter=type;
   document.querySelectorAll('.at').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
@@ -2998,7 +3003,7 @@ window.setAcct=function(type,btn){
 };
 
 // ── Document Modal ────────────────────────────────────────────────────────────
-window.openDocModal=function(type,shop,idx,name){
+function openDocModal(type,shop,idx,name){
   docAction={type:type,shop:shop||'',idx:idx};
   gs('doc-modal-title').textContent=type==='new'?'رفع مستند جديد':'تحديث: '+(name||'');
   gs('doc-name-inp').value=type==='update'?(name||''):'';
@@ -3012,7 +3017,7 @@ window.openDocModal=function(type,shop,idx,name){
   gs('doc-modal').classList.add('show');
 };
 
-window.setDocCal=function(cal){
+function setDocCal(cal){
   docCalType=cal;
   gs('doc-cal-hijri').classList.toggle('on',cal==='hijri');
   gs('doc-cal-greg').classList.toggle('on',cal==='greg');
@@ -3020,7 +3025,7 @@ window.setDocCal=function(cal){
   gs('doc-expiry-inp').value='';
 };
 
-window.doUploadDoc=function(){
+function doUploadDoc(){
   var shopSel=gs('doc-shop-sel');
   var targetShop = (curShop==='all'&&docAction.type==='new') ? shopSel.value : (docAction.shop||curShop);
   if(!targetShop||targetShop==='all'){alert('يرجى اختيار المحل');return;}
@@ -3229,6 +3234,5 @@ function loadDashboard(){
 })();
 
 </script>
-
 </body>
 </html>
