@@ -350,7 +350,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
   <div class="sec-hdr"><div class="sec-n" id="sn3">3</div><div class="sec-t">التفاصيل والحركات</div></div>
 
   <div class="card">
-    <div class="chdr"><div class="ctitle">حركة الحسابات</div></div>
+    <div class="chdr"><div class="ctitle">حركة الحسابات</div><div class="cpill" id="mov-lbl">هذا الشهر</div></div>
     <div class="acct-tabs">
       <button class="at on" onclick="setAcct('all',this)">الكل</button>
       <button class="at" onclick="setAcct('cash',this)">الصندوق</button>
@@ -360,7 +360,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
   </div>
 
   <div class="card" id="partners-stmt-card">
-    <div class="chdr"><div class="ctitle">كشف حساب الشركاء</div></div>
+    <div class="chdr"><div class="ctitle">كشف حساب الشركاء</div><div class="cpill" id="stmt-lbl">هذا الشهر</div></div>
     <select class="p-sel" id="p-sel" onchange="filterPartners()">
       <option value="all">كل الشركاء</option>
     </select>
@@ -423,78 +423,106 @@ var DISPLAY_NAME = 'محمد';
 var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
 var SHOP_NAMES  = {all:'كل المحلات',Tailor:'✂️ خياط البيت السوداني',Salon:'💇 صالون الخرطوم',Atara:'🌿 عطارة البيت السوداني'};
 
-// ── Auto-calculate period dates from today ────────────────────────────────────
-function getTodayGreg(){
-  var n=new Date();
-  return {y:n.getFullYear(),m:n.getMonth()+1,d:n.getDate()};
-}
+// ── Accurate Umm al-Qura Hijri ↔ Gregorian conversion ──────────────────────
+// Anchor dates: 1 Muharram of each year (Umm al-Qura calendar)
+var UMM_ANCHORS=[
+  {hy:1440,y:2018,m:9,d:11},{hy:1441,y:2019,m:9,d:1},{hy:1442,y:2020,m:8,d:20},
+  {hy:1443,y:2021,m:8,d:9}, {hy:1444,y:2022,m:7,d:30},{hy:1445,y:2023,m:7,d:19},
+  {hy:1446,y:2024,m:7,d:7}, {hy:1447,y:2025,m:6,d:28},{hy:1448,y:2026,m:6,d:17},
+  {hy:1449,y:2027,m:6,d:7}, {hy:1450,y:2028,m:5,d:26}
+];
+// Month lengths per year (Muharram→DhulHijjah) — Umm al-Qura data
+var UMM_MONTHS={
+  1446:[30,29,30,30,29,30,29,30,29,30,29,29],
+  1447:[30,29,30,29,30,29,30,29,30,29,29,30],
+  1448:[30,29,30,29,30,29,30,29,30,29,30,29],
+  1449:[30,29,30,29,30,29,30,29,30,29,30,29],
+  1450:[30,29,30,29,30,29,30,29,30,29,30,30]
+};
 function pad2(n){return String(n).padStart(2,'0');}
 function gregLastDay(y,m){return new Date(y,m,0).getDate();}
-function getWeekStartEnd(){
-  var n=new Date(),day=n.getDay();
-  var diff=n.getDate()-(day===0?6:day-1); // Monday start
-  var s=new Date(n.setDate(diff));
-  var e=new Date(s);e.setDate(s.getDate()+6);
-  return {
-    sy:s.getFullYear(),sm:s.getMonth()+1,sd:s.getDate(),
-    ey:e.getFullYear(),em:e.getMonth()+1,ed:e.getDate()
-  };
-}
+function dateMs(y,m,d){return new Date(y,m-1,d).getTime();}
 function greg2hijri(gy,gm,gd){
-  var a=Math.floor((14-gm)/12),y=gy+4800-a,mo=gm+12*a-3;
-  var jdn=gd+Math.floor((153*mo+2)/5)+365*y+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400)-32045;
-  var l=jdn-1948440+10632,n2=Math.floor((l-1)/10631);
-  l=l-10631*n2+354;
-  var j=(Math.floor((10985-l)/5316))*(Math.floor((50*l)/17719))+(Math.floor(l/5670))*(Math.floor((43*l)/15238));
-  l=l-(Math.floor((30-j)/15))*(Math.floor((17719*j)/50))-(Math.floor(j/16))*(Math.floor((15238*j)/43))+29;
-  var hm=Math.floor((24+29.5*(j-1))/29.5);
-  var hy=30*n2+Math.floor((3+5*hm)/5)+Math.floor(l/29)-30;
-  var hd=l-Math.floor(29.5001*(hm-1));
+  var target=dateMs(gy,gm,gd);
+  var hy=1447,anchorMs=dateMs(2025,6,28);
+  for(var i=0;i<UMM_ANCHORS.length-1;i++){
+    var a=UMM_ANCHORS[i],nb=UMM_ANCHORS[i+1];
+    var aMs=dateMs(a.y,a.m,a.d),nbMs=dateMs(nb.y,nb.m,nb.d);
+    if(target>=aMs&&target<nbMs){hy=a.hy;anchorMs=aMs;break;}
+    if(i===UMM_ANCHORS.length-2&&target>=nbMs){hy=nb.hy;anchorMs=nbMs;}
+  }
+  var doy=Math.round((target-anchorMs)/86400000); // days from 1 Muharram
+  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
+  var hm=1,acc=0;
+  for(var m=0;m<12;m++){if(doy>=acc+lens[m]){acc+=lens[m];}else{hm=m+1;break;}}
+  var hd=doy-acc+1;
   return {y:hy,m:hm,d:hd};
 }
-function hijriMonthLastDay(hy,hm){return (hm%2===1||(hm===12&&isHijriLeap(hy)))?30:29;}
-function isHijriLeap(y){return ((11*y+14)%30)<11;}
+function hijri2greg(hy,hm,hd){
+  var anchor=null;
+  for(var i=0;i<UMM_ANCHORS.length;i++){if(UMM_ANCHORS[i].hy===hy){anchor=UMM_ANCHORS[i];break;}}
+  if(!anchor) return null;
+  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
+  var days=0;
+  for(var m=0;m<hm-1;m++) days+=lens[m];
+  days+=hd-1;
+  var d=new Date(anchor.y,anchor.m-1,anchor.d+days);
+  return {y:d.getFullYear(),m:d.getMonth()+1,d:d.getDate()};
+}
+function hijri2isoStr(hy,hm,hd){
+  var g=hijri2greg(hy,hm,hd);
+  if(!g) return '';
+  return g.y+'-'+pad2(g.m)+'-'+pad2(g.d);
+}
+function hijriMonthLen(hy,hm){
+  var lens=UMM_MONTHS[hy]||[30,29,30,29,30,29,30,29,30,29,30,29];
+  return lens[hm-1]||29;
+}
+function getWeekStartEnd(){
+  var n=new Date(),day=n.getDay();
+  var diff=n.getDate()-(day===0?6:day-1);
+  var s=new Date(n);s.setDate(diff);
+  var e=new Date(s);e.setDate(s.getDate()+6);
+  return {sy:s.getFullYear(),sm:s.getMonth()+1,sd:s.getDate(),
+          ey:e.getFullYear(),em:e.getMonth()+1,ed:e.getDate()};
+}
 
-// Period keys — full dates YYYY/MM/DD for hijri, YYYY-MM-DD for greg
+// Period keys — use accurate Umm al-Qura conversion
 var HIJRI_DATES = {
   month: function(){
-    var tg=getTodayGreg();
-    var h=greg2hijri(tg.y,tg.m,tg.d);
-    var last=hijriMonthLastDay(h.y,h.m);
-    var hm=pad2(h.m),hy=h.y;
-    return {f:hy+'/'+hm+'/01',t:hy+'/'+hm+'/'+last,fKey:hy+'/'+hm,tKey:hy+'/'+hm};
+    var n=new Date(),h=greg2hijri(n.getFullYear(),n.getMonth()+1,n.getDate());
+    var last=hijriMonthLen(h.y,h.m);
+    return {f:h.y+'/'+pad2(h.m)+'/01',t:h.y+'/'+pad2(h.m)+'/'+pad2(last),
+            fKey:h.y+'/'+pad2(h.m),tKey:h.y+'/'+pad2(h.m)};
   },
   week: function(){
     var w=getWeekStartEnd();
     var hs=greg2hijri(w.sy,w.sm,w.sd),he=greg2hijri(w.ey,w.em,w.ed);
-    var sf=hs.y+'/'+pad2(hs.m)+'/'+pad2(hs.d),sk=hs.y+'/'+pad2(hs.m);
-    var ef=he.y+'/'+pad2(he.m)+'/'+pad2(he.d),ek=he.y+'/'+pad2(he.m);
-    return {f:sf,t:ef,fKey:sk,tKey:ek};
+    return {f:hs.y+'/'+pad2(hs.m)+'/'+pad2(hs.d),t:he.y+'/'+pad2(he.m)+'/'+pad2(he.d),
+            fKey:hs.y+'/'+pad2(hs.m),tKey:he.y+'/'+pad2(he.m)};
   },
   year: function(){
-    var tg=getTodayGreg();
-    var h=greg2hijri(tg.y,tg.m,tg.d);
-    var hy=h.y;
-    return {f:hy+'/01/01',t:hy+'/12/29',fKey:hy+'/01',tKey:hy+'/12'};
+    var n=new Date(),h=greg2hijri(n.getFullYear(),n.getMonth()+1,n.getDate());
+    var lastLen=hijriMonthLen(h.y,12);
+    return {f:h.y+'/01/01',t:h.y+'/12/'+pad2(lastLen),fKey:h.y+'/01',tKey:h.y+'/12'};
   },
   all: function(){ return {f:'من البداية',t:'اليوم',fKey:'1400/01',tKey:'1500/12'}; }
 };
 var GREG_DATES = {
   month: function(){
-    var tg=getTodayGreg();
-    var last=gregLastDay(tg.y,tg.m);
-    var gy=tg.y,gm=pad2(tg.m);
-    return {f:gy+'-'+gm+'-01',t:gy+'-'+gm+'-'+pad2(last),fKey:gy+'-'+gm,tKey:gy+'-'+gm};
+    var n=new Date(),gy=n.getFullYear(),gm=n.getMonth()+1;
+    var last=gregLastDay(gy,gm);
+    return {f:gy+'-'+pad2(gm)+'-01',t:gy+'-'+pad2(gm)+'-'+pad2(last),
+            fKey:gy+'-'+pad2(gm),tKey:gy+'-'+pad2(gm)};
   },
   week: function(){
     var w=getWeekStartEnd();
-    var sf=w.sy+'-'+pad2(w.sm)+'-'+pad2(w.sd),sk=w.sy+'-'+pad2(w.sm);
-    var ef=w.ey+'-'+pad2(w.em)+'-'+pad2(w.ed),ek=w.ey+'-'+pad2(w.em);
-    return {f:sf,t:ef,fKey:sk,tKey:ek};
+    return {f:w.sy+'-'+pad2(w.sm)+'-'+pad2(w.sd),t:w.ey+'-'+pad2(w.em)+'-'+pad2(w.ed),
+            fKey:w.sy+'-'+pad2(w.sm),tKey:w.ey+'-'+pad2(w.em)};
   },
   year: function(){
-    var tg=getTodayGreg();
-    return {f:tg.y+'-01-01',t:tg.y+'-12-31',fKey:tg.y+'-01',tKey:tg.y+'-12'};
+    var gy=new Date().getFullYear();
+    return {f:gy+'-01-01',t:gy+'-12-31',fKey:gy+'-01',tKey:gy+'-12'};
   },
   all: function(){ return {f:'من البداية',t:'اليوم',fKey:'2000-01',tKey:'2099-12'}; }
 };
@@ -522,18 +550,7 @@ function fmtFullDate(el){
   el.value=v.slice(0,10);
 }
 
-function h2gISO(h){
-  try{
-    var p=h.split('/').map(Number),y=p[0],m=p[1],d=p[2];
-    if(!y||!m||!d) return '';
-    var jd=Math.floor((11*y+3)/30)+354*y+30*m-Math.floor((m-1)/2)+d+1948440-385;
-    var l=jd+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4);
-    var i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31;
-    var j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),jj=Math.floor(j/11);
-    var mo=j+2-12*jj,yr=100*(n-49)+i+jj;
-    return yr+'-'+String(mo).padStart(2,'0')+'-'+String(day).padStart(2,'0');
-  }catch(e){return '';}
-}
+
 
 function formatDocDate(hijri, greg){
   var parts = [];
@@ -655,6 +672,8 @@ function loadAll(){
   gs('k-rev-sub').textContent='ر.س — '+lbl;
   gs('k-exp-sub').textContent='ر.س — '+lbl;
   gs('k-net-sub').textContent='ر.س — '+lbl;
+  if(gs('mov-lbl')) gs('mov-lbl').textContent=lbl;
+  if(gs('stmt-lbl')) gs('stmt-lbl').textContent=lbl;
   loadKPIs(p);
   loadDocsFromAPI();
   loadShopCmp(p);
@@ -800,8 +819,8 @@ function loadRevChart(p){
       data:{
         labels:data.map(function(d){return d.periodKey;}),
         datasets:[
-          {label:'نقداً', data:data.map(function(d){return d.revCash;}),backgroundColor:'#1D9E75',borderRadius:5,borderSkipped:false},
-          {label:'بطاقة',data:data.map(function(d){return d.revCard;}),backgroundColor:'#185FA5',borderRadius:5,borderSkipped:false}
+          {label:'بطاقة',data:data.map(function(d){return d.revCard;}),backgroundColor:'#185FA5',borderRadius:5,borderSkipped:false},
+          {label:'نقداً', data:data.map(function(d){return d.revCash;}),backgroundColor:'#1D9E75',borderRadius:5,borderSkipped:false}
         ]
       },
       options:{responsive:true,maintainAspectRatio:false,
@@ -831,7 +850,13 @@ function loadExpChart(p){
     cats.forEach(function(c,i){c.color=colors[i%colors.length];});
     gs('exp-tot-lbl').textContent='إجمالي: '+fmt(res.total)+' ر.س';
     gs('exp-leg').innerHTML=cats.map(function(c){
-      return '<div class="exp-lr"><div class="exp-ll"><div class="exp-dot" style="background:'+c.color+'"></div><div class="exp-nm">'+c.category+'</div></div><div><div class="exp-pct">'+c.percentage+'%</div><div class="exp-amt">'+fmt(c.amount)+' ر.س</div></div></div>';
+      return '<div class="exp-lr">'+
+        '<div class="exp-ll"><div class="exp-dot" style="background:'+c.color+'"></div><div class="exp-nm">'+c.category+'</div></div>'+
+        '<div style="text-align:left;flex-shrink:0">'+
+          '<div class="exp-pct">'+c.percentage+'%</div>'+
+          '<div class="exp-amt">'+fmt(c.amount)+' ر.س</div>'+
+        '</div>'+
+      '</div>';
     }).join('');
     if(expChart) expChart.destroy();
     expChart=new Chart(gs('expChart'),{
@@ -993,7 +1018,10 @@ window.doUploadDoc=function(){
   var expiryHijri='', expiryGreg='';
   if(docCalType==='hijri'){
     expiryHijri=expiry;
-    expiryGreg=expiry.length>=10?h2gISO(expiry):'';
+    if(expiry.length>=10){
+      var hp=expiry.split('/').map(Number);
+      expiryGreg=hijri2isoStr(hp[0],hp[1],hp[2]);
+    }
   } else {
     expiryGreg=expiry;
     expiryHijri=''; // would need reverse conversion
@@ -1063,7 +1091,7 @@ window.exportPDF=function(){
   var now=new Date();
   var nowStr=now.toLocaleDateString('ar-SA')+' '+now.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
   w.document.write('<div class="pdf-hdr">');
-  w.document.write('<h1>🏛️ البيت السوداني — تقرير مالي | '+(SHOP_NAMES[curShop]||'كل المحلات')+'</h1>');
+  w.document.write('<h1>🏛️ البيت السوداني | '+(SHOP_NAMES[curShop]||'كل المحلات')+'</h1>');
   w.document.write('<div class="meta">');
   w.document.write('<span>📅 الفترة: '+(k.f||'—')+' — '+(k.t||'—')+'</span>');
   w.document.write('<span>📆 طُبع في: '+nowStr+'</span>');
@@ -1073,8 +1101,10 @@ window.exportPDF=function(){
   apiCall(Object.assign({action:'getDashboardKPIs'},p)).then(function(res){
     if(res.success){
       w.document.write('<div class="kpi-grid">');
-      w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد الصندوق</div><div class="kpi-val pos">'+fmt(res.cashBalance)+' ر.س</div></div>');
-      w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد البنك</div><div class="kpi-val blue">'+fmt(res.bankBalance)+' ر.س</div></div>');
+      if(acctFilter==='all'||acctFilter==='cash')
+        w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد الصندوق</div><div class="kpi-val pos">'+fmt(res.cashBalance)+' ر.س</div></div>');
+      if(acctFilter==='all'||acctFilter==='bank')
+        w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد البنك</div><div class="kpi-val blue">'+fmt(res.bankBalance)+' ر.س</div></div>');
       w.document.write('<div class="kpi-box"><div class="kpi-lbl">الإيرادات</div><div class="kpi-val pos">'+fmt(res.totalRevenue)+' ر.س</div></div>');
       w.document.write('<div class="kpi-box"><div class="kpi-lbl">المصروفات</div><div class="kpi-val neg">'+fmt(res.totalExpenses)+' ر.س</div></div>');
       var np=res.netProfit||0;
