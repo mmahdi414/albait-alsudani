@@ -20,6 +20,8 @@
 }
 html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g900);font-size:14px;-webkit-font-smoothing:antialiased}
 .dash{max-width:480px;margin:0 auto;padding-bottom:40px}
+
+/* HEADER */
 .hdr{background:var(--cur);padding:20px 20px 22px;transition:background 0.35s;position:relative;overflow:hidden}
 .hdr::after{content:'';position:absolute;bottom:-40px;left:-20px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
 .hdr-inner{position:relative;z-index:1}
@@ -33,6 +35,8 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .shop-pills{display:flex;gap:6px;flex-wrap:wrap}
 .sp{padding:6px 13px;border-radius:var(--rxl);border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .sp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
+
+/* FILTER BAR */
 .fbar{background:#fff;border-bottom:1px solid var(--g200);padding:16px 20px;box-shadow:var(--s1)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .fg{display:flex;flex-direction:column;gap:4px}
@@ -42,7 +46,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .sdates{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .sdate{background:var(--g50);border:1.5px solid var(--g200);border-radius:var(--rmd);padding:9px 11px}
 .sdate-lbl{font-size:9px;font-weight:700;color:var(--g400);letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:1px}
-.sdate-val{font-size:13px;font-weight:800;color:var(--g700)}
+.sdate-val{font-size:11px;font-weight:800;color:var(--g700)}
 .cdates{display:none;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .cdates.show{display:grid}
 .finp-h{font-family:'Almarai',sans-serif;font-size:13px;font-weight:700;background:var(--g50);border:1.5px solid var(--g200);border-radius:var(--rmd);color:var(--g800);padding:9px 11px;width:100%;direction:ltr;text-align:right}
@@ -50,11 +54,15 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .finp-h.err{border-color:var(--red)}
 .apbtn{width:100%;padding:12px;background:var(--cur);border:none;border-radius:var(--rmd);color:#fff;font-size:14px;font-weight:800;font-family:'Almarai',sans-serif;cursor:pointer;transition:background 0.35s;display:flex;align-items:center;justify-content:center;gap:8px}
 .apbtn:active{transform:scale(0.98)}
+
+/* SECTIONS */
 .sec{padding:20px 20px 0}
 .sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.sec-n{width:26px;height:26px;background:var(--cur);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;transition:background 0.35s}
-.sec-t{font-size:12px;font-weight:800;color:var(--g500);text-transform:uppercase;letter-spacing:1px}
+.sec-n{width:28px;height:28px;background:var(--cur);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;transition:background 0.35s}
+.sec-t{font-size:13px;font-weight:800;color:var(--g700);text-transform:uppercase;letter-spacing:1px}
 .sdiv{height:1px;background:var(--g200);margin:20px 0 0}
+
+/* KPI CARDS */
 .kg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .kg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
 .kpi{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);padding:16px;box-shadow:var(--s1);position:relative;overflow:hidden}
@@ -66,10 +74,14 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .kpi-cur{font-size:12px;font-weight:400;color:var(--g400);margin-right:2px}
 .kpi-sub{font-size:10px;font-weight:700;color:var(--g400);margin-top:5px}
 .vg{color:var(--green-d)}.vr{color:var(--red-d)}.va{color:var(--amber-d)}.vb{color:var(--blue-d)}
+
+/* CARDS */
 .card{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);padding:18px;margin-bottom:12px;box-shadow:var(--s1)}
 .chdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .ctitle{font-size:15px;font-weight:800;color:var(--g800)}
 .cpill{font-size:10px;font-weight:700;background:var(--g100);border:1px solid var(--g200);border-radius:20px;padding:3px 10px;color:var(--g500)}
+
+/* SHOP COMPARISON */
 .shop-row{border-radius:var(--rmd);padding:13px 14px;margin-bottom:8px;border:1px solid var(--g200);background:var(--g50)}
 .shop-row:last-child{margin-bottom:0}
 .shop-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -82,6 +94,8 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .br-trk{flex:1;background:var(--g200);border-radius:4px;height:7px;overflow:hidden}
 .br-fill{height:100%;border-radius:4px}
 .br-val{font-size:11px;font-weight:800;width:46px;text-align:left;flex-shrink:0}
+
+/* REVENUE CHART */
 .cwrap{position:relative;width:100%}
 .rev-totals{display:flex;gap:10px;margin-bottom:14px}
 .rev-box{flex:1;background:var(--g50);border:1px solid var(--g200);border-radius:var(--rmd);padding:10px 12px;display:flex;align-items:center;gap:10px}
@@ -89,6 +103,8 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .rev-lbl{font-size:10px;font-weight:700;color:var(--g500);text-transform:uppercase;margin-bottom:2px}
 .rev-val{font-size:16px;font-weight:800;color:var(--g800)}
 .rev-sub{font-size:10px;font-weight:700;color:var(--g400)}
+
+/* EXPENSE CHART */
 .exp-layout{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
 .exp-leg{display:flex;flex-direction:column;gap:8px}
 .exp-lr{display:flex;align-items:center;justify-content:space-between}
@@ -97,6 +113,8 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .exp-nm{font-size:12px;font-weight:700;color:var(--g600)}
 .exp-pct{font-size:12px;font-weight:800;color:var(--g800)}
 .exp-amt{font-size:11px;font-weight:700;color:var(--g600)}
+
+/* EMPLOYEE */
 .emp-tot{border-radius:var(--rmd);padding:13px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;background:var(--cur);transition:background 0.35s}
 .emp-tot-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase}
 .emp-tot-val{font-size:20px;font-weight:800;color:#fff}
@@ -109,6 +127,8 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .emp-sal{font-size:13px;font-weight:800;color:var(--amber-d)}
 .emp-trk{width:100%;background:var(--g100);border-radius:4px;height:5px;overflow:hidden}
 .emp-fill{height:100%;border-radius:4px;background:var(--amber)}
+
+/* PARTNERS */
 .pc{border-radius:var(--rmd);padding:14px 16px;margin-bottom:8px;border:1px solid var(--g200);display:flex;justify-content:space-between;align-items:center;background:var(--g50)}
 .pc:last-child{margin-bottom:0}
 .p-nm{font-size:14px;font-weight:800;color:var(--g800);margin-bottom:5px}
@@ -118,23 +138,29 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .p-right{text-align:left}
 .p-bal{font-size:18px;font-weight:800;line-height:1;margin-bottom:3px}
 .p-status{font-size:10px;font-weight:700}
-.doc-row{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--g100)}
+
+/* DOCUMENTS */
+.doc-row{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--g100)}
 .doc-row:last-child{border-bottom:none}
-.doc-status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.doc-status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:2px}
 .doc-info{flex:1;min-width:0}
 .doc-name{font-size:13px;font-weight:800;color:var(--g800);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .doc-shop{font-size:10px;font-weight:700;color:var(--g400);margin-bottom:2px}
-.doc-date{font-size:10px;font-weight:700;color:var(--g500)}
-.doc-date span{color:var(--g700)}
-.doc-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.doc-dates{font-size:11px;font-weight:700;color:var(--g600);display:flex;gap:8px;flex-wrap:wrap}
+.doc-date-h{color:var(--g700)}
+.doc-date-g{color:var(--g500)}
+.doc-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
 .doc-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.doc-btn{font-size:11px;font-weight:800;color:var(--cur);background:var(--g50);border:1px solid var(--g200);border-radius:6px;padding:4px 10px;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.15s;font-family:'Almarai',sans-serif}
-.doc-btn:hover{background:var(--cur);color:#fff}
-.doc-btn-update{color:var(--amber-d);border-color:var(--amber-l);background:#fff}
+.doc-actions{display:flex;gap:4px}
+.doc-btn{font-size:11px;font-weight:800;padding:4px 9px;border-radius:6px;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.15s;border:1px solid;font-family:'Almarai',sans-serif}
+.doc-btn-view{color:var(--cur);background:var(--g50);border-color:var(--g200)}
+.doc-btn-view:hover{background:var(--cur);color:#fff}
+.doc-btn-update{color:var(--amber-d);background:#fff;border-color:var(--amber-l)}
 .doc-btn-update:hover{background:var(--amber);color:#fff;border-color:var(--amber)}
-.doc-actions{display:flex;gap:4px;flex-wrap:wrap}
 .doc-add-btn{width:calc(100% - 36px);margin:10px 18px;padding:10px;border-radius:var(--rmd);border:2px dashed var(--g300);background:transparent;color:var(--g500);font-size:13px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s}
 .doc-add-btn:hover{border-color:var(--cur);color:var(--cur)}
+
+/* ACCOUNT MOVEMENT */
 .acct-tabs{display:flex;gap:0;margin-bottom:14px;background:var(--g100);padding:4px;border-radius:var(--rmd)}
 .at{flex:1;padding:8px 6px;border-radius:6px;border:none;background:transparent;font-size:12px;font-weight:700;font-family:'Almarai',sans-serif;color:var(--g500);cursor:pointer;transition:all 0.15s}
 .at.on{background:#fff;color:var(--g900);box-shadow:var(--s1)}
@@ -149,6 +175,8 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .tx-date{font-size:11px;font-weight:700;color:var(--g400)}
 .tx-amt{font-size:14px;font-weight:800;line-height:1;margin-bottom:2px}
 .tx-bal{font-size:10px;font-weight:700;color:var(--g400)}
+
+/* PARTNERS STATEMENT */
 .p-sel{font-family:'Almarai',sans-serif;font-size:13px;font-weight:700;background:var(--g50);border:1.5px solid var(--g200);border-radius:var(--rmd);color:var(--g800);padding:10px 12px;width:100%;direction:rtl;margin-bottom:14px}
 .p-sel:focus{outline:none;border-color:var(--cur)}
 .ptx{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--g100)}
@@ -156,25 +184,33 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 .ptx-nm{font-size:12px;font-weight:800;color:var(--g500);margin-bottom:2px}
 .ptx-tp{font-size:13px;font-weight:700;color:var(--g800)}
 .ptx-dt{font-size:11px;font-weight:700;color:var(--g400)}
+
+/* PDF */
 .pdf-wrap{padding:0 20px 20px}
 .pdf-chk{display:flex;align-items:center;gap:10px;padding:13px 16px;background:#fff;border:1px solid var(--g200);border-radius:var(--rlg) var(--rlg) 0 0;border-bottom:none}
 .pdf-chk input{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(--cur)}
 .pdf-chk-lbl{font-size:13px;font-weight:700;color:var(--g700);cursor:pointer}
 .pdf-btn{width:100%;padding:14px;background:var(--cur);border:none;border-radius:0 0 var(--rlg) var(--rlg);color:#fff;font-size:15px;font-weight:800;font-family:'Almarai',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.35s}
 .pdf-btn:active{transform:scale(0.99)}
-.loading{text-align:center;color:var(--g400);padding:20px;font-size:13px;font-weight:700}
+
+/* LOADING */
+.loading{text-align:center;color:var(--g400);padding:16px;font-size:13px;font-weight:700}
 .loading::after{content:'';display:inline-block;width:14px;height:14px;border:2px solid var(--g300);border-top-color:var(--cur);border-radius:50%;animation:spin 0.8s linear infinite;margin-right:6px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Upload modal */
+
+/* MODAL */
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:20px}
 .modal.show{display:flex}
 .modal-box{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:340px;box-shadow:0 4px 24px rgba(0,0,0,0.18)}
 .modal-title{font-size:17px;font-weight:800;color:var(--g800);margin-bottom:16px}
 .m-fg{margin-bottom:12px}
 .m-fg label{font-size:13px;color:var(--g600);font-weight:700;display:block;margin-bottom:5px}
-.m-fg input[type=text]{width:100%;font-family:'Almarai',sans-serif;font-size:14px;border:1.5px solid var(--g200);border-radius:var(--rmd);padding:10px 12px;direction:rtl;color:var(--g900)}
-.m-fg input[type=text]:focus{outline:none;border-color:var(--cur)}
+.m-fg input[type=text],.m-fg select{width:100%;font-family:'Almarai',sans-serif;font-size:14px;border:1.5px solid var(--g200);border-radius:var(--rmd);padding:10px 12px;direction:rtl;color:var(--g900)}
+.m-fg input[type=text]:focus,.m-fg select:focus{outline:none;border-color:var(--cur)}
 .m-fg input[type=file]{width:100%;font-family:'Almarai',sans-serif;font-size:13px;border:1.5px dashed var(--g200);border-radius:var(--rmd);padding:9px;background:var(--g50);color:var(--g500)}
+.cal-toggle{display:flex;gap:6px;margin-bottom:8px}
+.cal-btn{flex:1;padding:8px;border-radius:var(--rmd);border:1.5px solid var(--g200);background:var(--g50);font-size:13px;font-family:'Almarai',sans-serif;font-weight:700;cursor:pointer;color:var(--g600);transition:all 0.15s}
+.cal-btn.on{background:var(--cur);border-color:var(--cur);color:#fff}
 .m-btns{display:flex;gap:8px;margin-top:16px}
 .m-btns button{flex:1;padding:11px;border-radius:var(--rmd);font-family:'Almarai',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--g200);background:var(--g50);color:var(--g700)}
 .m-btns .m-primary{background:var(--cur);border-color:var(--cur);color:#fff}
@@ -191,7 +227,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
         <div class="hdr-title">لوحة المتابعة</div>
         <div class="hdr-sub">Executive Dashboard</div>
       </div>
-      <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد — أدمن</div></div>
+      <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد</div></div>
     </div>
     <div class="shop-pills">
       <div class="sp on" onclick="setShop('all',this)">كل المحلات</div>
@@ -221,12 +257,12 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     </div>
   </div>
   <div class="sdates" id="sdates">
-    <div class="sdate"><span class="sdate-lbl">من</span><span class="sdate-val" id="d-from">1447/01</span></div>
-    <div class="sdate"><span class="sdate-lbl">إلى</span><span class="sdate-val" id="d-to">1447/12</span></div>
+    <div class="sdate"><span class="sdate-lbl">من</span><span class="sdate-val" id="d-from">—</span></div>
+    <div class="sdate"><span class="sdate-lbl">إلى</span><span class="sdate-val" id="d-to">—</span></div>
   </div>
   <div class="cdates" id="cdates">
-    <div class="fg"><div class="flbl" id="from-lbl">من (هجري)</div><input class="finp-h" id="f-from" placeholder="1447/01" maxlength="7" oninput="fmtPeriod(this)"></div>
-    <div class="fg"><div class="flbl" id="to-lbl">إلى (هجري)</div><input class="finp-h" id="f-to" placeholder="1447/12" maxlength="7" oninput="fmtPeriod(this)"></div>
+    <div class="fg"><div class="flbl" id="from-lbl">من (هجري)</div><input class="finp-h" id="f-from" placeholder="1447/09/01" maxlength="10" oninput="fmtFullDate(this)"></div>
+    <div class="fg"><div class="flbl" id="to-lbl">إلى (هجري)</div><input class="finp-h" id="f-to" placeholder="1447/09/30" maxlength="10" oninput="fmtFullDate(this)"></div>
   </div>
   <button class="apbtn" id="apbtn" onclick="applyFilters()">تطبيق التغييرات ←</button>
 </div>
@@ -239,7 +275,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <div class="kpi"><div class="kpi-acc" style="background:var(--blue)"></div><div class="kpi-ico" style="background:#EBF3FC">🏦</div><div class="kpi-lbl">رصيد البنك</div><div class="kpi-v vb" id="k-bank"><span class="loading" style="padding:0;font-size:12px"></span></div><div class="kpi-sub">الرصيد الفعلي الحالي</div></div>
   </div>
   <div class="kg3">
-    <div class="kpi"><div class="kpi-acc" style="background:var(--navy)"></div><div class="kpi-lbl">صافي الربح</div><div class="kpi-v sm" id="k-net" style="color:var(--navy)">—</div><div class="kpi-sub" id="k-net-sub">ر.س — الفترة</div></div>
+    <div class="kpi"><div class="kpi-acc" id="k-net-acc" style="background:var(--navy)"></div><div class="kpi-lbl">صافي الربح</div><div class="kpi-v sm" id="k-net" style="color:var(--navy)">—</div><div class="kpi-sub" id="k-net-sub">ر.س — الشهر</div></div>
     <div class="kpi"><div class="kpi-acc" style="background:var(--green)"></div><div class="kpi-lbl">الإيرادات</div><div class="kpi-v vg sm" id="k-rev">—</div><div class="kpi-sub" id="k-rev-sub">ر.س — الشهر</div></div>
     <div class="kpi"><div class="kpi-acc" style="background:var(--red)"></div><div class="kpi-lbl">المصروفات</div><div class="kpi-v vr sm" id="k-exp">—</div><div class="kpi-sub" id="k-exp-sub">ر.س — الشهر</div></div>
   </div>
@@ -254,9 +290,9 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <div style="padding:14px 18px;border-bottom:1px solid var(--g200);display:flex;justify-content:space-between;align-items:center">
       <div class="ctitle">المستندات والتراخيص</div>
       <div style="display:flex;gap:8px">
-        <span style="display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--green-d)"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span>ساري</span>
-        <span style="display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#854F0B"><span style="width:8px;height:8px;border-radius:50%;background:#EF9F27;display:inline-block"></span>قريب</span>
-        <span style="display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--red-d)"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block"></span>منتهي</span>
+        <span style="display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--green-d)"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span>ساري</span>
+        <span style="display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#854F0B"><span style="width:7px;height:7px;border-radius:50%;background:#EF9F27;display:inline-block"></span>قريب</span>
+        <span style="display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--red-d)"><span style="width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block"></span>منتهي</span>
       </div>
     </div>
     <div id="docs-list"><div class="loading">جاري التحميل</div></div>
@@ -291,12 +327,12 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <div class="chdr"><div class="ctitle">توزيع المصروفات</div><div class="cpill" id="exp-tot-lbl">جاري التحميل</div></div>
     <div class="exp-layout">
       <div class="cwrap" style="height:140px"><canvas id="expChart"></canvas></div>
-      <div class="exp-leg" id="exp-leg"><div class="loading" style="padding:10px">جاري التحميل</div></div>
+      <div class="exp-leg" id="exp-leg"><div class="loading" style="padding:8px">جاري التحميل</div></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="chdr"><div class="ctitle">رواتب العمالة</div><div class="cpill" id="emp-lbl">هذا الشهر</div></div>
+    <div class="chdr"><div class="ctitle">رواتب الموظفين</div><div class="cpill" id="emp-lbl">هذا الشهر</div></div>
     <div class="emp-tot" id="emp-tot"><div class="emp-tot-lbl">إجمالي الرواتب</div><div class="emp-tot-val" id="emp-tot-val">—</div></div>
     <div id="emp-list"><div class="loading">جاري التحميل</div></div>
   </div>
@@ -328,7 +364,7 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
     <select class="p-sel" id="p-sel" onchange="filterPartners()">
       <option value="all">كل الشركاء</option>
     </select>
-    <div id="ptx-list"><div class="loading">جاري التحميل</div></div>
+    <div id="ptx-list"></div>
   </div>
 </div>
 
@@ -337,15 +373,36 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
   <button class="pdf-btn" id="pdf-btn" onclick="exportPDF()">📄 تصدير تقرير PDF</button>
 </div>
 
-</div><!-- end .dash -->
+</div>
 
-<!-- Document modal -->
+<!-- Document Modal -->
 <div class="modal" id="doc-modal">
   <div class="modal-box">
     <div class="modal-title" id="doc-modal-title">رفع مستند جديد</div>
-    <div class="m-fg"><label>اسم المستند <span style="color:var(--amber)">*</span></label><input type="text" id="doc-name-inp" placeholder="مثال: السجل التجاري"/></div>
-    <div class="m-fg"><label>تاريخ الانتهاء (هجري)</label><input type="text" id="doc-expiry-inp" placeholder="1449/03/15" maxlength="10"/></div>
-    <div class="m-fg"><label>الملف <span style="color:var(--amber)">*</span></label><input type="file" id="doc-file-inp" accept="image/*,.pdf"/></div>
+    <div class="m-fg">
+      <label>المحل <span style="color:var(--amber)">*</span></label>
+      <select id="doc-shop-sel">
+        <option value="Tailor">✂️ خياط البيت السوداني</option>
+        <option value="Salon">💇 صالون الخرطوم</option>
+        <option value="Atara">🌿 عطارة البيت السوداني</option>
+      </select>
+    </div>
+    <div class="m-fg">
+      <label>اسم المستند <span style="color:var(--amber)">*</span></label>
+      <input type="text" id="doc-name-inp" placeholder="مثال: السجل التجاري"/>
+    </div>
+    <div class="m-fg">
+      <label>تاريخ الانتهاء</label>
+      <div class="cal-toggle">
+        <button class="cal-btn on" id="doc-cal-hijri" onclick="setDocCal('hijri')">هجري</button>
+        <button class="cal-btn" id="doc-cal-greg" onclick="setDocCal('greg')">ميلادي</button>
+      </div>
+      <input type="text" id="doc-expiry-inp" placeholder="1449/03/15" maxlength="10" oninput="fmtFullDate(this)"/>
+    </div>
+    <div class="m-fg">
+      <label>الملف <span style="color:var(--amber)">*</span></label>
+      <input type="file" id="doc-file-inp" accept="image/*,.pdf"/>
+    </div>
     <div class="m-btns">
       <button onclick="document.getElementById('doc-modal').classList.remove('show')">إلغاء</button>
       <button class="m-primary" id="doc-upload-btn" onclick="doUploadDoc()">رفع المستند</button>
@@ -360,22 +417,24 @@ html,body{font-family:'Almarai',sans-serif;background:var(--g100);color:var(--g9
 
 var API    = 'https://script.google.com/macros/s/AKfycbzb0l1cdEYAby51Hbl7tfyFI8zXTLgPVZm6DFGjR-fflIDtbzY7h-d4rs6pM8bhVDVF7w/exec';
 var WORKER = 'https://bait-sudani-upload.albyt-alsudani.workers.dev';
-var ROLE   = 'admin';   // will come from login in final app
+var ROLE   = 'admin';
+var DISPLAY_NAME = 'محمد';
 
 var SHOP_COLORS = {all:'#1E3A5F',Tailor:'#2C1810',Salon:'#4A1942',Atara:'#1B4D3E'};
 var SHOP_NAMES  = {all:'كل المحلات',Tailor:'✂️ خياط البيت السوداني',Salon:'💇 صالون الخرطوم',Atara:'🌿 عطارة البيت السوداني'};
 
-var HPERIODS = {
-  month:{f:'1447/09',t:'1447/09'},
-  week: {f:'1447/09',t:'1447/09'},
-  year: {f:'1447/01',t:'1447/12'},
-  all:  {f:'1400/01',t:'1500/12'}
+// Period keys — full dates YYYY/MM/DD for hijri, YYYY-MM-DD for greg
+var HIJRI_DATES = {
+  month: function(){ return {f:'1447/09/01', t:'1447/09/30', fKey:'1447/09', tKey:'1447/09'}; },
+  week:  function(){ return {f:'1447/09/19', t:'1447/09/25', fKey:'1447/09', tKey:'1447/09'}; },
+  year:  function(){ return {f:'1447/01/01', t:'1447/12/29', fKey:'1447/01', tKey:'1447/12'}; },
+  all:   function(){ return {f:'من البداية', t:'اليوم',     fKey:'1400/01', tKey:'1500/12'}; }
 };
-var GPERIODS = {
-  month:{f:'2026-03',t:'2026-03'},
-  week: {f:'2026-03',t:'2026-03'},
-  year: {f:'2026-01',t:'2026-12'},
-  all:  {f:'2000-01',t:'2099-12'}
+var GREG_DATES = {
+  month: function(){ return {f:'2026-03-01', t:'2026-03-31', fKey:'2026-03', tKey:'2026-03'}; },
+  week:  function(){ return {f:'2026-03-19', t:'2026-03-25', fKey:'2026-03', tKey:'2026-03'}; },
+  year:  function(){ return {f:'2026-01-01', t:'2026-12-31', fKey:'2026-01', tKey:'2026-12'}; },
+  all:   function(){ return {f:'من البداية', t:'اليوم',     fKey:'2000-01', tKey:'2099-12'}; }
 };
 var PLBLS = {month:'هذا الشهر',week:'هذا الأسبوع',year:'هذا العام',all:'من البداية',custom:'مخصص'};
 var SCFG  = {
@@ -387,25 +446,68 @@ var SCFG  = {
 var curShop='all', curPeriod='month', curCal='hijri';
 var expChart=null, revChart=null;
 var allMovements=[], allPartnerTx=[];
-var docAction=null;
+var docAction=null, docCalType='hijri';
 
 function gs(id){return document.getElementById(id);}
 function fmt(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
 function apiCall(p){return fetch(API+'?'+new URLSearchParams(p)).then(function(r){return r.json();});}
 
+// ── Date helpers ──────────────────────────────────────────────────────────────
+function fmtFullDate(el){
+  var v=el.value.replace(/[^0-9]/g,'');
+  if(v.length>4) v=v.slice(0,4)+'/'+v.slice(4);
+  if(v.length>7) v=v.slice(0,7)+'/'+v.slice(7);
+  el.value=v.slice(0,10);
+}
+
+function h2gISO(h){
+  try{
+    var p=h.split('/').map(Number),y=p[0],m=p[1],d=p[2];
+    if(!y||!m||!d) return '';
+    var jd=Math.floor((11*y+3)/30)+354*y+30*m-Math.floor((m-1)/2)+d+1948440-385;
+    var l=jd+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4);
+    var i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31;
+    var j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),jj=Math.floor(j/11);
+    var mo=j+2-12*jj,yr=100*(n-49)+i+jj;
+    return yr+'-'+String(mo).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+  }catch(e){return '';}
+}
+
+function formatDocDate(hijri, greg){
+  var parts = [];
+  if(hijri) parts.push('<span class="doc-date-h">'+hijri+'</span>');
+  if(greg && greg !== 'undefined' && greg !== '') {
+    // Clean up date if it's a timestamp
+    var cleanGreg = greg;
+    if(cleanGreg.indexOf('T') > -1) cleanGreg = cleanGreg.split('T')[0];
+    if(cleanGreg.match(/^\d{4}-\d{2}-\d{2}$/)){
+      var p = cleanGreg.split('-');
+      var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+      cleanGreg = parseInt(p[2])+' '+ms[parseInt(p[1])-1]+' '+p[0];
+    }
+    parts.push('<span class="doc-date-g">'+cleanGreg+'</span>');
+  }
+  return parts.join(' · ');
+}
+
 function getKeys(){
   if(curPeriod==='custom'){
-    return {f:gs('f-from').value.trim(),t:gs('f-to').value.trim()};
+    var fv=gs('f-from').value.trim(), tv=gs('f-to').value.trim();
+    // Extract period keys from full dates
+    var fKey = fv.length>=7 ? fv.slice(0,7) : fv;
+    var tKey = tv.length>=7 ? tv.slice(0,7) : tv;
+    return {f:fv, t:tv, fKey:fKey, tKey:tKey};
   }
-  var src=curCal==='hijri'?HPERIODS:GPERIODS;
-  return src[curPeriod]||src.month;
+  var src = curCal==='hijri' ? HIJRI_DATES : GREG_DATES;
+  return (src[curPeriod]||src.month)();
 }
 
 function getParams(){
   var k=getKeys();
-  return {role:ROLE,userShops:'all',shop:curShop,calType:curCal,fromKey:k.f,toKey:k.t};
+  return {role:ROLE,userShops:'all',shop:curShop,calType:curCal,fromKey:k.fKey,toKey:k.tKey};
 }
 
+// ── Color ─────────────────────────────────────────────────────────────────────
 function applyColor(c){
   gs('hdr').style.background=c;
   gs('apbtn').style.background=c;
@@ -415,6 +517,7 @@ function applyColor(c){
   document.documentElement.style.setProperty('--cur',c);
 }
 
+// ── Shop pills ────────────────────────────────────────────────────────────────
 window.setShop=function(shop,el){
   curShop=shop;
   document.querySelectorAll('.sp').forEach(function(p){p.classList.remove('on');});
@@ -423,6 +526,7 @@ window.setShop=function(shop,el){
   loadAll();
 };
 
+// ── Period/Calendar ───────────────────────────────────────────────────────────
 window.onPeriod=function(){
   curPeriod=gs('f-period').value;
   var isC=curPeriod==='custom';
@@ -436,28 +540,30 @@ window.onCal=function(){
   var isH=curCal==='hijri';
   gs('from-lbl').textContent=isH?'من (هجري)':'من (ميلادي)';
   gs('to-lbl').textContent=isH?'إلى (هجري)':'إلى (ميلادي)';
-  gs('f-from').placeholder=isH?'1447/01':'2026-01';
-  gs('f-to').placeholder=isH?'1447/12':'2026-12';
+  gs('f-from').placeholder=isH?'1447/09/01':'2026-03-01';
+  gs('f-to').placeholder=isH?'1447/09/30':'2026-03-31';
   updateDates();
-  loadDocs();
+  renderDocs(null); // reload docs with new calendar
 };
 
 function updateDates(){
-  var p=curCal==='hijri'?HPERIODS:GPERIODS;
-  var d=p[curPeriod]||p.month;
-  gs('d-from').textContent=d.f;
-  gs('d-to').textContent=d.t;
+  if(curPeriod==='custom'){gs('d-from').textContent='—';gs('d-to').textContent='—';return;}
+  var k=getKeys();
+  gs('d-from').textContent=k.f;
+  gs('d-to').textContent=k.t;
 }
 
-window.fmtPeriod=function(el){
-  var v=el.value.replace(/[^0-9]/g,'');
-  if(v.length>4) v=v.slice(0,4)+'/'+v.slice(4);
-  el.value=v.slice(0,7);
+window.fmtFullDate=fmtFullDate;
+
+window.applyFilters=function(){
+  if(curPeriod==='custom'){
+    var fv=gs('f-from').value.trim(), tv=gs('f-to').value.trim();
+    if(!fv||!tv){return;}
+  }
+  loadAll();
 };
 
-window.applyFilters=function(){loadAll();};
-
-// ── LOAD ALL ──────────────────────────────────────────────────────────────────
+// ── Load All ──────────────────────────────────────────────────────────────────
 function loadAll(){
   var p=getParams();
   var lbl=PLBLS[curPeriod];
@@ -465,8 +571,9 @@ function loadAll(){
   gs('emp-lbl').textContent=lbl;
   gs('k-rev-sub').textContent='ر.س — '+lbl;
   gs('k-exp-sub').textContent='ر.س — '+lbl;
+  gs('k-net-sub').textContent='ر.س — '+lbl;
   loadKPIs(p);
-  loadDocs();
+  loadDocsFromAPI();
   loadShopCmp(p);
   loadRevChart(p);
   loadExpChart(p);
@@ -483,25 +590,18 @@ function loadKPIs(p){
     if(!res.success) return;
     gs('k-cash').innerHTML=fmt(res.cashBalance)+' <span class="kpi-cur">ر.س</span>';
     gs('k-bank').innerHTML=fmt(res.bankBalance)+' <span class="kpi-cur">ر.س</span>';
-    // assets removed from display
     gs('k-rev').textContent=fmt(res.totalRevenue);
     gs('k-exp').textContent=fmt(res.totalExpenses);
-    if(gs('k-net')){
-      var np=res.netProfit||0;
-      gs('k-net').textContent=(np>=0?'+':'')+fmt(np);
-      gs('k-net').style.color=np>=0?'var(--green-d)':'var(--red-d)';
-      gs('k-net').parentElement.querySelector('.kpi-acc').style.background=np>=0?'var(--green)':'var(--red)';
-    }
-  }).catch(function(){
-    gs('k-cash').textContent='—';
-    gs('k-bank').textContent='—';
-  });
+    var np=res.netProfit||0;
+    gs('k-net').textContent=(np>=0?'+':'')+fmt(np);
+    gs('k-net').style.color=np>=0?'var(--green-d)':'var(--red-d)';
+    gs('k-net-acc').style.background=np>=0?'var(--green)':'var(--red)';
+  }).catch(function(){gs('k-cash').textContent='—';gs('k-bank').textContent='—';});
 }
 
-// ── DOCUMENTS ─────────────────────────────────────────────────────────────────
-function loadDocs(){
-  var c=gs('docs-list');
-  c.innerHTML='<div class="loading">جاري التحميل</div>';
+// ── Documents ─────────────────────────────────────────────────────────────────
+function loadDocsFromAPI(){
+  gs('docs-list').innerHTML='<div class="loading">جاري التحميل</div>';
   apiCall({action:'getDocuments',shop:curShop}).then(function(res){
     renderDocs(res.success?res.documents:[]);
   }).catch(function(){renderDocs([]);});
@@ -511,7 +611,7 @@ function renderDocs(docs){
   var c=gs('docs-list');
   var canManage=(ROLE==='admin'||ROLE==='area_manager');
   if(!docs||!docs.length){
-    c.innerHTML='<div style="padding:20px;text-align:center;font-size:13px;font-weight:700;color:var(--g400)">لا توجد مستندات لهذا المحل</div>';
+    c.innerHTML='<div style="padding:16px;text-align:center;font-size:13px;font-weight:700;color:var(--g400)">لا توجد مستندات لهذا المحل</div>';
     if(canManage) c.innerHTML+='<button class="doc-add-btn" onclick="openDocModal(\'new\',\''+curShop+'\')">＋ رفع مستند جديد</button>';
     return;
   }
@@ -519,27 +619,41 @@ function renderDocs(docs){
   docs.sort(function(a,b){return order[a.status]-order[b.status];});
   c.innerHTML=docs.map(function(d,i){
     var s=SCFG[d.status]||SCFG.ok;
-    var dt=curCal==='hijri'?d.expiryHijri:d.expiryGreg;
+    // Show hijri date or greg date based on current calendar
+    var expiryDisplay = curCal==='hijri' ? d.expiryHijri : d.expiryGreg;
+    // Clean up timestamp if present
+    if(expiryDisplay && expiryDisplay.indexOf('T')>-1) expiryDisplay=expiryDisplay.split('T')[0];
+    // Format gregorian nicely
+    var gregDisplay = '';
+    if(d.expiryGreg && d.expiryGreg.match && d.expiryGreg.match(/^\d{4}-\d{2}-\d{2}$/)){
+      var gp=d.expiryGreg.split('-');
+      var ms=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+      gregDisplay=parseInt(gp[2])+' '+ms[parseInt(gp[1])-1]+' '+gp[0];
+    }
+    var showUpdate = canManage; // show update for ALL statuses
     return '<div class="doc-row">'+
       '<div class="doc-status-dot" style="background:'+s.color+'"></div>'+
       '<div class="doc-info">'+
         '<div class="doc-name">'+d.name+'</div>'+
         (curShop==='all'?'<div class="doc-shop">'+(SHOP_NAMES[d.shop]||d.shop)+'</div>':'')+
-        '<div class="doc-date">ينتهي: <span>'+dt+'</span></div>'+
+        '<div class="doc-dates">'+
+          (d.expiryHijri?'<span class="doc-date-h">'+d.expiryHijri+'</span>':'')+
+          (gregDisplay?'<span class="doc-date-g">'+gregDisplay+'</span>':'')+
+        '</div>'+
       '</div>'+
       '<div class="doc-right">'+
         '<span class="doc-badge" style="background:'+s.bg+';color:'+s.text+'">'+s.label+'</span>'+
         '<div class="doc-actions">'+
-          (d.driveLink?'<a class="doc-btn" href="'+d.driveLink+'" target="_blank" rel="noopener">عرض ↗</a>':'')+
-          (canManage?'<button class="doc-btn doc-btn-update" onclick="openDocModal(\'update\',\''+d.shop+'\',\''+i+'\',\''+d.name+'\')">تحديث</button>':'')+
+          (d.driveLink?'<a class="doc-btn doc-btn-view" href="'+d.driveLink+'" target="_blank" rel="noopener">عرض ↗</a>':'')+
+          (showUpdate?'<button class="doc-btn doc-btn-update" onclick="openDocModal(\'update\',\''+d.shop+'\','+i+',\''+d.name+'\')">تحديث</button>':'')+
         '</div>'+
       '</div>'+
     '</div>';
   }).join('');
-  if(canManage) c.innerHTML+='<button class="doc-add-btn" onclick="openDocModal(\'new\',\''+(curShop==='all'?'Tailor':curShop)+'\')">＋ رفع مستند جديد</button>';
+  if(canManage) c.innerHTML+='<button class="doc-add-btn" onclick="openDocModal(\'new\',\''+(curShop==='all'?'':curShop)+'\')">＋ رفع مستند جديد</button>';
 }
 
-// ── SHOP COMPARISON ───────────────────────────────────────────────────────────
+// ── Shop Comparison ───────────────────────────────────────────────────────────
 function loadShopCmp(p){
   var c=gs('shop-cmp');
   c.innerHTML='<div class="loading">جاري التحميل</div>';
@@ -579,16 +693,23 @@ function loadShopCmp(p){
   });
 }
 
-// ── REVENUE CHART ─────────────────────────────────────────────────────────────
+// ── Revenue Chart ─────────────────────────────────────────────────────────────
 function loadRevChart(p){
+  // Reset chart first
+  if(revChart){revChart.destroy();revChart=null;}
+  gs('rev-cash-tot').textContent='—';
+  gs('rev-card-tot').textContent='—';
   apiCall(Object.assign({action:'getRevenueChart'},p)).then(function(res){
-    if(!res.success||!res.data||!res.data.length) return;
+    if(!res.success||!res.data||!res.data.length){
+      // Draw empty chart
+      if(revChart){revChart.destroy();revChart=null;}
+      revChart=new Chart(gs('revChart'),{type:'bar',data:{labels:[],datasets:[{data:[],backgroundColor:'#1D9E75'},{data:[],backgroundColor:'#185FA5'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+      return;
+    }
     var data=res.data;
-    var totalCash=data.reduce(function(s,d){return s+d.revCash;},0);
-    var totalCard=data.reduce(function(s,d){return s+d.revCard;},0);
-    gs('rev-cash-tot').textContent=fmt(totalCash);
-    gs('rev-card-tot').textContent=fmt(totalCard);
-    if(revChart) revChart.destroy();
+    gs('rev-cash-tot').textContent=fmt(data.reduce(function(s,d){return s+d.revCash;},0));
+    gs('rev-card-tot').textContent=fmt(data.reduce(function(s,d){return s+d.revCard;},0));
+    if(revChart){revChart.destroy();}
     revChart=new Chart(gs('revChart'),{
       type:'bar',
       data:{
@@ -609,14 +730,15 @@ function loadRevChart(p){
   });
 }
 
-// ── EXPENSE CHART ─────────────────────────────────────────────────────────────
+// ── Expense Chart ─────────────────────────────────────────────────────────────
 function loadExpChart(p){
-  gs('exp-leg').innerHTML='<div class="loading" style="padding:10px">جاري التحميل</div>';
+  gs('exp-leg').innerHTML='<div class="loading" style="padding:8px">جاري التحميل</div>';
   gs('exp-tot-lbl').textContent='جاري التحميل';
   apiCall(Object.assign({action:'getExpenseBreakdown'},p)).then(function(res){
     if(!res.success||!res.data||!res.data.length){
-      gs('exp-leg').innerHTML='<div style="color:var(--g400);font-size:12px;font-weight:700">لا توجد بيانات</div>';
+      gs('exp-leg').innerHTML='<div style="color:var(--g400);font-size:12px;font-weight:700;padding:8px">لا توجد بيانات</div>';
       gs('exp-tot-lbl').textContent='لا توجد بيانات';
+      if(expChart){expChart.destroy();expChart=null;}
       return;
     }
     var cats=res.data;
@@ -635,7 +757,7 @@ function loadExpChart(p){
   });
 }
 
-// ── SALARIES ──────────────────────────────────────────────────────────────────
+// ── Salaries ──────────────────────────────────────────────────────────────────
 function loadSalaries(p){
   gs('emp-list').innerHTML='<div class="loading">جاري التحميل</div>';
   apiCall(Object.assign({action:'getEmployeeSalaries'},p)).then(function(res){
@@ -650,9 +772,8 @@ function loadSalaries(p){
     gs('emp-list').innerHTML=res.data.map(function(d){
       var initials=(d.employeeName||'').slice(0,2);
       var pct=Math.round(d.amount/maxAmt*100);
-      var bgColor=shopColors[d.shop]||'var(--navy)';
       return '<div class="emp-row">'+
-        '<div class="emp-av" style="background:'+bgColor+'">'+initials+'</div>'+
+        '<div class="emp-av" style="background:'+(shopColors[d.shop]||'var(--navy)')+'">'+initials+'</div>'+
         '<div class="emp-inf">'+
           '<div class="emp-nr"><div class="emp-nm">'+d.employeeName+'</div><div class="emp-sal">'+fmt(d.amount)+' ر.س</div></div>'+
           '<div class="emp-trk"><div class="emp-fill" style="width:'+pct+'%"></div></div>'+
@@ -662,20 +783,21 @@ function loadSalaries(p){
   });
 }
 
-// ── PARTNERS BALANCE ──────────────────────────────────────────────────────────
+// ── Partners ──────────────────────────────────────────────────────────────────
 function loadPartners(p){
-  var card=gs('partners-card');
-  var stmtCard=gs('partners-stmt-card');
-  if(ROLE!=='admin'){card.style.display='none';if(stmtCard)stmtCard.style.display='none';return;}
+  if(ROLE!=='admin'){
+    gs('partners-card').style.display='none';
+    gs('partners-stmt-card').style.display='none';
+    return;
+  }
   gs('partners-list').innerHTML='<div class="loading">جاري التحميل</div>';
   gs('ptx-list').innerHTML='';
   apiCall(Object.assign({action:'getPartnersBalance'},p)).then(function(res){
     if(!res.success||!res.data||!res.data.length){
-      gs('partners-list').innerHTML='<div style="color:var(--g400);text-align:center;padding:16px;font-size:13px;font-weight:700">لا توجد بيانات شركاء</div>';
+      gs('partners-list').innerHTML='<div style="color:var(--g400);text-align:center;padding:16px;font-size:13px;font-weight:700">لا توجد بيانات شركاء لهذا المحل</div>';
       gs('ptx-list').innerHTML='<div style="color:var(--g400);text-align:center;padding:16px;font-size:13px;font-weight:700">لا توجد حركات</div>';
       return;
     }
-    // Render balances
     gs('partners-list').innerHTML=res.data.map(function(p){
       var balPos=p.balance>=0;
       return '<div class="pc">'+
@@ -691,11 +813,9 @@ function loadPartners(p){
         '</div>'+
       '</div>';
     }).join('');
-    // Build partner filter
     var sel=gs('p-sel');
     sel.innerHTML='<option value="all">كل الشركاء</option>';
     res.data.forEach(function(p){sel.innerHTML+='<option value="'+p.name+'">'+p.name+'</option>';});
-    // Store transactions
     allPartnerTx=[];
     res.data.forEach(function(p){
       (p.transactions||[]).forEach(function(t){t._partner=p.name;allPartnerTx.push(t);});
@@ -708,9 +828,7 @@ function loadPartners(p){
   });
 }
 
-window.filterPartners=function(){
-  renderPartnerTx(gs('p-sel').value);
-};
+window.filterPartners=function(){renderPartnerTx(gs('p-sel').value);};
 
 function renderPartnerTx(filter){
   var list=allPartnerTx.filter(function(t){return filter==='all'||t._partner===filter;});
@@ -724,7 +842,7 @@ function renderPartnerTx(filter){
   }).join('');
 }
 
-// ── ACCOUNT MOVEMENT ──────────────────────────────────────────────────────────
+// ── Account Movement ──────────────────────────────────────────────────────────
 function loadMovements(p){
   gs('tx-list').innerHTML='<div class="loading">جاري التحميل</div>';
   apiCall(Object.assign({action:'getAccountMovement'},p)).then(function(res){
@@ -753,88 +871,198 @@ window.setAcct=function(type,btn){
   renderMovements(type);
 };
 
-// ── DOCUMENT UPLOAD ───────────────────────────────────────────────────────────
+// ── Document Modal ────────────────────────────────────────────────────────────
 window.openDocModal=function(type,shop,idx,name){
-  docAction={type:type,shop:shop,idx:idx};
+  docAction={type:type,shop:shop||'',idx:idx};
   gs('doc-modal-title').textContent=type==='new'?'رفع مستند جديد':'تحديث: '+(name||'');
   gs('doc-name-inp').value=type==='update'?(name||''):'';
   gs('doc-expiry-inp').value='';
   gs('doc-file-inp').value='';
+  // Set shop selector
+  var shopSel=gs('doc-shop-sel');
+  if(shop && shop!=='all' && shop!=='') shopSel.value=shop;
+  // Show/hide shop selector based on context
+  shopSel.parentElement.style.display=(curShop==='all'&&type==='new')?'':'none';
   gs('doc-modal').classList.add('show');
 };
 
+window.setDocCal=function(cal){
+  docCalType=cal;
+  gs('doc-cal-hijri').classList.toggle('on',cal==='hijri');
+  gs('doc-cal-greg').classList.toggle('on',cal==='greg');
+  gs('doc-expiry-inp').placeholder=cal==='hijri'?'1449/03/15':'2027-09-10';
+  gs('doc-expiry-inp').value='';
+};
+
 window.doUploadDoc=function(){
+  var shopSel=gs('doc-shop-sel');
+  var targetShop = (curShop==='all'&&docAction.type==='new') ? shopSel.value : (docAction.shop||curShop);
+  if(!targetShop||targetShop==='all'){alert('يرجى اختيار المحل');return;}
   var name=gs('doc-name-inp').value.trim();
   var expiry=gs('doc-expiry-inp').value.trim();
   var file=gs('doc-file-inp').files[0];
   if(!name){alert('يرجى إدخال اسم المستند');return;}
   if(!file){alert('يرجى اختيار ملف');return;}
+
+  // Calculate both dates
+  var expiryHijri='', expiryGreg='';
+  if(docCalType==='hijri'){
+    expiryHijri=expiry;
+    expiryGreg=expiry.length>=10?h2gISO(expiry):'';
+  } else {
+    expiryGreg=expiry;
+    expiryHijri=''; // would need reverse conversion
+  }
+
   var btn=gs('doc-upload-btn');
   btn.disabled=true;btn.textContent='⏳ جاري الرفع...';
   var today=new Date().toISOString().slice(0,10);
   var form=new FormData();
   form.append('file',file,file.name);
   form.append('uploadType','document');
-  form.append('shop',docAction.shop||'General');
+  form.append('shop',targetShop);
   form.append('documentName',name);
   form.append('uploadDate',today);
   fetch(WORKER,{method:'POST',body:form}).then(function(r){return r.json();}).then(function(data){
     if(!data.success) throw new Error(data.message);
     return apiCall({action:'saveDocument',data:encodeURIComponent(JSON.stringify({
-      shop:docAction.shop,name:name,expiryHijri:expiry,expiryGreg:'',status:'active',driveLink:data.driveLink,notes:docAction.type==='update'?'تحديث '+today:''
+      shop:targetShop,name:name,
+      expiryHijri:expiryHijri,
+      expiryGreg:expiryGreg,
+      status:'active',
+      driveLink:data.driveLink,
+      notes:docAction.type==='update'?'تحديث '+today:''
     }))});
   }).then(function(){
     gs('doc-modal').classList.remove('show');
     btn.disabled=false;btn.textContent='رفع المستند';
-    loadDocs();
+    loadDocsFromAPI();
   }).catch(function(err){
     alert('حدث خطأ: '+err.message);
     btn.disabled=false;btn.textContent='رفع المستند';
   });
 };
 
-// ── PDF EXPORT ────────────────────────────────────────────────────────────────
+// ── PDF Export ────────────────────────────────────────────────────────────────
 window.exportPDF=function(){
   var withPartners=gs('pdf-p').checked;
   var p=getParams();
   var k=getKeys();
+  var acctFilter=allMovements.length>0?document.querySelector('.at.on').dataset.acct||'all':'all';
+
   var w=window.open('','_blank');
-  w.document.write('<html lang="ar" dir="rtl"><head><meta charset="UTF-8">');
+  w.document.write('<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">');
   w.document.write('<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">');
-  w.document.write('<style>body{font-family:Almarai,sans-serif;direction:rtl;padding:32px;color:#212529;font-size:14px}h1{font-size:22px;font-weight:800;color:#1E3A5F;margin-bottom:4px}.sub{color:#6C757D;font-size:13px;margin-bottom:24px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th{background:#F1F3F5;padding:10px 12px;font-size:12px;font-weight:700;color:#495057;text-align:right;border-bottom:2px solid #DEE2E6}td{padding:10px 12px;font-size:13px;border-bottom:1px solid #F1F3F5;color:#343A40}.pos{color:#085041;font-weight:700}.neg{color:#A32D2D;font-weight:700}h2{font-size:16px;font-weight:800;margin:20px 0 10px;color:#212529}</style></head><body>');
+  w.document.write('<style>');
+  w.document.write('*{box-sizing:border-box;margin:0;padding:0}');
+  w.document.write('body{font-family:Almarai,sans-serif;direction:rtl;padding:32px;color:#212529;font-size:13px;background:#fff}');
+  w.document.write('.pdf-hdr{background:#1E3A5F;color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:24px}');
+  w.document.write('.pdf-hdr h1{font-size:22px;font-weight:800;margin-bottom:6px}');
+  w.document.write('.pdf-hdr .meta{font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:16px;flex-wrap:wrap}');
+  w.document.write('.pdf-hdr .meta span{display:flex;align-items:center;gap:4px}');
+  w.document.write('.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}');
+  w.document.write('.kpi-box{background:#F8F9FA;border:1px solid #E9ECEF;border-radius:10px;padding:14px}');
+  w.document.write('.kpi-lbl{font-size:11px;color:#6C757D;font-weight:700;margin-bottom:4px}');
+  w.document.write('.kpi-val{font-size:20px;font-weight:800}');
+  w.document.write('.kpi-val.pos{color:#085041}.kpi-val.neg{color:#A32D2D}.kpi-val.blue{color:#0C447C}.kpi-val.amber{color:#993C1D}');
+  w.document.write('h2{font-size:15px;font-weight:800;color:#212529;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #E9ECEF}');
+  w.document.write('table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px}');
+  w.document.write('th{background:#F1F3F5;padding:9px 12px;font-size:11px;font-weight:700;color:#495057;text-align:right;border-bottom:2px solid #DEE2E6}');
+  w.document.write('td{padding:9px 12px;border-bottom:1px solid #F1F3F5;color:#343A40}');
+  w.document.write('tr:nth-child(even) td{background:#FAFAFA}');
+  w.document.write('.pos{color:#085041;font-weight:700}.neg{color:#A32D2D;font-weight:700}');
+  w.document.write('@media print{body{padding:16px}.pdf-hdr{border-radius:0}}');
+  w.document.write('</style></head><body>');
+
+  // PDF Header
+  var now=new Date();
+  var nowStr=now.toLocaleDateString('ar-SA')+' '+now.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+  w.document.write('<div class="pdf-hdr">');
   w.document.write('<h1>🏛️ البيت السوداني — تقرير مالي</h1>');
-  w.document.write('<div class="sub">الفترة: '+k.f+' — '+k.t+' · التقويم: '+(curCal==='hijri'?'هجري':'ميلادي')+' · المحل: '+(SHOP_NAMES[curShop]||curShop)+'</div>');
+  w.document.write('<div class="meta">');
+  w.document.write('<span>📅 الفترة: '+(k.f||'—')+' — '+(k.t||'—')+'</span>');
+  w.document.write('<span>🏪 '+(SHOP_NAMES[curShop]||'كل المحلات')+'</span>');
+  w.document.write('<span>📆 طُبع في: '+nowStr+'</span>');
+  w.document.write('</div></div>');
+
+  // Load KPIs then movements then optionally partners
   apiCall(Object.assign({action:'getDashboardKPIs'},p)).then(function(res){
     if(res.success){
-      w.document.write('<h2>المؤشرات الرئيسية</h2><table>');
-      w.document.write('<tr><th>المؤشر</th><th>القيمة</th></tr>');
-      w.document.write('<tr><td>رصيد الصندوق</td><td class="pos">'+fmt(res.cashBalance)+' ر.س</td></tr>');
-      w.document.write('<tr><td>رصيد البنك</td><td class="pos">'+fmt(res.bankBalance)+' ر.س</td></tr>');
-      w.document.write('<tr><td>إجمالي الأصول</td><td class="pos">'+fmt(res.totalAssets)+' ر.س</td></tr>');
-      w.document.write('<tr><td>الإيرادات</td><td class="pos">'+fmt(res.totalRevenue)+' ر.س</td></tr>');
-      w.document.write('<tr><td>المصروفات</td><td class="neg">'+fmt(res.totalExpenses)+' ر.س</td></tr>');
-      w.document.write('<tr><td>الصافي</td><td class="'+(res.netProfit>=0?'pos':'neg')+'">'+fmt(res.netProfit)+' ر.س</td></tr>');
-      w.document.write('</table>');
+      w.document.write('<div class="kpi-grid">');
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد الصندوق</div><div class="kpi-val pos">'+fmt(res.cashBalance)+' ر.س</div></div>');
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">رصيد البنك</div><div class="kpi-val blue">'+fmt(res.bankBalance)+' ر.س</div></div>');
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">الإيرادات</div><div class="kpi-val pos">'+fmt(res.totalRevenue)+' ر.س</div></div>');
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">المصروفات</div><div class="kpi-val neg">'+fmt(res.totalExpenses)+' ر.س</div></div>');
+      var np=res.netProfit||0;
+      w.document.write('<div class="kpi-box"><div class="kpi-lbl">صافي الربح</div><div class="kpi-val '+(np>=0?'pos':'neg')+'">'+(np>=0?'+':'')+fmt(np)+' ر.س</div></div>');
+      w.document.write('</div>');
     }
+
+    // Account Movement
+    w.document.write('<h2>حركة الحسابات</h2>');
+    var movList = acctFilter==='all'?allMovements:allMovements.filter(function(m){return m.account===acctFilter;});
+    if(movList.length){
+      w.document.write('<table><tr><th>التاريخ</th><th>النوع</th><th>الحساب</th><th>المبلغ</th><th>الرصيد</th></tr>');
+      movList.forEach(function(m){
+        var isPos=m.direction===1;
+        w.document.write('<tr>'+
+          '<td>'+m.hijri+'</td>'+
+          '<td>'+m.type+'</td>'+
+          '<td>'+(m.account==='cash'?'الصندوق':'البنك')+'</td>'+
+          '<td class="'+(isPos?'pos':'neg')+'">'+(isPos?'+':'-')+fmt(m.amount)+' ر.س</td>'+
+          '<td style="font-weight:700">'+fmt(m.runningBalance)+' ر.س</td>'+
+        '</tr>');
+      });
+      w.document.write('</table>');
+    } else {
+      w.document.write('<p style="color:#6C757D;font-size:13px">لا توجد حركات في هذه الفترة</p>');
+    }
+
+    var promise = Promise.resolve();
     if(withPartners&&ROLE==='admin'){
-      return apiCall(Object.assign({action:'getPartnersBalance'},p)).then(function(pr){
+      promise = apiCall(Object.assign({action:'getPartnersBalance'},p)).then(function(pr){
         if(pr.success&&pr.data&&pr.data.length){
-          w.document.write('<h2>أرصدة الشركاء</h2><table>');
-          w.document.write('<tr><th>الشريك</th><th>إيداعات</th><th>سحوبات</th><th>الرصيد</th><th>الحالة</th></tr>');
+          w.document.write('<h2>أرصدة الشركاء</h2>');
+          w.document.write('<table><tr><th>الشريك</th><th>إيداعات</th><th>سحوبات</th><th>الرصيد</th><th>الحالة</th></tr>');
           pr.data.forEach(function(p){
-            w.document.write('<tr><td>'+p.name+'</td><td class="pos">'+fmt(p.deposits)+'</td><td class="neg">'+fmt(p.withdrawals)+'</td><td class="'+(p.balance>=0?'pos':'neg')+'">'+fmt(Math.abs(p.balance))+'</td><td>'+p.status+'</td></tr>');
+            w.document.write('<tr>'+
+              '<td style="font-weight:700">'+p.name+'</td>'+
+              '<td class="pos">'+fmt(p.deposits)+' ر.س</td>'+
+              '<td class="neg">'+fmt(p.withdrawals)+' ر.س</td>'+
+              '<td class="'+(p.balance>=0?'pos':'neg')+'">'+fmt(Math.abs(p.balance))+' ر.س</td>'+
+              '<td>'+p.status+'</td>'+
+            '</tr>');
           });
           w.document.write('</table>');
+          // Partner transactions
+          if(allPartnerTx.length){
+            w.document.write('<h2>كشف حساب الشركاء</h2>');
+            w.document.write('<table><tr><th>التاريخ</th><th>الشريك</th><th>النوع</th><th>الحساب</th><th>المبلغ</th></tr>');
+            allPartnerTx.forEach(function(t){
+              var isIn=t.type==='إيداع';
+              w.document.write('<tr>'+
+                '<td>'+t.hijriDate+'</td>'+
+                '<td style="font-weight:700">'+t._partner+'</td>'+
+                '<td>'+t.type+'</td>'+
+                '<td>'+(t.acct==='cash'?'الصندوق':'البنك')+'</td>'+
+                '<td class="'+(isIn?'pos':'neg')+'">'+(isIn?'+':'-')+fmt(t.amt)+' ر.س</td>'+
+              '</tr>');
+            });
+            w.document.write('</table>');
+          }
         }
       });
     }
+    return promise;
   }).then(function(){
-    w.document.write('<script>setTimeout(function(){window.print();},800);<\/script></body></html>');
+    w.document.write('<script>setTimeout(function(){window.print();},600);<\/script>');
+    w.document.write('</body></html>');
     w.document.close();
   });
 };
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+// ── Init ──────────────────────────────────────────────────────────────────────
+gs('hdr-uname').textContent = DISPLAY_NAME;
 updateDates();
 loadAll();
 
