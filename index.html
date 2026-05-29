@@ -712,13 +712,15 @@ input[type=file]{
 .sc-alldash{
   min-height:100vh;display:none;flex-direction:column;
   background:var(--g100);
+  position:relative;
 }
 .sc-alldash.on{display:flex}
 .alldash-hdr{
   background:#1E3A5F;
   padding:0;
-  position:sticky;top:0;z-index:100;
+  position:relative;
   box-shadow:0 2px 12px rgba(0,0,0,0.3);
+  flex-shrink:0;
 }
 .alldash-hdr-top{
   display:flex;align-items:center;justify-content:space-between;
@@ -742,6 +744,8 @@ input[type=file]{
   overflow-x:auto;scrollbar-width:none;
 }
 .alldash-pills::-webkit-scrollbar{display:none}
+.adsp{padding:6px 13px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:Almarai,sans-serif}
+.adsp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
 .alldash-body{flex:1;overflow-y:auto;padding-bottom:40px}
 
 /* KPI TABLE */
@@ -1015,10 +1019,10 @@ input[type=file]{
       <button class="alldash-back" id="alldash-back">رجوع ←</button>
     </div>
     <div class="alldash-pills" id="alldash-pills">
-      <div class="sp on" onclick="setAlldashShop('all',this)">كل المحلات</div>
-      <div class="sp" onclick="setAlldashShop('Tailor',this)">✂️ الخياط</div>
-      <div class="sp" onclick="setAlldashShop('Salon',this)">💇 الصالون</div>
-      <div class="sp" onclick="setAlldashShop('Atara',this)">🌿 العطارة</div>
+      <div class="adsp on" onclick="setAlldashShop('all',this)">كل المحلات</div>
+      <div class="adsp" onclick="setAlldashShop('Tailor',this)">✂️ الخياط</div>
+      <div class="adsp" onclick="setAlldashShop('Salon',this)">💇 الصالون</div>
+      <div class="adsp" onclick="setAlldashShop('Atara',this)">🌿 العطارة</div>
     </div>
   </div>
   <div class="alldash-body" id="alldash-body">
@@ -3559,13 +3563,13 @@ function enterAllShopsDashboard(){
   if(uname) uname.textContent = '👤 ' + (state.user ? state.user.displayName : '');
   gs('alldash-back').onclick = function(){ closeAlldash(); };
   alldashShop = 'all';
-  document.querySelectorAll('#alldash-pills .sp').forEach(function(p){ p.classList.remove('on'); });
-  document.querySelector('#alldash-pills .sp').classList.add('on');
+  document.querySelectorAll('#alldash-pills .adsp').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelector('#alldash-pills .adsp').classList.add('on');
   loadAlldash();
 }
 window.setAlldashShop = function(shopId, el){
   alldashShop = shopId;
-  document.querySelectorAll('#alldash-pills .sp').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('#alldash-pills .adsp').forEach(function(p){ p.classList.remove('on'); });
   el.classList.add('on');
   loadAlldash();
 };
