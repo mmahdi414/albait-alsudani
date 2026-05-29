@@ -1423,9 +1423,10 @@ function enterShop(shopId){
   state.prtCounter  = 0;
 
   // Clear dynamic data so dropdowns don't show previous shop's data
-  state.categories = [];
-  state.employees  = [];
-  state.partners   = [];
+  state.categories     = [];
+  state.employees      = [];
+  state.partners       = [];
+  state.partnersLoaded = false;
 
   setShopTheme(shopId);
   buildNav();
@@ -1515,8 +1516,13 @@ function loadEmployees(){
   });
 }
 function loadShopPartners(){
+  state.partnersLoaded = false;
   apiCall({ action:'getPartners', shop:state.currentShop }).then(function(res){
     if(res.success) state.partners = res.partners || [];
+    state.partnersLoaded = true;
+  }).catch(function(){
+    state.partners = [];
+    state.partnersLoaded = true;
   });
 }
 
@@ -2300,8 +2306,9 @@ function resetForm(){
   S.expC=0;S.salC=0;S.prtC=0;
   S.tfOpen=false;S.tfFrom='bank';S.tfTo='cash';
   S.tfFile='';S.tfDriveLink='';S.tfFileObj=null;
-  // Now clear built flag — buildEntry will rebuild with clean state
+  // Clear built flag then trigger rebuild
   gs('pg-entry').dataset.built = '';
+  renderEntry();
 }
 
 // ── IMAGE COMPRESS ─────────────────────────────────────────────────────────
@@ -3414,20 +3421,21 @@ function renderEntry(){
   // If categories, employees or partners not yet loaded — show spinner and wait
   var catsReady = state.categories && state.categories.length > 0;
   var empsReady = state.employees  && state.employees.length  > 0;
-  var prtsReady = state.partners   !== undefined;
+  var prtsReady = state.partnersLoaded === true;
 
-  if(!catsReady || !empsReady){
+  if(!catsReady || !empsReady || !prtsReady){
     pg.innerHTML = '<div class="loading">جاري تحميل البيانات...</div>';
     var attempts = 0;
     var interval = setInterval(function(){
       attempts++;
       var c = state.categories && state.categories.length > 0;
       var e = state.employees  && state.employees.length  > 0;
-      if((c && e) || attempts > 20){
+      var p = state.partnersLoaded === true;
+      if((c && e && p) || attempts > 20){
         clearInterval(interval);
-        if(c) DEMO.categories = state.categories;
-        if(e) DEMO.employees  = state.employees;
-        DEMO.partners = state.partners || [];
+        DEMO.categories = state.categories || [];
+        DEMO.employees  = state.employees  || [];
+        DEMO.partners   = state.partners   || [];
         pg.innerHTML = '';
         buildEntry();
         pg.dataset.built = '1';
