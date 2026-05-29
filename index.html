@@ -1413,6 +1413,11 @@ function enterShop(shopId){
   state.salCounter  = 0;
   state.prtCounter  = 0;
 
+  // Clear dynamic data so dropdowns don't show previous shop's data
+  state.categories = [];
+  state.employees  = [];
+  state.partners   = [];
+
   setShopTheme(shopId);
   buildNav();
 
@@ -1423,9 +1428,10 @@ function enterShop(shopId){
   gs('sc-shops').style.display = 'none';
   gs('sc-main').style.display  = 'flex';
 
-  // Load dynamic data
+  // Load dynamic data for new shop
   loadCategories();
   loadEmployees();
+  loadShopPartners();
 
   goTab('entry');
 }
@@ -1488,7 +1494,7 @@ function doLogout(){
   state.histCache   = [];
 }
 
-// ── LOAD CATEGORIES & EMPLOYEES ───────────────────────────────────────────────
+// ── LOAD CATEGORIES, EMPLOYEES & PARTNERS ─────────────────────────────────────
 function loadCategories(){
   apiCall({ action:'getCategories', shop:state.currentShop }).then(function(res){
     if(res.success) state.categories = res.categories || [];
@@ -1497,6 +1503,11 @@ function loadCategories(){
 function loadEmployees(){
   apiCall({ action:'getEmployees', shop:state.currentShop }).then(function(res){
     if(res.success) state.employees = res.employees || [];
+  });
+}
+function loadShopPartners(){
+  apiCall({ action:'getPartners', shop:state.currentShop }).then(function(res){
+    if(res.success) state.partners = res.partners || [];
   });
 }
 
@@ -2288,8 +2299,8 @@ function resetForm(){
     S.tfOpen=false;
     var tfBody=gs('tf-body');
     if(tfBody) tfBody.style.display='none';
-    var tfToggle=gs('tf-toggle');
-    if(tfToggle) tfToggle.textContent='＋ إضافة تحويل بين الحسابات';
+    var tfToggle=gs('tf-tog');
+    if(tfToggle) tfToggle.textContent='➕ تفعيل التحويل';
   }
   S.tfFrom='bank';S.tfTo='cash';
   gs('tf-amt').value='';
@@ -3406,9 +3417,10 @@ function renderEntry(){
   DEMO.role      = state.user ? state.user.role        : 'admin';
   DEMO.user      = state.user ? state.user.displayName : '';
 
-  // If categories or employees not yet loaded — show spinner and wait
+  // If categories, employees or partners not yet loaded — show spinner and wait
   var catsReady = state.categories && state.categories.length > 0;
   var empsReady = state.employees  && state.employees.length  > 0;
+  var prtsReady = state.partners   !== undefined;
 
   if(!catsReady || !empsReady){
     pg.innerHTML = '<div class="loading">جاري تحميل البيانات...</div>';
@@ -3421,6 +3433,7 @@ function renderEntry(){
         clearInterval(interval);
         if(c) DEMO.categories = state.categories;
         if(e) DEMO.employees  = state.employees;
+        DEMO.partners = state.partners || [];
         pg.innerHTML = '';
         buildEntry();
         pg.dataset.built = '1';
@@ -3431,6 +3444,7 @@ function renderEntry(){
 
   DEMO.categories = state.categories;
   DEMO.employees  = state.employees;
+  DEMO.partners   = state.partners || [];
   buildEntry();
   pg.dataset.built = '1';
 }
