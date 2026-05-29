@@ -1356,6 +1356,15 @@ function afterLogin(){
 
 // ── SHOP SELECTION ────────────────────────────────────────────────────────────
 function showShopSelection(){
+  // Clear entry form built flag so next shop entry rebuilds with fresh data
+  var pgEntry = gs('pg-entry');
+  if(pgEntry) pgEntry.dataset.built = '';
+  // Reset entry state
+  S.expenses=[];S.salaries=[];S.partners=[];
+  S.expC=0;S.salC=0;S.prtC=0;
+  S.tfOpen=false;S.tfFrom='bank';S.tfTo='cash';
+  S.tfFile='';S.tfDriveLink='';S.tfFileObj=null;
+
   gs('shops-welcome').textContent = 'مرحباً ' + state.user.displayName;
   var grid = gs('shops-grid');
   grid.innerHTML = '';
@@ -2286,28 +2295,13 @@ function doSave(mode){
 }
 
 function resetForm(){
-  gs('pg-entry').dataset.built = '';
-  gs('hd').value='';
-  gs('gd').textContent='';
-  gs('rc').value='';
-  gs('rk').value='';
+  // Reset state FIRST before clearing built flag
   S.expenses=[];S.salaries=[];S.partners=[];
   S.expC=0;S.salC=0;S.prtC=0;
-  S.tfFile='';S.tfDriveLink='';
-  // Close transfer section if open
-  if(S.tfOpen){
-    S.tfOpen=false;
-    var tfBody=gs('tf-body');
-    if(tfBody) tfBody.style.display='none';
-    var tfToggle=gs('tf-tog');
-    if(tfToggle) tfToggle.textContent='➕ تفعيل التحويل';
-  }
-  S.tfFrom='bank';S.tfTo='cash';
-  gs('tf-amt').value='';
-  gs('tf-note').value='';
-  renderExpenses();
-  renderSalaries();
-  renderPartners();
+  S.tfOpen=false;S.tfFrom='bank';S.tfTo='cash';
+  S.tfFile='';S.tfDriveLink='';S.tfFileObj=null;
+  // Now clear built flag — buildEntry will rebuild with clean state
+  gs('pg-entry').dataset.built = '';
 }
 
 // ── IMAGE COMPRESS ─────────────────────────────────────────────────────────
