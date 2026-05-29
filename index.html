@@ -708,6 +708,62 @@ input[type=file]{
 
 }
 
+/* ALL-SHOPS DASHBOARD SCREEN */
+.sc-alldash{
+  min-height:100vh;display:none;flex-direction:column;
+  background:var(--g100);
+}
+.sc-alldash.on{display:flex}
+.alldash-hdr{
+  background:#1E3A5F;
+  padding:0;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.alldash-hdr-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px 10px;
+}
+.alldash-back{
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--rxl);padding:6px 14px;
+  color:#fff;font-family:Almarai,sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;gap:5px;
+}
+.alldash-title{font-size:15px;font-weight:800;color:#fff;letter-spacing:0.5px}
+.alldash-uname{
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);
+  border-radius:var(--rxl);padding:6px 13px;
+  font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);
+  display:flex;align-items:center;gap:5px;
+}
+.alldash-pills{
+  display:flex;gap:6px;padding:0 20px 12px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.alldash-pills::-webkit-scrollbar{display:none}
+.alldash-body{flex:1;overflow-y:auto;padding-bottom:40px}
+
+/* KPI TABLE */
+.kpi-table-wrap{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);overflow:hidden;box-shadow:var(--s1);margin-bottom:10px}
+.kpi-table{width:100%;border-collapse:collapse;direction:rtl}
+.kpi-table th{background:#f8f9fa;font-size:10px;font-weight:700;color:var(--g500);padding:10px 12px;text-align:right;letter-spacing:0.5px;border-bottom:1px solid var(--g200)}
+.kpi-table td{padding:12px;border-bottom:1px solid var(--g100);font-size:13px;font-weight:700;color:var(--g800);text-align:right}
+.kpi-table tr:last-child td{border-bottom:none}
+.kpi-table .tot-row td{background:#f8f9fa;font-weight:800;color:var(--g900);border-top:2px solid var(--g200)}
+.kpi-table .shop-name{display:flex;align-items:center;gap:6px;font-size:12px}
+.kpi-table .val-cash{color:var(--green-d)}
+.kpi-table .val-bank{color:#185FA5}
+.kpi-table .val-avail{color:var(--navy);font-weight:800}
+
+/* SHOP DASHBOARD BANNER */
+.shop-dash-banner{
+  padding:12px 20px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;
+  letter-spacing:1px;text-transform:uppercase;
+}
+
 /* P4 */
 .dash{max-width:480px;margin:0 auto;padding-bottom:40px}
 
@@ -935,7 +991,38 @@ input[type=file]{
       <div class="shops-title">اختر المحل</div>
       <div class="shops-sub">حدد المحل الذي تريد العمل عليه</div>
     </div>
+    <div id="dash-entry-wrap" style="display:none">
+      <div class="dash-entry-card" id="dash-entry-btn">
+        <div class="dash-entry-card-ico">📊</div>
+        <div class="dash-entry-card-info">
+          <div class="dash-entry-card-name">لوحة المتابعة</div>
+          <div class="dash-entry-card-sub">عرض إحصائيات جميع المحلات</div>
+        </div>
+        <div class="shop-card-arrow">←</div>
+      </div>
+      <div class="dash-entry-divider"><span class="dash-entry-divider-txt">أو اختر محلاً</span></div>
+    </div>
     <div class="shops-grid" id="shops-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════ ALL-SHOPS DASHBOARD ══════════════════ -->
+<div class="sc-alldash" id="sc-alldash">
+  <div class="alldash-hdr">
+    <div class="alldash-hdr-top">
+      <div class="alldash-uname" id="alldash-uname">👤 محمد</div>
+      <div class="alldash-title">البيت السوداني</div>
+      <button class="alldash-back" id="alldash-back">رجوع ←</button>
+    </div>
+    <div class="alldash-pills" id="alldash-pills">
+      <div class="sp on" onclick="setAlldashShop('all',this)">كل المحلات</div>
+      <div class="sp" onclick="setAlldashShop('Tailor',this)">✂️ الخياط</div>
+      <div class="sp" onclick="setAlldashShop('Salon',this)">💇 الصالون</div>
+      <div class="sp" onclick="setAlldashShop('Atara',this)">🌿 العطارة</div>
+    </div>
+  </div>
+  <div class="alldash-body" id="alldash-body">
+    <!-- Dashboard content injected here by loadAlldash() -->
   </div>
 </div>
 
@@ -968,7 +1055,7 @@ input[type=file]{
   <div id="pg-dashboard" class="pg">
 <div class="dash">
 
-<div class="hdr" id="dash-hdr">
+<div class="hdr" id="dash-hdr" style="display:none">
   <div class="hdr-inner">
     <div class="hdr-top">
       <div>
@@ -986,6 +1073,7 @@ input[type=file]{
     </div>
   </div>
 </div>
+<div class="shop-dash-banner" id="dash-banner" style="background:var(--shop)">لوحة المتابعة</div>
 
 <div class="fbar">
   <div class="frow">
@@ -1366,6 +1454,14 @@ function showShopSelection(){
   S.tfFile='';S.tfDriveLink='';S.tfFileObj=null;
 
   gs('shops-welcome').textContent = 'مرحباً ' + state.user.displayName;
+
+  // Show dashboard card for admin and area_manager only
+  var role = state.user ? state.user.role : '';
+  var canDash = (role === 'admin' || role === 'area_manager');
+  gs('dash-entry-wrap').style.display = canDash ? 'block' : 'none';
+  if(canDash){
+    gs('dash-entry-btn').onclick = function(){ enterAllShopsDashboard(); };
+  }
   var grid = gs('shops-grid');
   grid.innerHTML = '';
 
@@ -3023,34 +3119,35 @@ function loadShopCmp(p){
 
 // ── Revenue Chart ─────────────────────────────────────────────────────────────
 function loadRevChart(p){
-  // Reset chart first
   if(revChart){revChart.destroy();revChart=null;}
   gs('rev-cash-tot').textContent='—';
   gs('rev-card-tot').textContent='—';
   apiCall(Object.assign({action:'getRevenueChart'},p)).then(function(res){
     if(!res.success||!res.data||!res.data.length){
-      // Draw empty chart
       if(revChart){revChart.destroy();revChart=null;}
-      revChart=new Chart(gs('revChart'),{type:'bar',data:{labels:[],datasets:[{data:[],backgroundColor:'#1D9E75'},{data:[],backgroundColor:'#185FA5'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+      revChart=new Chart(gs('revChart'),{type:'bar',data:{labels:['نقداً','بطاقة'],datasets:[{data:[0,0],backgroundColor:['#1D9E75','#185FA5'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
       return;
     }
     var data=res.data;
-    gs('rev-cash-tot').textContent=fmt(data.reduce(function(s,d){return s+d.revCash;},0));
-    gs('rev-card-tot').textContent=fmt(data.reduce(function(s,d){return s+d.revCard;},0));
+    var totalCash=data.reduce(function(s,d){return s+(d.revCash||0);},0);
+    var totalCard=data.reduce(function(s,d){return s+(d.revCard||0);},0);
+    gs('rev-cash-tot').textContent=fmt(totalCash);
+    gs('rev-card-tot').textContent=fmt(totalCard);
     if(revChart){revChart.destroy();}
     revChart=new Chart(gs('revChart'),{
       type:'bar',
       data:{
-        labels:data.map(function(d){return d.periodKey;}),
-        datasets:[
-          {label:'بطاقة',data:data.map(function(d){return d.revCard;}),backgroundColor:'#185FA5',borderRadius:5,borderSkipped:false},
-          {label:'نقداً', data:data.map(function(d){return d.revCash;}),backgroundColor:'#1D9E75',borderRadius:5,borderSkipped:false}
-        ]
+        labels:['نقداً','بطاقة'],
+        datasets:[{
+          data:[totalCash,totalCard],
+          backgroundColor:['#1D9E75','#185FA5'],
+          borderRadius:8,borderSkipped:false
+        }]
       },
       options:{responsive:true,maintainAspectRatio:false,
         plugins:{legend:{display:false}},
         scales:{
-          x:{ticks:{font:{size:10,family:'Almarai'},color:'#ADB5BD',autoSkip:false,maxRotation:0},grid:{display:false},border:{color:'#DEE2E6'}},
+          x:{ticks:{font:{size:12,family:'Almarai'},color:'#555'},grid:{display:false},border:{color:'#DEE2E6'}},
           y:{ticks:{font:{size:10,family:'Almarai'},color:'#ADB5BD',callback:function(v){return v>=1000?(v/1000)+'K':v;}},grid:{color:'#F1F3F5'},border:{display:false}}
         }
       }
@@ -3451,17 +3548,204 @@ function renderEntry(){
   pg.dataset.built = '1';
 }
 
+// ── ALL-SHOPS DASHBOARD ───────────────────────────────────────────────────────
+var alldashShop = 'all';
+
+function enterAllShopsDashboard(){
+  gs('sc-shops').style.display    = 'none';
+  gs('sc-main').style.display     = 'none';
+  gs('sc-alldash').style.display  = 'flex';
+  var uname = gs('alldash-uname');
+  if(uname) uname.textContent = '👤 ' + (state.user ? state.user.displayName : '');
+  gs('alldash-back').onclick = function(){ closeAlldash(); };
+  alldashShop = 'all';
+  document.querySelectorAll('#alldash-pills .sp').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelector('#alldash-pills .sp').classList.add('on');
+  loadAlldash();
+}
+window.setAlldashShop = function(shopId, el){
+  alldashShop = shopId;
+  document.querySelectorAll('#alldash-pills .sp').forEach(function(p){ p.classList.remove('on'); });
+  el.classList.add('on');
+  loadAlldash();
+};
+function closeAlldash(){
+  gs('sc-alldash').style.display = 'none';
+  showShopSelection();
+}
+
+function loadAlldash(){
+  var body = gs('alldash-body');
+  body.innerHTML = '<div class="loading" style="padding:40px 20px;text-align:center">جاري التحميل</div>';
+  var role      = state.user ? state.user.role  : 'admin';
+  var userShops = state.user ? state.user.shops : 'all';
+  var adPeriodEl = gs('ad-period');
+  var adCalEl    = gs('ad-cal');
+  var adPeriod   = adPeriodEl ? adPeriodEl.value : 'month';
+  var adCal      = adCalEl    ? adCalEl.value    : 'hijri';
+
+  // Build date range
+  var now = new Date();
+  var hy  = greg2hijri(now.getFullYear(), now.getMonth()+1, now.getDate());
+  var fromKey, toKey;
+  if(adCal === 'hijri'){
+    if(adPeriod === 'month'){ fromKey = hy.y+'/'+pad2(hy.m); toKey = fromKey; }
+    else if(adPeriod === 'year'){ fromKey = hy.y+'/01'; toKey = hy.y+'/12'; }
+    else { fromKey = ''; toKey = ''; }
+  } else {
+    var ym = now.getFullYear()+'-'+pad2(now.getMonth()+1);
+    if(adPeriod === 'month'){ fromKey = ym; toKey = ym; }
+    else if(adPeriod === 'year'){ fromKey = now.getFullYear()+'-01'; toKey = now.getFullYear()+'-12'; }
+    else { fromKey = ''; toKey = ''; }
+  }
+
+  var p = { role:role, userShops:userShops, shop:alldashShop, calType:adCal, fromKey:fromKey, toKey:toKey };
+  var isAll = alldashShop === 'all';
+
+  Promise.all([
+    apiCall(Object.assign({ action: isAll ? 'getAllShopsKPIs' : 'getDashboardKPIs' }, p)),
+    apiCall(Object.assign({ action: 'getRevenueChart' }, p))
+  ]).then(function(results){
+    var kpiRes = results[0];
+    var revRes = results[1];
+    body.innerHTML = '';
+
+    // Filter bar
+    var fbar = document.createElement('div');
+    fbar.style.cssText = 'background:#fff;border-bottom:1px solid var(--g200);padding:12px 20px;position:sticky;top:0;z-index:10';
+    fbar.innerHTML =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'+
+        '<div><div class="flbl">الفترة</div>'+
+          '<select class="fsel" id="ad-period">'+
+            '<option value="month"'+(adPeriod==='month'?' selected':'')+'>هذا الشهر</option>'+
+            '<option value="year"'+(adPeriod==='year'?' selected':'')+'>هذا العام</option>'+
+            '<option value="all"'+(adPeriod==='all'?' selected':'')+'>من البداية</option>'+
+          '</select></div>'+
+        '<div><div class="flbl">التقويم</div>'+
+          '<select class="fsel" id="ad-cal">'+
+            '<option value="hijri"'+(adCal==='hijri'?' selected':'')+'>هجري</option>'+
+            '<option value="greg"'+(adCal==='greg'?' selected':'')+'>ميلادي</option>'+
+          '</select></div>'+
+      '</div>'+
+      '<button class="apbtn" onclick="loadAlldash()">تطبيق ←</button>';
+    body.appendChild(fbar);
+
+    var inner = document.createElement('div');
+    inner.style.cssText = 'max-width:480px;margin:0 auto;padding:20px 20px 0';
+
+    // KPI section
+    var kpiWrap = document.createElement('div');
+    kpiWrap.style.marginBottom = '16px';
+    if(isAll && kpiRes.success && kpiRes.rows){
+      kpiWrap.innerHTML =
+        '<div class="kpi-table-wrap">'+
+          '<table class="kpi-table">'+
+            '<thead><tr><th>المحل</th><th>الصندوق</th><th>البنك</th><th>المتاح</th></tr></thead>'+
+            '<tbody>'+
+            kpiRes.rows.map(function(r){
+              return '<tr>'+
+                '<td><span class="shop-name">'+r.emoji+' '+r.shopName+'</span></td>'+
+                '<td class="val-cash">'+fmt(r.cashBalance)+'</td>'+
+                '<td class="val-bank">'+fmt(r.bankBalance)+'</td>'+
+                '<td class="val-avail">'+fmt(r.available)+'</td>'+
+              '</tr>';
+            }).join('')+
+            '<tr class="tot-row">'+
+              '<td>الإجمالي</td>'+
+              '<td class="val-cash">'+fmt(kpiRes.totals.cashBalance)+'</td>'+
+              '<td class="val-bank">'+fmt(kpiRes.totals.bankBalance)+'</td>'+
+              '<td class="val-avail">'+fmt(kpiRes.totals.available)+'</td>'+
+            '</tr>'+
+            '</tbody>'+
+          '</table>'+
+        '</div>';
+    } else if(kpiRes.success){
+      var avail = (kpiRes.cashBalance||0) + (kpiRes.bankBalance||0);
+      kpiWrap.innerHTML =
+        '<div class="kg3">'+
+          '<div class="kpi"><div class="kpi-acc" style="background:var(--green)"></div><div class="kpi-lbl">الصندوق</div><div class="kpi-v vg" style="font-size:18px">'+fmt(kpiRes.cashBalance)+'<span class="kpi-cur" style="font-size:11px"> ر.س</span></div></div>'+
+          '<div class="kpi"><div class="kpi-acc" style="background:#185FA5"></div><div class="kpi-lbl">البنك</div><div class="kpi-v vb" style="font-size:18px">'+fmt(kpiRes.bankBalance)+'<span class="kpi-cur" style="font-size:11px"> ر.س</span></div></div>'+
+          '<div class="kpi"><div class="kpi-acc" style="background:var(--navy)"></div><div class="kpi-lbl">المتاح</div><div class="kpi-v" style="font-size:18px;color:var(--navy)">'+fmt(avail)+'<span class="kpi-cur" style="font-size:11px"> ر.س</span></div></div>'+
+        '</div>';
+    }
+    inner.appendChild(kpiWrap);
+
+    // Revenue — always two bars
+    if(revRes.success && revRes.data){
+      var totalCash = revRes.data.reduce(function(s,d){ return s+(d.revCash||0); }, 0);
+      var totalCard = revRes.data.reduce(function(s,d){ return s+(d.revCard||0); }, 0);
+      var revWrap = document.createElement('div');
+      revWrap.innerHTML =
+        '<div class="card" style="margin-bottom:16px">'+
+          '<div class="chdr"><div class="ctitle">اتجاه الإيرادات</div></div>'+
+          '<div style="display:flex;gap:8px;margin-bottom:10px">'+
+            '<div style="flex:1;text-align:center;background:rgba(29,158,117,0.08);border-radius:var(--rmd);padding:10px">'+
+              '<div style="font-size:10px;font-weight:700;color:var(--green-d);margin-bottom:4px">نقداً</div>'+
+              '<div style="font-size:16px;font-weight:800;color:var(--green-d)">'+fmt(totalCash)+' ر.س</div>'+
+            '</div>'+
+            '<div style="flex:1;text-align:center;background:rgba(24,95,165,0.08);border-radius:var(--rmd);padding:10px">'+
+              '<div style="font-size:10px;font-weight:700;color:#185FA5;margin-bottom:4px">بطاقة</div>'+
+              '<div style="font-size:16px;font-weight:800;color:#185FA5">'+fmt(totalCard)+' ر.س</div>'+
+            '</div>'+
+          '</div>'+
+          '<div style="height:160px;position:relative"><canvas id="ad-rev-chart"></canvas></div>'+
+        '</div>';
+      inner.appendChild(revWrap);
+      setTimeout(function(){
+        var ctx = gs('ad-rev-chart');
+        if(ctx && typeof Chart !== 'undefined'){
+          new Chart(ctx,{
+            type:'bar',
+            data:{
+              labels:['نقداً','بطاقة'],
+              datasets:[{data:[totalCash,totalCard],backgroundColor:['#1D9E75','#185FA5'],borderRadius:8,borderSkipped:false}]
+            },
+            options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+              scales:{
+                x:{ticks:{font:{size:12,family:'Almarai'},color:'#555'},grid:{display:false}},
+                y:{ticks:{font:{size:10,family:'Almarai'},color:'#ADB5BD',callback:function(v){return v>=1000?(v/1000)+'K':v;}},grid:{color:'#F1F3F5'},border:{display:false}}
+              }
+            }
+          });
+        }
+      }, 100);
+    }
+
+    body.appendChild(inner);
+
+  }).catch(function(){
+    body.innerHTML = '<div class="empty" style="padding:40px 20px">تعذر التحميل</div>';
+  });
+}
+window.enterAllShopsDashboard = enterAllShopsDashboard;
+
 function loadDashboard(){
-  curShop      = 'all';
+  curShop      = state.currentShop || 'all';
   ROLE         = state.user ? state.user.role        : 'admin';
   USER_SHOPS   = state.user ? state.user.shops       : 'all';
   DISPLAY_NAME = state.user ? state.user.displayName : '';
   var uname = gs('hdr-uname');
   if(uname) uname.textContent = DISPLAY_NAME;
   document.querySelectorAll('.sp').forEach(function(p){ p.classList.remove('on'); });
-  var allPill = document.querySelector('.sp');
-  if(allPill) allPill.classList.add('on');
-  applyColor(SHOP_COLORS['all']);
+  document.querySelectorAll('.sp').forEach(function(p){
+    var shopVal = p.getAttribute('onclick');
+    if(shopVal && shopVal.indexOf("'"+curShop+"'") > -1) p.classList.add('on');
+  });
+  if(curShop === 'all'){
+    var allPill = document.querySelector('.sp');
+    if(allPill) allPill.classList.add('on');
+  }
+
+  // D6 — Hide partners for area_manager
+  var canSeePrt = (ROLE === 'admin');
+  var pCard  = gs('partners-card');
+  var pStmt  = gs('partners-stmt-card');
+  var pPdf   = document.querySelector('.pdf-chk');
+  if(pCard)  pCard.style.display  = canSeePrt ? '' : 'none';
+  if(pStmt)  pStmt.style.display  = canSeePrt ? '' : 'none';
+  if(pPdf)   pPdf.style.display   = canSeePrt ? '' : 'none';
+
+  applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
   loadAll();
 }
