@@ -739,59 +739,9 @@ input[type=file]{
 
 }
 
-/* ALL-SHOPS DASHBOARD SCREEN */
-.sc-alldash{display:none;height:0;overflow:hidden;visibility:hidden}
-.sc-alldash *{visibility:hidden}
-.sc-alldash.show{
-  display:flex;
-  height:auto;
-  overflow-y:auto;
-  visibility:visible;
-  flex-direction:column;
-  min-height:100vh;
-  background:var(--g100);
-}
-.sc-alldash.show *{visibility:visible}
-.alldash-hdr{
-  background:#1E3A5F;
-  padding:0;
-  position:relative;
-  box-shadow:0 2px 12px rgba(0,0,0,0.3);
-  flex-shrink:0;
-}
-.alldash-inner{
-  max-width:480px;
-  margin:0 auto;
-  width:100%;
-  flex:1;
-  display:flex;
-  flex-direction:column;
-}
-.alldash-hdr-top{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 20px 10px;
-}
-.alldash-back{
-  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
-  border-radius:var(--rxl);padding:6px 14px;
-  color:#fff;font-family:Almarai,sans-serif;font-size:12px;font-weight:700;
-  cursor:pointer;display:flex;align-items:center;gap:5px;
-}
-.alldash-title{font-size:15px;font-weight:800;color:#fff;letter-spacing:0.5px}
-.alldash-uname{
-  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);
-  border-radius:var(--rxl);padding:6px 13px;
-  font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);
-  display:flex;align-items:center;gap:5px;
-}
-.alldash-pills{
-  display:flex;gap:6px;padding:0 20px 12px;
-  overflow-x:auto;scrollbar-width:none;
-}
-.alldash-pills::-webkit-scrollbar{display:none}
+/* ALL-SHOPS DASHBOARD PILLS */
 .adsp{padding:6px 13px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:Almarai,sans-serif}
 .adsp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
-.alldash-body{flex:1;overflow-y:auto;padding-bottom:40px;-webkit-overflow-scrolling:touch}
 
 /* KPI TABLE */
 .kpi-table-wrap{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);overflow:hidden;box-shadow:var(--s1);margin-bottom:10px}
@@ -1056,24 +1006,6 @@ input[type=file]{
     </div>
     <div class="shops-grid" id="shops-grid"></div>
   </div>
-</div>
-
-<!-- ══════════════════ ALL-SHOPS DASHBOARD ══════════════════ -->
-<div class="sc-alldash" id="sc-alldash">
-  <div class="alldash-hdr">
-    <div class="alldash-hdr-top">
-      <div class="alldash-uname" id="alldash-uname">👤 محمد</div>
-      <div class="alldash-title">البيت السوداني</div>
-      <button class="alldash-back" id="alldash-back">رجوع ←</button>
-    </div>
-    <div class="alldash-pills" id="alldash-pills">
-      <div class="adsp on" onclick="setAlldashShop('all',this)">كل المحلات</div>
-      <div class="adsp" onclick="setAlldashShop('Tailor',this)">✂️ الخياط</div>
-      <div class="adsp" onclick="setAlldashShop('Salon',this)">💇 الصالون</div>
-      <div class="adsp" onclick="setAlldashShop('Atara',this)">🌿 العطارة</div>
-    </div>
-  </div>
-  <div class="alldash-body" id="alldash-body"></div>
 </div>
 
 <!-- ══════════════════ MAIN APP ══════════════════ -->
@@ -3590,33 +3522,66 @@ function renderEntry(){
 
 // ── ALL-SHOPS DASHBOARD ───────────────────────────────────────────────────────
 var alldashShop = 'all';
+var inAlldash   = false;
 
 function enterAllShopsDashboard(){
-  gs('sc-login').style.display   = 'none';
-  gs('sc-shops').style.display   = 'none';
-  gs('sc-main').style.display    = 'none';
-  gs('sc-alldash').classList.add('show');
-  var uname = gs('alldash-uname');
-  if(uname) uname.textContent = '👤 ' + (state.user ? state.user.displayName : '');
-  gs('alldash-back').onclick = function(){ closeAlldash(); };
+  inAlldash = true;
   alldashShop = 'all';
-  document.querySelectorAll('#alldash-pills .adsp').forEach(function(p){ p.classList.remove('on'); });
-  document.querySelector('#alldash-pills .adsp').classList.add('on');
+  state.currentShop = null;
+
+  gs('sc-shops').style.display = 'none';
+  gs('sc-main').style.display  = 'flex';
+
+  // Navy header for all-shops mode
+  var hdr = gs('hdr');
+  if(hdr) hdr.style.background = '#1E3A5F';
+  if(gs('hdr-title')) gs('hdr-title').textContent = 'البيت السوداني';
+  if(gs('hdr-shop-label')) gs('hdr-shop-label').textContent = 'AL-BAIT AL-SUDANI';
+
+  // Convert switch button to back button
+  var switchBtn = gs('hdr-switch-btn');
+  if(switchBtn){
+    switchBtn.style.display = 'flex';
+    switchBtn.textContent   = '← رجوع';
+    switchBtn.onclick = function(){
+      inAlldash = false;
+      gs('sc-main').style.display = 'none';
+      switchBtn.textContent = '⇄ تبديل';
+      switchBtn.onclick = function(){ showShopSelection(); };
+      showShopSelection();
+    };
+  }
+
+  // Build nav — dashboard tab only
+  var nav = gs('nav');
+  nav.innerHTML = '';
+  var btn = document.createElement('button');
+  btn.className = 'nb on'; btn.id = 'nb-dashboard';
+  btn.innerHTML = '<span class="ico">📊</span><span>داشبورد</span>';
+  nav.appendChild(btn);
+
+  // Show dashboard page
+  ['entry','summary','history'].forEach(function(t){
+    var pg=gs('pg-'+t); if(pg) pg.classList.remove('on');
+  });
+  gs('pg-dashboard').classList.add('on');
+  var cnt=gs('cnt'); if(cnt) cnt.style.display='none';
+
+  ROLE         = state.user ? state.user.role        : 'admin';
+  USER_SHOPS   = state.user ? state.user.shops       : 'all';
+  DISPLAY_NAME = state.user ? state.user.displayName : '';
   loadAlldash();
 }
+window.enterAllShopsDashboard = enterAllShopsDashboard;
 window.setAlldashShop = function(shopId, el){
   alldashShop = shopId;
-  document.querySelectorAll('#alldash-pills .adsp').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.adsp').forEach(function(p){ p.classList.remove('on'); });
   el.classList.add('on');
   loadAlldash();
 };
-function closeAlldash(){
-  gs('sc-alldash').classList.remove('show');
-  showShopSelection();
-}
 
 function loadAlldash(){
-  var body = gs('alldash-body');
+  var body = gs('pg-dashboard');
   body.innerHTML = '<div class="loading" style="padding:40px 20px;text-align:center">جاري التحميل</div>';
   var role      = state.user ? state.user.role  : 'admin';
   var userShops = state.user ? state.user.shops : 'all';
@@ -3647,10 +3612,16 @@ function loadAlldash(){
   apiCall(Object.assign({action:kpiAction},p)).then(function(kpiRes){
     body.innerHTML = '';
 
-    // Filter bar
+    // Shop pills + filter bar
     var fbar=document.createElement('div');
     fbar.style.cssText='background:#fff;border-bottom:1px solid var(--g200);padding:12px 20px';
     fbar.innerHTML=
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+        '<div class="adsp'+(alldashShop==='all'?' on':'')+'" onclick="setAlldashShop(\'all\',this)">كل المحلات</div>'+
+        '<div class="adsp'+(alldashShop==='Tailor'?' on':'')+'" style="background:'+(alldashShop==='Tailor'?'rgba(44,24,16,0.15)':'')+'";onclick="setAlldashShop(\'Tailor\',this)">✂️ الخياط</div>'+
+        '<div class="adsp'+(alldashShop==='Salon'?' on':'')+'" onclick="setAlldashShop(\'Salon\',this)">💇 الصالون</div>'+
+        '<div class="adsp'+(alldashShop==='Atara'?' on':'')+'" onclick="setAlldashShop(\'Atara\',this)">🌿 العطارة</div>'+
+      '</div>'+
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'+
         '<div><div class="flbl">الفترة</div>'+
           '<select class="fsel" id="ad-period">'+
