@@ -71,7 +71,6 @@
 
 /* ── Reset ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{overflow-y:scroll;scrollbar-gutter:stable}
 html,body{
   font-family:'Almarai',sans-serif;
   background:var(--shop-page);
@@ -373,7 +372,7 @@ html,body{
 .nb.on{color:var(--shop);border-bottom-color:var(--shop)}
 
 /* Content area */
-.cnt{flex:1;overflow-y:auto;padding:14px;padding-bottom:20px}
+.cnt{flex:1;overflow-y:scroll;padding:14px;padding-bottom:20px}
 .pg{display:none}.pg.on{display:block}
 
 /* ═══════════════════════════════════════════════════
@@ -565,7 +564,7 @@ input[type=file]{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-#pg-dashboard.on{display:flex;flex-direction:column;overflow-y:auto;}
+#pg-dashboard.on{display:flex;flex-direction:column;overflow-y:scroll;}
 
 
 /* P2 */
@@ -1581,10 +1580,6 @@ function buildNav(){
 }
 
 function goTab(tabId){
-  // Configure dashboard layout/theme BEFORE making it visible (prevents header/layout flash);
-  // chart loading inside is deferred via rAF so canvases size correctly once visible.
-  if(tabId === 'dashboard') loadDashboard();
-
   ['entry','summary','history','dashboard'].forEach(function(t){
     var pg = gs('pg-' + t);
     var nb = gs('nb-' + t);
@@ -1597,6 +1592,7 @@ function goTab(tabId){
   if(tabId === 'entry')     renderEntry();
   if(tabId === 'summary')   loadSummary();
   if(tabId === 'history')   loadHistory();
+  if(tabId === 'dashboard') loadDashboard();
 }
 
 // ── HEADER ACTIONS ────────────────────────────────────────────────────────────
@@ -3695,13 +3691,7 @@ function loadDashboard(){
 
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
-  // Defer chart/data loading until after the page is visible AND laid out at full size.
-  // Double rAF: first frame applies the .on/display changes from goTab, second frame
-  // runs after the browser has completed layout — so Chart.js measures final dimensions
-  // (eliminates the small→big resize flash on dashboard pages).
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){ loadAll(); });
-  });
+  loadAll();
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
