@@ -564,7 +564,7 @@ input[type=file]{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-#pg-dashboard.on{display:flex;flex-direction:column;overflow-y:auto;flex:1;min-height:0;}
+#pg-dashboard.on{display:flex;flex-direction:column;overflow-y:auto;}
 
 
 /* P2 */
@@ -1294,7 +1294,9 @@ input[type=file]{
     </div>
   </div>
 </div>
-<!-- ALL-SHOPS DASHBOARD OVERLAY -->
+</div><!-- end .app -->
+
+<!-- ALL-SHOPS DASHBOARD OVERLAY — outside .app so position:fixed works correctly -->
 <div class="sc-alldash" id="sc-alldash">
   <div class="alldash-hdr">
     <div class="alldash-hdr-top">
