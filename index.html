@@ -740,14 +740,14 @@ input[type=file]{
 }
 
 /* ALL-SHOPS DASHBOARD SCREEN */
-.sc-alldash{
-  min-height:100vh;
-  display:none;
+.sc-alldash{display:none}
+.sc-alldash.show{
+  display:flex;
   flex-direction:column;
+  min-height:100vh;
   background:var(--g100);
-  overflow:hidden;
+  overflow-y:auto;
 }
-.sc-alldash.on{display:flex}
 .alldash-hdr{
   background:#1E3A5F;
   padding:0;
@@ -3591,7 +3591,7 @@ function enterAllShopsDashboard(){
   gs('sc-login').style.display   = 'none';
   gs('sc-shops').style.display   = 'none';
   gs('sc-main').style.display    = 'none';
-  gs('sc-alldash').style.display = 'flex';
+  gs('sc-alldash').classList.add('show');
   var uname = gs('alldash-uname');
   if(uname) uname.textContent = '👤 ' + (state.user ? state.user.displayName : '');
   gs('alldash-back').onclick = function(){ closeAlldash(); };
@@ -3607,7 +3607,7 @@ window.setAlldashShop = function(shopId, el){
   loadAlldash();
 };
 function closeAlldash(){
-  gs('sc-alldash').style.display = 'none';
+  gs('sc-alldash').classList.remove('show');
   showShopSelection();
 }
 
