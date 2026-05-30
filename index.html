@@ -3532,22 +3532,30 @@ function enterAllShopsDashboard(){
   gs('sc-shops').style.display = 'none';
   gs('sc-main').style.display  = 'flex';
 
-  // Issue 2 — Navy background for all-shops mode
+  // Navy theme — consistent background
   document.documentElement.style.setProperty('--shop-page', '#EEF2F7');
   document.documentElement.style.setProperty('--shop-card', '#E1E8F0');
   document.documentElement.style.setProperty('--shop-card-border', '#D0DCE8');
+  document.documentElement.style.setProperty('--shop', '#1E3A5F');
+  document.documentElement.style.setProperty('--cur', '#1E3A5F');
+
+  // Issue 1 — Same header size/style as shop pages
   var hdr = gs('hdr');
   if(hdr) hdr.style.background = '#1E3A5F';
-  if(gs('hdr-title')) gs('hdr-title').textContent = 'لوحة المتابعة';
+  if(gs('hdr-title'))      gs('hdr-title').textContent      = 'لوحة المتابعة';
   if(gs('hdr-shop-label')) gs('hdr-shop-label').textContent = 'البيت السوداني';
 
-  // Convert switch button to back button
+  // Back button
   var switchBtn = gs('hdr-switch-btn');
   if(switchBtn){
     switchBtn.style.display = 'flex';
     switchBtn.textContent   = '← رجوع';
     switchBtn.onclick = function(){
       inAlldash = false;
+      // Restore nav style
+      var nav2=gs('nav');
+      nav2.style.background='';nav2.style.padding='';
+      nav2.style.display='';nav2.style.gap='';nav2.style.overflowX='';
       gs('sc-main').style.display = 'none';
       switchBtn.textContent = '⇄ تبديل';
       switchBtn.onclick = function(){ showShopSelection(); };
@@ -3555,18 +3563,14 @@ function enterAllShopsDashboard(){
     };
   }
 
-  // Issue 1 — Build nav with shop pills extending header
+  // Issue 2 — Nav becomes shop selector pills (dark navy background)
   var nav = gs('nav');
-  nav.style.background = '#152a47';
-  nav.style.padding = '10px 16px';
-  nav.style.display = 'flex';
-  nav.style.gap = '8px';
-  nav.style.overflowX = 'auto';
+  nav.style.cssText = 'background:#152a47;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;flex-wrap:wrap;scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,0.1)';
   nav.innerHTML =
-    '<div class="adsp'+(alldashShop==='all'?' on':'')+'" onclick="setAlldashShop(\'all\',this)">كل المحلات</div>'+
-    '<div class="adsp'+(alldashShop==='Tailor'?' on':'')+'" onclick="setAlldashShop(\'Tailor\',this)">✂️ الخياط</div>'+
-    '<div class="adsp'+(alldashShop==='Salon'?' on':'')+'" onclick="setAlldashShop(\'Salon\',this)">💇 الصالون</div>'+
-    '<div class="adsp'+(alldashShop==='Atara'?' on':'')+'" onclick="setAlldashShop(\'Atara\',this)">🌿 العطارة</div>';
+    '<button class="adsp'+(alldashShop==='all'?' on':'')+'" onclick="setAlldashShop(\'all\',this)">كل المحلات</button>'+
+    '<button class="adsp'+(alldashShop==='Tailor'?' on':'')+'" onclick="setAlldashShop(\'Tailor\',this)">✂️ الخياط</button>'+
+    '<button class="adsp'+(alldashShop==='Salon'?' on':'')+'" onclick="setAlldashShop(\'Salon\',this)">💇 الصالون</button>'+
+    '<button class="adsp'+(alldashShop==='Atara'?' on':'')+'" onclick="setAlldashShop(\'Atara\',this)">🌿 العطارة</button>';
 
   // Show dashboard page
   ['entry','summary','history'].forEach(function(t){
@@ -3596,40 +3600,46 @@ function loadAlldash(){
   var userShops = state.user ? state.user.shops : 'all';
   var canSeePrt = (role==='admin');
 
-  // Issue 4 — proper date range from filter
-  var adPeriodEl = gs('ad-period');
-  var adCalEl    = gs('ad-cal');
-  var adPeriod   = adPeriodEl ? adPeriodEl.value : 'month';
-  var adCal      = adCalEl    ? adCalEl.value    : 'hijri';
-  var now = new Date();
-  var hy  = greg2hijri(now.getFullYear(), now.getMonth()+1, now.getDate());
-  var fromKey='', toKey='';
-  if(adCal==='hijri'){
-    if(adPeriod==='month'){ fromKey=hy.y+'/'+pad2(hy.m); toKey=fromKey; }
-    else if(adPeriod==='year'){ fromKey=hy.y+'/01'; toKey=hy.y+'/12'; }
+  // Issue 4 — full date filter with مخصص
+  var adPeriodEl=gs('ad-period'), adCalEl=gs('ad-cal');
+  var adFromEl=gs('ad-from'), adToEl=gs('ad-to');
+  var adPeriod=adPeriodEl?adPeriodEl.value:'all';
+  var adCal=adCalEl?adCalEl.value:'hijri';
+  var now=new Date();
+  var hy=greg2hijri(now.getFullYear(),now.getMonth()+1,now.getDate());
+  var fromKey='',toKey='';
+  if(adPeriod==='custom'){
+    fromKey=adFromEl?adFromEl.value.slice(0,7):'';
+    toKey=adToEl?adToEl.value.slice(0,7):'';
+  } else if(adCal==='hijri'){
+    if(adPeriod==='month'){fromKey=hy.y+'/'+pad2(hy.m);toKey=fromKey;}
+    else if(adPeriod==='year'){fromKey=hy.y+'/01';toKey=hy.y+'/12';}
   } else {
     var ym=now.getFullYear()+'-'+pad2(now.getMonth()+1);
-    if(adPeriod==='month'){ fromKey=ym; toKey=ym; }
-    else if(adPeriod==='year'){ fromKey=now.getFullYear()+'-01'; toKey=now.getFullYear()+'-12'; }
+    if(adPeriod==='month'){fromKey=ym;toKey=ym;}
+    else if(adPeriod==='year'){fromKey=now.getFullYear()+'-01';toKey=now.getFullYear()+'-12';}
   }
 
-  var isAll = alldashShop==='all';
-  var p = { role:role, userShops:userShops, shop:alldashShop, calType:adCal, fromKey:fromKey, toKey:toKey };
-  var kpiAction = isAll ? 'getAllShopsKPIs' : 'getDashboardKPIs';
+  var isAll=alldashShop==='all';
+  var p={role:role,userShops:userShops,shop:alldashShop,calType:adCal,fromKey:fromKey,toKey:toKey};
+  var kpiAction=isAll?'getAllShopsKPIs':'getDashboardKPIs';
 
   apiCall(Object.assign({action:kpiAction},p)).then(function(kpiRes){
-    body.innerHTML = '';
+    body.innerHTML='';
 
-    // Issue 3 — date filter with proper spacing (matches fbar style)
+    // Issue 4 — date filter with مخصص and custom date inputs
+    var showCustom=(adPeriod==='custom');
     var fbar=document.createElement('div');
     fbar.className='fbar';
     fbar.innerHTML=
       '<div class="frow">'+
         '<div class="fg"><div class="flbl">الفترة</div>'+
-          '<select class="fsel" id="ad-period" onchange="loadAlldash()">'+
+          '<select class="fsel" id="ad-period" onchange="window.alldashPeriodChange()">'+
             '<option value="month"'+(adPeriod==='month'?' selected':'')+'>هذا الشهر</option>'+
+            '<option value="week"'+(adPeriod==='week'?' selected':'')+'>هذا الأسبوع</option>'+
             '<option value="year"'+(adPeriod==='year'?' selected':'')+'>هذا العام</option>'+
             '<option value="all"'+(adPeriod==='all'?' selected':'')+'>من البداية</option>'+
+            '<option value="custom"'+(adPeriod==='custom'?' selected':'')+'>مخصص</option>'+
           '</select></div>'+
         '<div class="fg"><div class="flbl">التقويم</div>'+
           '<select class="fsel" id="ad-cal" onchange="loadAlldash()">'+
@@ -3637,83 +3647,105 @@ function loadAlldash(){
             '<option value="greg"'+(adCal==='greg'?' selected':'')+'>ميلادي</option>'+
           '</select></div>'+
       '</div>'+
-      '<button class="apbtn" onclick="loadAlldash()">تطبيق التغييرات ←</button>';
+      '<div class="cdates'+(showCustom?' show':'')+'" id="ad-cdates">'+
+        '<div class="fg"><div class="flbl">من</div><input class="finp-h" id="ad-from" placeholder="1447/09/01" maxlength="10" value="'+(adFromEl?adFromEl.value:'')+'"/></div>'+
+        '<div class="fg"><div class="flbl">إلى</div><input class="finp-h" id="ad-to" placeholder="1447/12/30" maxlength="10" value="'+(adToEl?adToEl.value:'')+'"/></div>'+
+      '</div>'+
+      // Issue 6 — buttons use --cur which is set to navy
+      '<div style="display:flex;gap:8px">'+
+        '<button class="apbtn" style="flex:1" onclick="loadAlldash()">تطبيق التغييرات ←</button>'+
+        '<button class="apbtn" style="flex:0 0 auto;padding:0 16px" onclick="exportAlldashPDF()">📄 PDF</button>'+
+      '</div>';
     body.appendChild(fbar);
 
-    // Issue 5 — correct section sizing using .sec and .dash
+    // Issue 3 — sections use .sec/.sec-hdr/.sec-n/.sec-t matching shop dashboard
     var inner=document.createElement('div');
     inner.className='dash';
 
-    // KPI section
-    var kpiSec=document.createElement('div');
-    kpiSec.className='sec';
-    kpiSec.innerHTML='<div class="sec-hdr"><div class="sec-n" style="background:var(--navy)">1</div><div class="sec-t">المؤشرات الرئيسية</div></div>';
+    // Section 1: KPIs
+    var s1=document.createElement('div'); s1.className='sec';
     var kpiWrap=document.createElement('div');
+    s1.innerHTML='<div class="sec-hdr"><div class="sec-n" id="sn-ad1">1</div><div class="sec-t">المؤشرات الرئيسية</div></div>';
     if(isAll&&kpiRes.success&&kpiRes.rows){
       kpiWrap.innerHTML=
-        '<div class="kpi-table-wrap">'+
-          '<table class="kpi-table">'+
-            '<thead><tr><th>المحل</th><th>الصندوق</th><th>البنك</th><th>المتاح</th></tr></thead>'+
-            '<tbody>'+
-            kpiRes.rows.map(function(r){return '<tr><td><span class="shop-name">'+r.emoji+' '+r.shopName+'</span></td><td class="val-cash">'+fmt(r.cashBalance)+'</td><td class="val-bank">'+fmt(r.bankBalance)+'</td><td class="val-avail">'+fmt(r.available)+'</td></tr>';}).join('')+
-            '<tr class="tot-row"><td>الإجمالي</td><td class="val-cash">'+fmt(kpiRes.totals.cashBalance)+'</td><td class="val-bank">'+fmt(kpiRes.totals.bankBalance)+'</td><td class="val-avail">'+fmt(kpiRes.totals.available)+'</td></tr>'+
-            '</tbody></table></div>';
+        '<div class="kpi-table-wrap"><table class="kpi-table">'+
+          '<thead><tr><th>المحل</th><th>الصندوق</th><th>البنك</th><th>المتاح</th></tr></thead>'+
+          '<tbody>'+kpiRes.rows.map(function(r){
+            return '<tr><td><span class="shop-name">'+r.emoji+' '+r.shopName+'</span></td>'+
+              '<td class="val-cash">'+fmt(r.cashBalance)+'</td>'+
+              '<td class="val-bank">'+fmt(r.bankBalance)+'</td>'+
+              '<td class="val-avail">'+fmt(r.available)+'</td></tr>';
+          }).join('')+
+          '<tr class="tot-row"><td>الإجمالي</td>'+
+            '<td class="val-cash">'+fmt(kpiRes.totals.cashBalance)+'</td>'+
+            '<td class="val-bank">'+fmt(kpiRes.totals.bankBalance)+'</td>'+
+            '<td class="val-avail">'+fmt(kpiRes.totals.available)+'</td></tr>'+
+          '</tbody></table></div>';
     } else if(kpiRes.success){
       var av=(kpiRes.cashBalance||0)+(kpiRes.bankBalance||0);
       kpiWrap.innerHTML='<div class="kg3">'+
-        '<div class="kpi"><div class="kpi-acc" style="background:var(--green)"></div><div class="kpi-lbl">الصندوق</div><div class="kpi-v vg sm">'+fmt(kpiRes.cashBalance)+'<span class="kpi-cur" style="font-size:10px"> ر.س</span></div></div>'+
-        '<div class="kpi"><div class="kpi-acc" style="background:#185FA5"></div><div class="kpi-lbl">البنك</div><div class="kpi-v vb sm">'+fmt(kpiRes.bankBalance)+'<span class="kpi-cur" style="font-size:10px"> ر.س</span></div></div>'+
-        '<div class="kpi"><div class="kpi-acc" style="background:var(--navy)"></div><div class="kpi-lbl">المتاح</div><div class="kpi-v sm" style="color:var(--navy)">'+fmt(av)+'<span class="kpi-cur" style="font-size:10px"> ر.س</span></div></div>'+
+        '<div class="kpi"><div class="kpi-acc" style="background:var(--green)"></div><div class="kpi-lbl">الصندوق</div><div class="kpi-v vg sm">'+fmt(kpiRes.cashBalance)+'<span class="kpi-cur"> ر.س</span></div></div>'+
+        '<div class="kpi"><div class="kpi-acc" style="background:#185FA5"></div><div class="kpi-lbl">البنك</div><div class="kpi-v vb sm">'+fmt(kpiRes.bankBalance)+'<span class="kpi-cur"> ر.س</span></div></div>'+
+        '<div class="kpi"><div class="kpi-acc" style="background:var(--navy)"></div><div class="kpi-lbl">المتاح</div><div class="kpi-v sm" style="color:var(--navy)">'+fmt(av)+'<span class="kpi-cur"> ر.س</span></div></div>'+
+        '</div>'+
+        '<div class="kg3">'+
+        '<div class="kpi"><div class="kpi-acc" id="k-ad-net-acc" style="background:var(--navy)"></div><div class="kpi-lbl">صافي الربح</div><div class="kpi-v sm" id="k-ad-net">—</div><div class="kpi-sub">ر.س</div></div>'+
+        '<div class="kpi"><div class="kpi-acc" style="background:var(--green)"></div><div class="kpi-lbl">الإيرادات</div><div class="kpi-v vg sm" id="k-ad-rev">'+fmt(kpiRes.totalRevenue||0)+'</div><div class="kpi-sub">ر.س</div></div>'+
+        '<div class="kpi"><div class="kpi-acc" style="background:var(--red)"></div><div class="kpi-lbl">المصروفات</div><div class="kpi-v vr sm" id="k-ad-exp">'+fmt(kpiRes.totalExpenses||0)+'</div><div class="kpi-sub">ر.س</div></div>'+
         '</div>';
+      var np=(kpiRes.netProfit||0);
+      setTimeout(function(){
+        if(gs('k-ad-net')){gs('k-ad-net').textContent=(np>=0?'+':'')+fmt(np);}
+        if(gs('k-ad-net-acc')){gs('k-ad-net-acc').style.background=np>=0?'var(--green)':'var(--red)';}
+        if(gs('k-ad-net')){gs('k-ad-net').style.color=np>=0?'var(--green-d)':'var(--red-d)';}
+      },100);
     }
-    kpiSec.appendChild(kpiWrap);
-    inner.appendChild(kpiSec);
+    s1.appendChild(kpiWrap);
+    inner.appendChild(s1);
+    inner.appendChild(Object.assign(document.createElement('div'),{className:'sdiv'}));
 
-    inner.appendChild(document.createElement('div')).className='sdiv';
+    // Section 2: Revenue chart
+    var s2=document.createElement('div'); s2.className='sec';
+    s2.innerHTML='<div class="sec-hdr"><div class="sec-n">2</div><div class="sec-t">اتجاه الإيرادات</div></div>'+
+      '<div class="card">'+
+        '<div style="display:flex;gap:8px;margin-bottom:10px">'+
+          '<div style="flex:1;text-align:center;background:rgba(29,158,117,0.08);border-radius:var(--rmd);padding:10px"><div class="flbl" style="margin-bottom:4px">نقداً</div><div class="kpi-v vg sm" id="ad-rev-cash-tot">—</div></div>'+
+          '<div style="flex:1;text-align:center;background:rgba(24,95,165,0.08);border-radius:var(--rmd);padding:10px"><div class="flbl" style="margin-bottom:4px">بطاقة</div><div class="kpi-v vb sm" id="ad-rev-card-tot">—</div></div>'+
+        '</div>'+
+        '<div style="height:180px;position:relative"><canvas id="ad-rev-chart"></canvas></div>'+
+      '</div>';
+    inner.appendChild(s2);
+    inner.appendChild(Object.assign(document.createElement('div'),{className:'sdiv'}));
 
-    // Revenue section
-    var revSec=document.createElement('div'); revSec.className='sec';
-    revSec.innerHTML='<div class="sec-hdr"><div class="sec-n" style="background:var(--navy)">2</div><div class="sec-t">اتجاه الإيرادات</div></div>'+
-      '<div class="card"><div style="display:flex;gap:8px;margin-bottom:10px">'+
-        '<div style="flex:1;text-align:center;background:rgba(29,158,117,0.08);border-radius:var(--rmd);padding:10px"><div style="font-size:10px;font-weight:700;color:var(--green-d);margin-bottom:4px">نقداً</div><div class="kpi-v vg sm" id="ad-rev-cash-tot">—</div></div>'+
-        '<div style="flex:1;text-align:center;background:rgba(24,95,165,0.08);border-radius:var(--rmd);padding:10px"><div style="font-size:10px;font-weight:700;color:#185FA5;margin-bottom:4px">بطاقة</div><div class="kpi-v vb sm" id="ad-rev-card-tot">—</div></div>'+
-      '</div><div style="height:180px;position:relative"><canvas id="ad-rev-chart"></canvas></div></div>';
-    inner.appendChild(revSec);
-
-    // Expense section
-    var expSec=document.createElement('div'); expSec.className='sec';
-    expSec.innerHTML='<div class="sec-hdr"><div class="sec-n" style="background:var(--navy)">3</div><div class="sec-t">توزيع المصروفات</div></div>'+
+    // Section 3: Expense breakdown
+    var s3=document.createElement('div'); s3.className='sec';
+    s3.innerHTML='<div class="sec-hdr"><div class="sec-n">3</div><div class="sec-t">توزيع المصروفات</div></div>'+
       '<div class="card"><div class="exp-chart-wrap"><canvas id="ad-exp-chart" style="max-height:200px"></canvas></div>'+
       '<div id="ad-exp-leg" class="exp-leg"><div class="loading">جاري التحميل</div></div></div>';
-    inner.appendChild(expSec);
+    inner.appendChild(s3);
+    inner.appendChild(Object.assign(document.createElement('div'),{className:'sdiv'}));
 
-    // Salaries section
-    var salSec=document.createElement('div'); salSec.className='sec';
-    salSec.innerHTML='<div class="sec-hdr"><div class="sec-n" style="background:var(--navy)">4</div><div class="sec-t">رواتب الموظفين</div></div>'+
-      '<div class="card" id="ad-sal-card">'+
+    // Section 4: Salaries
+    var s4=document.createElement('div'); s4.className='sec';
+    s4.innerHTML='<div class="sec-hdr"><div class="sec-n">4</div><div class="sec-t">رواتب الموظفين</div></div>'+
+      '<div class="card">'+
         '<div class="emp-tot"><div class="emp-tot-lbl">إجمالي الرواتب</div><div class="emp-tot-val" id="ad-emp-tot-val">—</div></div>'+
         '<div id="ad-emp-list"><div class="loading">جاري التحميل</div></div></div>';
-    inner.appendChild(salSec);
+    inner.appendChild(s4);
 
-    // Partners section (admin only)
+    // Section 5: Partners (admin only)
     if(canSeePrt){
-      var prtSec=document.createElement('div'); prtSec.className='sec';
-      prtSec.innerHTML='<div class="sec-hdr"><div class="sec-n" style="background:var(--navy)">5</div><div class="sec-t">رصيد الشركاء</div></div>'+
+      inner.appendChild(Object.assign(document.createElement('div'),{className:'sdiv'}));
+      var s5=document.createElement('div'); s5.className='sec';
+      s5.innerHTML='<div class="sec-hdr"><div class="sec-n">5</div><div class="sec-t">رصيد الشركاء</div></div>'+
         '<div class="card"><div id="ad-prt-list"><div class="loading">جاري التحميل</div></div></div>';
-      inner.appendChild(prtSec);
+      inner.appendChild(s5);
     }
-
-    // Issue 6 — PDF export button
-    var pdfWrap=document.createElement('div');
-    pdfWrap.className='pdf-wrap';
-    pdfWrap.style.marginTop='20px';
-    pdfWrap.innerHTML='<button class="pdf-btn" onclick="exportAlldashPDF()">📄 تصدير تقرير PDF</button>';
-    inner.appendChild(pdfWrap);
 
     inner.style.paddingBottom='40px';
     body.appendChild(inner);
 
-    // Load revenue chart
+    // Load revenue
     apiCall(Object.assign({action:'getRevenueChart'},p)).then(function(revRes){
       if(!revRes.success||!revRes.data) return;
       var tc=revRes.data.reduce(function(s,d){return s+(d.revCash||0);},0);
@@ -3729,7 +3761,7 @@ function loadAlldash(){
       }
     });
 
-    // Load expense breakdown
+    // Load expenses
     apiCall(Object.assign({action:'getExpenseBreakdown'},p)).then(function(expRes){
       var leg=gs('ad-exp-leg'); if(!leg) return;
       if(!expRes.success||!expRes.categories||!expRes.categories.length){leg.innerHTML='<div class="empty">لا توجد بيانات</div>';return;}
@@ -3742,7 +3774,7 @@ function loadAlldash(){
 
     // Load salaries
     apiCall(Object.assign({action:'getEmployeeSalaries'},p)).then(function(salRes){
-      var el=gs('ad-emp-list'); var tv=gs('ad-emp-tot-val'); if(!el) return;
+      var el=gs('ad-emp-list'),tv=gs('ad-emp-tot-val'); if(!el) return;
       if(!salRes.success||!salRes.employees||!salRes.employees.length){el.innerHTML='<div class="empty">لا توجد بيانات</div>';return;}
       if(tv) tv.textContent=fmt(salRes.totalSalaries||0)+' ر.س';
       el.innerHTML=salRes.employees.map(function(e){
@@ -3768,25 +3800,32 @@ function loadAlldash(){
   });
 }
 
-// Issue 6 — PDF export for all-shops dashboard
+// Period change handler — show/hide custom date inputs
+window.alldashPeriodChange = function(){
+  var val=gs('ad-period')?gs('ad-period').value:'';
+  var cd=gs('ad-cdates');
+  if(cd) cd.classList.toggle('show', val==='custom');
+};
+
+// Issue 6 — PDF export using navy color (--cur is now navy)
 window.exportAlldashPDF = function(){
   var role=state.user?state.user.role:'admin';
   var userShops=state.user?state.user.shops:'all';
-  var adPeriodEl=gs('ad-period'); var adCalEl=gs('ad-cal');
-  var adPeriod=adPeriodEl?adPeriodEl.value:'month';
+  var adPeriodEl=gs('ad-period'),adCalEl=gs('ad-cal'),adFromEl=gs('ad-from'),adToEl=gs('ad-to');
+  var adPeriod=adPeriodEl?adPeriodEl.value:'all';
   var adCal=adCalEl?adCalEl.value:'hijri';
-  var now=new Date(); var hy=greg2hijri(now.getFullYear(),now.getMonth()+1,now.getDate());
+  var now=new Date(),hy=greg2hijri(now.getFullYear(),now.getMonth()+1,now.getDate());
   var fromKey='',toKey='';
-  if(adCal==='hijri'){if(adPeriod==='month'){fromKey=hy.y+'/'+pad2(hy.m);toKey=fromKey;}else if(adPeriod==='year'){fromKey=hy.y+'/01';toKey=hy.y+'/12';}}
+  if(adPeriod==='custom'){fromKey=adFromEl?adFromEl.value.slice(0,7):'';toKey=adToEl?adToEl.value.slice(0,7):'';}
+  else if(adCal==='hijri'){if(adPeriod==='month'){fromKey=hy.y+'/'+pad2(hy.m);toKey=fromKey;}else if(adPeriod==='year'){fromKey=hy.y+'/01';toKey=hy.y+'/12';}}
   else{var ym=now.getFullYear()+'-'+pad2(now.getMonth()+1);if(adPeriod==='month'){fromKey=ym;toKey=ym;}else if(adPeriod==='year'){fromKey=now.getFullYear()+'-01';toKey=now.getFullYear()+'-12';}}
   var p={role:role,userShops:userShops,shop:alldashShop,calType:adCal,fromKey:fromKey,toKey:toKey};
-  var shopLabel=alldashShop==='all'?'كل المحلات':alldashShop;
+  var shopLabel=alldashShop==='all'?'كل المحلات':(SHOPS[alldashShop]?SHOPS[alldashShop].name:alldashShop);
   var w=window.open('','_blank');
   w.document.write('<html dir="rtl"><head><meta charset="UTF-8"><title>تقرير — '+shopLabel+'</title>');
-  w.document.write('<style>body{font-family:Arial,sans-serif;padding:20px;direction:rtl}h1,h2{color:#1E3A5F}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #ddd;padding:8px;text-align:right}th{background:#f5f5f5}</style>');
+  w.document.write('<style>body{font-family:Arial,sans-serif;padding:20px;direction:rtl}h1,h2,h3{color:#1E3A5F}table{width:100%;border-collapse:collapse;margin-bottom:20px}th,td{border:1px solid #ddd;padding:8px;text-align:right}th{background:#f5f5f5}.pos{color:green}.neg{color:red}</style>');
   w.document.write('</head><body>');
-  w.document.write('<h1>البيت السوداني — لوحة المتابعة</h1>');
-  w.document.write('<h2>'+shopLabel+' — '+adPeriod+'</h2>');
+  w.document.write('<h1>البيت السوداني — لوحة المتابعة</h1><h2>'+shopLabel+'</h2>');
   Promise.all([
     apiCall(Object.assign({action:alldashShop==='all'?'getAllShopsKPIs':'getDashboardKPIs'},p)),
     apiCall(Object.assign({action:'getPartnersBalance'},p))
@@ -3803,10 +3842,11 @@ window.exportAlldashPDF = function(){
     var prt=res[1];
     if(prt.success&&prt.partners&&prt.partners.length){
       w.document.write('<h3>رصيد الشركاء</h3><table><tr><th>الشريك</th><th>الرصيد</th></tr>');
-      prt.partners.forEach(function(pt){w.document.write('<tr><td>'+pt.name+'</td><td>'+(pt.balance>=0?'+':'')+fmt(pt.balance)+' ر.س</td></tr>');});
+      prt.partners.forEach(function(pt){w.document.write('<tr><td>'+pt.name+'</td><td class="'+(pt.balance>=0?'pos':'neg')+'">'+(pt.balance>=0?'+':'')+fmt(pt.balance)+' ر.س</td></tr>');});
       w.document.write('</table>');
     }
-    w.document.write('<script>setTimeout(function(){window.print();},500);<\/script>');
+    w.document.write('<p style="color:#888;font-size:12px">تاريخ التصدير: '+new Date().toLocaleDateString('ar-SA')+'</p>');
+    w.document.write('<scr'+'ipt>setTimeout(function(){window.print();},500);<\/scr'+'ipt>');
     w.document.write('</body></html>');
     w.document.close();
   });
