@@ -757,7 +757,7 @@ input[type=file]{
 .kpi-table .val-avail{color:var(--navy);font-weight:800}
 
 /* P4 */
-.dash{max-width:480px;margin:0 auto;padding-bottom:40px}
+.dash{width:100%;max-width:480px;margin:0 auto;align-self:center;padding-bottom:40px}
 
 /* HEADER */
 
@@ -1290,7 +1290,6 @@ input[type=file]{
 <script>
 (function(){
 'use strict';
-window.__NOCHARTS=true;
 
 /* P1 */
 
@@ -3198,7 +3197,7 @@ function loadShopCmp(p){
 }
 
 // ── Revenue Chart ─────────────────────────────────────────────────────────────
-function loadRevChart(p){ if(window.__NOCHARTS) return;
+function loadRevChart(p){
   if(revChart){revChart.destroy();revChart=null;}
   gs('rev-cash-tot').textContent='—';
   gs('rev-card-tot').textContent='—';
@@ -3236,7 +3235,7 @@ function loadRevChart(p){ if(window.__NOCHARTS) return;
 }
 
 // ── Expense Chart ─────────────────────────────────────────────────────────────
-function loadExpChart(p){ if(window.__NOCHARTS) return;
+function loadExpChart(p){
   gs('exp-leg').innerHTML='<div class="loading" style="padding:8px">جاري التحميل</div>';
   gs('exp-tot-lbl').textContent='جاري التحميل';
   apiCall(Object.assign({action:'getExpenseBreakdown'},p)).then(function(res){
