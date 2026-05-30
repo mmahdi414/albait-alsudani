@@ -7,7 +7,8 @@
 <title>البيت السوداني — المحاسبة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=block">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=block" rel="stylesheet">
 <style>
 /* P1 */
 
@@ -3009,8 +3010,15 @@ function loadAll(){
   loadKPIs(p);
   loadDocsFromAPI();
   loadShopCmp(p);
-  loadRevChart(p);
-  loadExpChart(p);
+  // Charts must be created only after the web font is fully loaded, otherwise the
+  // font swap (display=swap) re-measures the layout and Chart.js resizes the canvas
+  // (the narrow→wide flash seen only on dashboard pages). fonts.ready resolves
+  // immediately once the font is cached, so there's no delay after first load.
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){ loadRevChart(p); loadExpChart(p); });
+  } else {
+    loadRevChart(p); loadExpChart(p);
+  }
   loadSalaries(p);
   loadPartners(p);
   loadMovements(p);
