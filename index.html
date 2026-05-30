@@ -775,11 +775,13 @@ input[type=file]{
   display:flex;align-items:center;gap:5px;flex-shrink:0;transition:background 0.15s;
 }
 .dash-back-btn:hover{background:rgba(255,255,255,0.2)}
+#dash-hdr{padding:20px 18px 22px}
 .dash-hdr-inner{position:relative;z-index:1}
-.dash-hdr-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.dash-hdr-actions{display:flex;align-items:center;gap:8px}
-.dash-hdr-title{font-size:19px;font-weight:800;color:#fff;line-height:1.1}
-.dash-hdr-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-top:3px}
+.dash-hdr-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.dash-hdr-actions{display:flex;align-items:center;gap:10px}
+.dash-hdr-title{font-size:21px;font-weight:800;color:#fff;line-height:1.15}
+.dash-hdr-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-top:5px}
+.dash-hdr .shop-pills{margin-top:4px;gap:8px}
 .sp{padding:6px 13px;border-radius:var(--rxl);border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .sp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
 
@@ -3693,9 +3695,13 @@ function loadDashboard(){
 
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
-  // Defer chart/data loading until after the page is painted at full size,
-  // so Chart.js measures the final container dimensions (no small→big resize flash).
-  requestAnimationFrame(function(){ loadAll(); });
+  // Defer chart/data loading until after the page is visible AND laid out at full size.
+  // Double rAF: first frame applies the .on/display changes from goTab, second frame
+  // runs after the browser has completed layout — so Chart.js measures final dimensions
+  // (eliminates the small→big resize flash on dashboard pages).
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ loadAll(); });
+  });
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
