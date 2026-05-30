@@ -71,7 +71,6 @@
 
 /* ── Reset ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{overflow-y:scroll}
 html,body{
   font-family:'Almarai',sans-serif;
   background:var(--shop-page);
@@ -1289,6 +1288,36 @@ input[type=file]{
 <script>
 (function(){
 'use strict';
+
+/* ═══ DIAGNOSTIC LOGGER ═══ */
+function DLOG(evt){
+  function snap(t){
+    var de=document.documentElement, app=document.querySelector('.app');
+    var sb=window.innerWidth-de.clientWidth;
+    var r=app?app.getBoundingClientRect():{width:0,left:0};
+    var pgd=document.getElementById('pg-dashboard');
+    console.log('[DX '+evt+' @'+t+'] sb='+sb+' app.w='+Math.round(r.width)+' app.left='+Math.round(r.left)+' docScrollH='+de.scrollHeight+' winW='+window.innerWidth+' deClientW='+de.clientWidth+' pgdScrollH='+(pgd?pgd.scrollHeight:'-'));
+  }
+  snap('0');
+  requestAnimationFrame(function(){ snap('raf'); });
+  [100,300,700,1200].forEach(function(ms){ setTimeout(function(){ snap(ms); }, ms); });
+}
+window.__DLOG=DLOG;
+
+/* Continuous watcher — logs ONLY when the scrollbar width changes */
+(function(){
+  var last=-999;
+  setInterval(function(){
+    var de=document.documentElement;
+    var sb=window.innerWidth-de.clientWidth;
+    if(sb!==last){
+      var app=document.querySelector('.app');
+      var r=app?app.getBoundingClientRect():{left:0,width:0};
+      console.log('[WATCH] scrollbar CHANGED '+last+'→'+sb+' | app.left='+Math.round(r.left)+' docScrollH='+de.scrollHeight);
+      last=sb;
+    }
+  }, 50);
+})();
 
 /* P1 */
 
@@ -2935,6 +2964,7 @@ function applyColor(c){
 // ── Shop pills ────────────────────────────────────────────────────────────────
 var ALLDASH_PAGE = {page:'#EEF2F7', card:'#E1E8F0', cardBorder:'#D0DCE8'};
 function setShop(shop,el){
+  DLOG('setShop-BEFORE-'+shop);
   curShop=shop;
   document.querySelectorAll('.sp').forEach(function(p){p.classList.remove('on');});
   el.classList.add('on');
@@ -2945,6 +2975,7 @@ function setShop(shop,el){
   document.documentElement.style.setProperty('--shop-card', pc.card);
   document.documentElement.style.setProperty('--shop-card-border', pc.cardBorder);
   loadAll();
+  DLOG('setShop-AFTER-'+shop);
 };
 
 // ── Period/Calendar ───────────────────────────────────────────────────────────
@@ -3707,6 +3738,7 @@ function loadDashboard(){
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
   loadAll();
+  DLOG('loadDashboard-'+curShop);
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
