@@ -71,6 +71,7 @@
 
 /* ── Reset ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{overflow-y:scroll;scrollbar-gutter:stable}
 html,body{
   font-family:'Almarai',sans-serif;
   background:var(--shop-page);
@@ -1051,17 +1052,17 @@ input[type=file]{
 <div class="hdr" id="dash-hdr" style="display:none">
   <div class="dash-hdr-inner">
     <div class="dash-hdr-row1">
+      <div style="text-align:right">
+        <div class="dash-hdr-title">لوحة المتابعة</div>
+        <div class="dash-hdr-sub">EXECUTIVE DASHBOARD</div>
+      </div>
       <div class="dash-hdr-actions">
-        <button class="dash-back-btn" id="dash-back-btn">← رجوع</button>
+        <button class="dash-back-btn" id="dash-back-btn">رجوع →</button>
         <div class="hdr-chip" id="dash-uchip">
           <span style="font-size:14px">👤</span>
           <span class="hdr-chip-name" id="dash-ulbl"></span>
           <span class="hdr-chip-arrow">▾</span>
         </div>
-      </div>
-      <div style="text-align:right">
-        <div class="dash-hdr-title">لوحة المتابعة</div>
-        <div class="dash-hdr-sub">EXECUTIVE DASHBOARD</div>
       </div>
     </div>
     <div class="shop-pills" id="dash-shop-pills">
