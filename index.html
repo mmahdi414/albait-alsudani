@@ -741,17 +741,13 @@ input[type=file]{
 
 /* ALL-SHOPS DASHBOARD SCREEN */
 .sc-alldash{
-  position:fixed;
-  top:0;left:0;right:0;bottom:0;
-  z-index:1000;
+  min-height:100vh;
   display:none;
-  visibility:hidden;
   flex-direction:column;
   background:var(--g100);
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
+  overflow:hidden;
 }
-.sc-alldash.on{display:flex;visibility:visible}
+.sc-alldash.on{display:flex}
 .alldash-hdr{
   background:#1E3A5F;
   padding:0;
@@ -791,7 +787,7 @@ input[type=file]{
 .alldash-pills::-webkit-scrollbar{display:none}
 .adsp{padding:6px 13px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:Almarai,sans-serif}
 .adsp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
-.alldash-body{flex:1;padding-bottom:40px}
+.alldash-body{flex:1;overflow-y:auto;padding-bottom:40px;-webkit-overflow-scrolling:touch}
 
 /* KPI TABLE */
 .kpi-table-wrap{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);overflow:hidden;box-shadow:var(--s1);margin-bottom:10px}
@@ -1058,6 +1054,24 @@ input[type=file]{
   </div>
 </div>
 
+<!-- ══════════════════ ALL-SHOPS DASHBOARD ══════════════════ -->
+<div class="sc-alldash" id="sc-alldash">
+  <div class="alldash-hdr">
+    <div class="alldash-hdr-top">
+      <div class="alldash-uname" id="alldash-uname">👤 محمد</div>
+      <div class="alldash-title">البيت السوداني</div>
+      <button class="alldash-back" id="alldash-back">رجوع ←</button>
+    </div>
+    <div class="alldash-pills" id="alldash-pills">
+      <div class="adsp on" onclick="setAlldashShop('all',this)">كل المحلات</div>
+      <div class="adsp" onclick="setAlldashShop('Tailor',this)">✂️ الخياط</div>
+      <div class="adsp" onclick="setAlldashShop('Salon',this)">💇 الصالون</div>
+      <div class="adsp" onclick="setAlldashShop('Atara',this)">🌿 العطارة</div>
+    </div>
+  </div>
+  <div class="alldash-body" id="alldash-body"></div>
+</div>
+
 <!-- ══════════════════ MAIN APP ══════════════════ -->
 <div class="sc-main" id="sc-main">
   <div class="hdr" id="hdr">
@@ -1296,24 +1310,6 @@ input[type=file]{
   </div>
 </div>
 </div><!-- end .app -->
-
-<!-- ALL-SHOPS DASHBOARD OVERLAY — outside .app so position:fixed works correctly -->
-<div class="sc-alldash" id="sc-alldash">
-  <div class="alldash-hdr">
-    <div class="alldash-hdr-top">
-      <div class="alldash-uname" id="alldash-uname">👤 محمد</div>
-      <div class="alldash-title">البيت السوداني</div>
-      <button class="alldash-back" id="alldash-back">رجوع ←</button>
-    </div>
-    <div class="alldash-pills" id="alldash-pills">
-      <div class="adsp on" onclick="setAlldashShop('all',this)">كل المحلات</div>
-      <div class="adsp" onclick="setAlldashShop('Tailor',this)">✂️ الخياط</div>
-      <div class="adsp" onclick="setAlldashShop('Salon',this)">💇 الصالون</div>
-      <div class="adsp" onclick="setAlldashShop('Atara',this)">🌿 العطارة</div>
-    </div>
-  </div>
-  <div class="alldash-body" id="alldash-body"></div>
-</div>
 <!-- Chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <!-- App -->
@@ -3595,9 +3591,7 @@ function enterAllShopsDashboard(){
   gs('sc-login').style.display   = 'none';
   gs('sc-shops').style.display   = 'none';
   gs('sc-main').style.display    = 'none';
-  var alldash = gs('sc-alldash');
-  alldash.style.display     = 'flex';
-  alldash.style.visibility  = 'visible';
+  gs('sc-alldash').style.display = 'flex';
   var uname = gs('alldash-uname');
   if(uname) uname.textContent = '👤 ' + (state.user ? state.user.displayName : '');
   gs('alldash-back').onclick = function(){ closeAlldash(); };
@@ -3613,9 +3607,7 @@ window.setAlldashShop = function(shopId, el){
   loadAlldash();
 };
 function closeAlldash(){
-  var alldash = gs('sc-alldash');
-  alldash.style.display    = 'none';
-  alldash.style.visibility = 'hidden';
+  gs('sc-alldash').style.display = 'none';
   showShopSelection();
 }
 
