@@ -277,6 +277,37 @@ html,body{
 .shop-card-last{font-size:12px;color:rgba(255,255,255,0.45);font-weight:700}
 .shop-card-arrow{color:rgba(255,255,255,0.35);font-size:20px;flex-shrink:0}
 
+/* Dashboard entry card on shop selection */
+.dash-entry-card{
+  max-width:340px;margin:0 auto;width:100%;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:18px;padding:20px;
+  display:flex;align-items:center;gap:16px;
+  cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;
+  text-align:right;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);
+}
+.dash-entry-card:active{transform:scale(0.97)}
+.dash-entry-card-ico{
+  width:56px;height:56px;border-radius:16px;
+  background:rgba(30,58,95,0.7);
+  border:1px solid rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;flex-shrink:0;
+}
+.dash-entry-card-info{flex:1}
+.dash-entry-card-name{font-size:17px;font-weight:800;color:#fff;margin-bottom:3px}
+.dash-entry-card-sub{font-size:12px;color:rgba(255,255,255,0.5);font-weight:700}
+.dash-entry-divider{
+  max-width:340px;margin:16px auto;width:100%;
+  display:flex;align-items:center;gap:10px;
+}
+.dash-entry-divider::before,.dash-entry-divider::after{
+  content:'';flex:1;height:1px;background:rgba(255,255,255,0.12);
+}
+.dash-entry-divider-txt{font-size:11px;color:rgba(255,255,255,0.3);font-weight:700;white-space:nowrap}
+
 /* ═══════════════════════════════════════════════════
    MAIN APP SCREEN
 ═══════════════════════════════════════════════════ */
@@ -710,9 +741,11 @@ input[type=file]{
 
 /* ALL-SHOPS DASHBOARD SCREEN */
 .sc-alldash{
-  min-height:100vh;display:none;flex-direction:column;
+  position:fixed;inset:0;z-index:500;
+  display:none;flex-direction:column;
   background:var(--g100);
-  position:relative;
+  max-width:480px;margin:0 auto;
+  overflow-y:auto;
 }
 .sc-alldash.on{display:flex}
 .alldash-hdr{
@@ -746,7 +779,7 @@ input[type=file]{
 .alldash-pills::-webkit-scrollbar{display:none}
 .adsp{padding:6px 13px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:Almarai,sans-serif}
 .adsp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
-.alldash-body{flex:1;overflow-y:auto;padding-bottom:40px}
+.alldash-body{flex:1;padding-bottom:40px}
 
 /* KPI TABLE */
 .kpi-table-wrap{background:#fff;border-radius:var(--rlg);border:1px solid var(--g200);overflow:hidden;box-shadow:var(--s1);margin-bottom:10px}
