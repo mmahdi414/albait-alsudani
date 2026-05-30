@@ -71,6 +71,7 @@
 
 /* ── Reset ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{overflow-y:scroll}
 html,body{
   font-family:'Almarai',sans-serif;
   background:var(--shop-page);
@@ -1590,17 +1591,7 @@ function configDashboardHeader(){
   if(pills) pills.style.display = isAllShopsMode ? '' : 'none';
 }
 
-function DIAGLOG(tag){
-  var de=document.documentElement, app=document.querySelector('.app'), sm=gs('sc-main');
-  var winW=window.innerWidth, docW=de.clientWidth;
-  var sbW=winW-docW; // scrollbar width (>0 means window scrollbar present)
-  var appW=app?app.getBoundingClientRect().width:'-';
-  var appLeft=app?Math.round(app.getBoundingClientRect().left):'-';
-  console.log('[DIAG2 '+tag+'] winW='+winW+' docClientW='+docW+' scrollbar='+sbW+' app.width='+Math.round(appW)+' app.left='+appLeft+' docScrollH='+de.scrollHeight+' docClientH='+de.clientHeight);
-}
-
 function goTab(tabId){
-  DIAGLOG('BEFORE-'+tabId);
   // Pre-configure dashboard header visibility before the page becomes visible
   if(tabId === 'dashboard') configDashboardHeader();
 
@@ -1617,10 +1608,6 @@ function goTab(tabId){
   if(tabId === 'summary')   loadSummary();
   if(tabId === 'history')   loadHistory();
   if(tabId === 'dashboard') loadDashboard();
-  DIAGLOG('AFTER-sync-'+tabId);
-  requestAnimationFrame(function(){ DIAGLOG('AFTER-raf-'+tabId); });
-  setTimeout(function(){ DIAGLOG('AFTER-t300-'+tabId); }, 300);
-  setTimeout(function(){ DIAGLOG('AFTER-t800-'+tabId); }, 800);
 }
 
 // ── HEADER ACTIONS ────────────────────────────────────────────────────────────
@@ -3720,18 +3707,6 @@ function loadDashboard(){
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
   loadAll();
-  // DIAGNOSTIC v3 — window-level scrollbar + app position, sampled over time
-  (function(){
-    function snap(tag){
-      var de=document.documentElement, app=document.querySelector('.app');
-      var sb=window.innerWidth-de.clientWidth;
-      var r=app?app.getBoundingClientRect():{width:0,left:0};
-      console.log('[D3 '+tag+'] scrollbar='+sb+' app.w='+Math.round(r.width)+' app.left='+Math.round(r.left)+' docScrollH='+de.scrollHeight+' winInner='+window.innerWidth+' deClient='+de.clientWidth);
-    }
-    snap('0ms');
-    requestAnimationFrame(function(){ snap('raf'); });
-    [50,150,300,600,1000].forEach(function(ms){ setTimeout(function(){ snap(ms+'ms'); }, ms); });
-  })();
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
