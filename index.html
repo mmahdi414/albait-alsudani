@@ -3706,6 +3706,16 @@ function loadDashboard(){
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
   loadAll();
+  // DIAGNOSTIC — log widths at several timepoints to find the reflow
+  function logW(tag){
+    var d=gs('pg-dashboard'), dash=document.querySelector('#pg-dashboard .dash'), cw=document.querySelector('#pg-dashboard .cwrap');
+    console.log('[DIAG '+tag+'] pg-dashboard='+(d?d.clientWidth:'-')+' .dash='+(dash?dash.clientWidth:'-')+' .cwrap='+(cw?cw.clientWidth:'-')+' scrollH='+(d?d.scrollHeight:'-')+' clientH='+(d?d.clientHeight:'-'));
+  }
+  logW('sync');
+  requestAnimationFrame(function(){ logW('raf1'); requestAnimationFrame(function(){ logW('raf2'); }); });
+  setTimeout(function(){ logW('t100'); }, 100);
+  setTimeout(function(){ logW('t400'); }, 400);
+  setTimeout(function(){ logW('t900'); }, 900);
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
