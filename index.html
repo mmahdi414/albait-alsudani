@@ -855,7 +855,8 @@ input[type=file]{
 .br-val{font-size:11px;font-weight:800;width:46px;text-align:left;flex-shrink:0}
 
 /* REVENUE CHART */
-.cwrap{position:relative;width:100%}
+.cwrap{position:relative;width:100%;overflow:hidden}
+.cwrap canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
 .rev-totals{display:flex;gap:10px;margin-bottom:14px}
 .rev-box{flex:1;background:var(--g50);border:1px solid var(--g200);border-radius:var(--rmd);padding:10px 12px;display:flex;align-items:center;gap:10px}
 .rev-bar{width:4px;height:36px;border-radius:2px;flex-shrink:0}
@@ -1289,36 +1290,7 @@ input[type=file]{
 <script>
 (function(){
 'use strict';
-
-/* ═══ DIAGNOSTIC LOGGER ═══ */
-function DLOG(evt){
-  function snap(t){
-    var de=document.documentElement, app=document.querySelector('.app');
-    var sb=window.innerWidth-de.clientWidth;
-    var r=app?app.getBoundingClientRect():{width:0,left:0};
-    var pgd=document.getElementById('pg-dashboard');
-    console.log('[DX '+evt+' @'+t+'] sb='+sb+' app.w='+Math.round(r.width)+' app.left='+Math.round(r.left)+' docScrollH='+de.scrollHeight+' winW='+window.innerWidth+' deClientW='+de.clientWidth+' pgdScrollH='+(pgd?pgd.scrollHeight:'-'));
-  }
-  snap('0');
-  requestAnimationFrame(function(){ snap('raf'); });
-  [100,300,700,1200].forEach(function(ms){ setTimeout(function(){ snap(ms); }, ms); });
-}
-window.__DLOG=DLOG;
-
-/* Continuous watcher — logs ONLY when the scrollbar width changes */
-(function(){
-  var last=-999;
-  setInterval(function(){
-    var de=document.documentElement;
-    var sb=window.innerWidth-de.clientWidth;
-    if(sb!==last){
-      var app=document.querySelector('.app');
-      var r=app?app.getBoundingClientRect():{left:0,width:0};
-      console.log('[WATCH] scrollbar CHANGED '+last+'→'+sb+' | app.left='+Math.round(r.left)+' docScrollH='+de.scrollHeight);
-      last=sb;
-    }
-  }, 50);
-})();
+window.__NOCHARTS=true;
 
 /* P1 */
 
@@ -2965,7 +2937,6 @@ function applyColor(c){
 // ── Shop pills ────────────────────────────────────────────────────────────────
 var ALLDASH_PAGE = {page:'#EEF2F7', card:'#E1E8F0', cardBorder:'#D0DCE8'};
 function setShop(shop,el){
-  DLOG('setShop-BEFORE-'+shop);
   curShop=shop;
   document.querySelectorAll('.sp').forEach(function(p){p.classList.remove('on');});
   el.classList.add('on');
@@ -2976,7 +2947,6 @@ function setShop(shop,el){
   document.documentElement.style.setProperty('--shop-card', pc.card);
   document.documentElement.style.setProperty('--shop-card-border', pc.cardBorder);
   loadAll();
-  DLOG('setShop-AFTER-'+shop);
 };
 
 // ── Period/Calendar ───────────────────────────────────────────────────────────
@@ -3228,7 +3198,7 @@ function loadShopCmp(p){
 }
 
 // ── Revenue Chart ─────────────────────────────────────────────────────────────
-function loadRevChart(p){
+function loadRevChart(p){ if(window.__NOCHARTS) return;
   if(revChart){revChart.destroy();revChart=null;}
   gs('rev-cash-tot').textContent='—';
   gs('rev-card-tot').textContent='—';
@@ -3266,7 +3236,7 @@ function loadRevChart(p){
 }
 
 // ── Expense Chart ─────────────────────────────────────────────────────────────
-function loadExpChart(p){
+function loadExpChart(p){ if(window.__NOCHARTS) return;
   gs('exp-leg').innerHTML='<div class="loading" style="padding:8px">جاري التحميل</div>';
   gs('exp-tot-lbl').textContent='جاري التحميل';
   apiCall(Object.assign({action:'getExpenseBreakdown'},p)).then(function(res){
@@ -3739,7 +3709,6 @@ function loadDashboard(){
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
   loadAll();
-  DLOG('loadDashboard-'+curShop);
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
