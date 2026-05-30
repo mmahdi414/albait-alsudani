@@ -745,12 +745,13 @@ input[type=file]{
   top:0;left:0;right:0;bottom:0;
   z-index:1000;
   display:none;
+  visibility:hidden;
   flex-direction:column;
   background:var(--g100);
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
 }
-.sc-alldash.on{display:flex}
+.sc-alldash.on{display:flex;visibility:visible}
 .alldash-hdr{
   background:#1E3A5F;
   padding:0;
@@ -3594,7 +3595,9 @@ function enterAllShopsDashboard(){
   gs('sc-login').style.display   = 'none';
   gs('sc-shops').style.display   = 'none';
   gs('sc-main').style.display    = 'none';
-  gs('sc-alldash').style.display = 'flex';
+  var alldash = gs('sc-alldash');
+  alldash.style.display     = 'flex';
+  alldash.style.visibility  = 'visible';
   var uname = gs('alldash-uname');
   if(uname) uname.textContent = '👤 ' + (state.user ? state.user.displayName : '');
   gs('alldash-back').onclick = function(){ closeAlldash(); };
@@ -3610,7 +3613,9 @@ window.setAlldashShop = function(shopId, el){
   loadAlldash();
 };
 function closeAlldash(){
-  gs('sc-alldash').style.display = 'none';
+  var alldash = gs('sc-alldash');
+  alldash.style.display    = 'none';
+  alldash.style.visibility = 'hidden';
   showShopSelection();
 }
 
@@ -3783,6 +3788,13 @@ function loadDashboard(){
   DISPLAY_NAME = state.user ? state.user.displayName : '';
   var uname = gs('hdr-uname');
   if(uname) uname.textContent = DISPLAY_NAME;
+
+  // Set banner color immediately from current shop
+  var banner = gs('dash-banner');
+  if(banner && state.currentShop && SHOPS[state.currentShop]){
+    banner.style.background = SHOPS[state.currentShop].color;
+  }
+
   document.querySelectorAll('.sp').forEach(function(p){ p.classList.remove('on'); });
   document.querySelectorAll('.sp').forEach(function(p){
     var shopVal = p.getAttribute('onclick');
