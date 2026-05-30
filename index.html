@@ -783,11 +783,26 @@ input[type=file]{
   display:flex;align-items:center;gap:5px;flex-shrink:0;transition:background 0.15s;
 }
 .dash-back-btn:hover{background:rgba(255,255,255,0.2)}
+.dash-hdr-inner{position:relative;z-index:1}
+.dash-hdr-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.dash-hdr-title{font-size:19px;font-weight:800;color:#fff;line-height:1.1}
+.dash-hdr-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-top:3px}
+.dash-hdr-row2{display:flex;justify-content:flex-end;margin-bottom:12px}
 .sp{padding:6px 13px;border-radius:var(--rxl);border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .sp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
 
-/* FILTER BAR */
-.fbar{background:#fff;border-bottom:1px solid var(--g200);padding:16px 20px;box-shadow:var(--s1)}
+/* FILTER BAR — boxed card, separated from header */
+.fbar{
+  background:#fff;
+  border:1px solid var(--g200);
+  border-radius:var(--rlg);
+  box-shadow:var(--s1);
+  padding:16px;
+  margin:14px;
+}
+.fbar-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.fbar-ico{font-size:16px}
+.fbar-ttl{font-size:14px;font-weight:800;color:var(--g800)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 
 .flbl{font-size:10px;font-weight:700;color:var(--g500);letter-spacing:0.8px;text-transform:uppercase}
@@ -1043,16 +1058,20 @@ input[type=file]{
 <div class="dash">
 
 <div class="hdr" id="dash-hdr" style="display:none">
-  <div class="hdr-inner">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+  <div class="dash-hdr-inner">
+    <div class="dash-hdr-row1">
       <button class="dash-back-btn" id="dash-back-btn">← رجوع</button>
       <div style="text-align:right">
-        <div class="hdr-title" style="margin:0">لوحة المتابعة</div>
-        <div class="hdr-sub" style="letter-spacing:1px">EXECUTIVE DASHBOARD</div>
+        <div class="dash-hdr-title">لوحة المتابعة</div>
+        <div class="dash-hdr-sub">EXECUTIVE DASHBOARD</div>
       </div>
     </div>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد</div></div>
+    <div class="dash-hdr-row2">
+      <div class="hdr-chip" id="dash-uchip">
+        <span style="font-size:15px">👤</span>
+        <span class="hdr-chip-name" id="dash-ulbl"></span>
+        <span class="hdr-chip-arrow">▾</span>
+      </div>
     </div>
     <div class="shop-pills" id="dash-shop-pills" style="justify-content:flex-start">
       <div class="sp on" onclick="setShop('all',this)">كل المحلات</div>
@@ -1065,6 +1084,7 @@ input[type=file]{
 <div id="dash-thin-divider" style="display:none"></div>
 
 <div class="fbar">
+  <div class="fbar-hdr"><span class="fbar-ico">📅</span><span class="fbar-ttl">الفترة الزمنية</span></div>
   <div class="frow">
     <div class="fg"><div class="flbl">الفترة</div>
       <select class="fsel" id="f-period" onchange="onPeriod()">
@@ -1587,6 +1607,7 @@ function goTab(tabId){
 
 // ── HEADER ACTIONS ────────────────────────────────────────────────────────────
 gs('uchip').addEventListener('click',    function(){ gs('logout-modal').classList.add('show'); });
+gs('dash-uchip').addEventListener('click', function(){ gs('logout-modal').classList.add('show'); });
 gs('logout-cancel').addEventListener('click',  function(){ gs('logout-modal').classList.remove('show'); });
 gs('logout-confirm').addEventListener('click', doLogout);
 gs('hdr-switch-btn').addEventListener('click', function(){ showShopSelection(); });
@@ -3648,7 +3669,7 @@ function loadDashboard(){
   ROLE         = state.user ? state.user.role        : 'admin';
   USER_SHOPS   = state.user ? state.user.shops       : 'all';
   DISPLAY_NAME = state.user ? state.user.displayName : '';
-  var uname = gs('hdr-uname');
+  var uname = gs('dash-ulbl');
   if(uname) uname.textContent = DISPLAY_NAME;
 
   var isAllShopsMode = (curShop === 'all');
