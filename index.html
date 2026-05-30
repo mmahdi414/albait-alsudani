@@ -3720,6 +3720,18 @@ function loadDashboard(){
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
   loadAll();
+  // DIAGNOSTIC v3 — window-level scrollbar + app position, sampled over time
+  (function(){
+    function snap(tag){
+      var de=document.documentElement, app=document.querySelector('.app');
+      var sb=window.innerWidth-de.clientWidth;
+      var r=app?app.getBoundingClientRect():{width:0,left:0};
+      console.log('[D3 '+tag+'] scrollbar='+sb+' app.w='+Math.round(r.width)+' app.left='+Math.round(r.left)+' docScrollH='+de.scrollHeight+' winInner='+window.innerWidth+' deClient='+de.clientWidth);
+    }
+    snap('0ms');
+    requestAnimationFrame(function(){ snap('raf'); });
+    [50,150,300,600,1000].forEach(function(ms){ setTimeout(function(){ snap(ms+'ms'); }, ms); });
+  })();
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
