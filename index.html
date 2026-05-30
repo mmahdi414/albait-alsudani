@@ -7,8 +7,7 @@
 <title>البيت السوداني — المحاسبة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=block">
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <style>
 /* P1 */
 
@@ -565,7 +564,7 @@ input[type=file]{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-#pg-dashboard.on{display:flex;flex-direction:column;overflow-y:auto;scrollbar-gutter:stable;}
+#pg-dashboard.on{display:flex;flex-direction:column;overflow-y:auto;}
 
 
 /* P2 */
@@ -1580,7 +1579,21 @@ function buildNav(){
   });
 }
 
+function configDashboardHeader(){
+  // Set dash-hdr / pills visibility BEFORE the dashboard page is shown,
+  // so there is no post-paint reflow (the cause of the narrow→wide flash).
+  var cs = state.currentShop || 'all';
+  var isAllShopsMode = (cs === 'all');
+  var dashHdr = gs('dash-hdr');
+  if(dashHdr) dashHdr.style.display = isAllShopsMode ? '' : 'none';
+  var pills = gs('dash-shop-pills');
+  if(pills) pills.style.display = isAllShopsMode ? '' : 'none';
+}
+
 function goTab(tabId){
+  // Pre-configure dashboard header visibility before the page becomes visible
+  if(tabId === 'dashboard') configDashboardHeader();
+
   ['entry','summary','history','dashboard'].forEach(function(t){
     var pg = gs('pg-' + t);
     var nb = gs('nb-' + t);
@@ -3010,15 +3023,8 @@ function loadAll(){
   loadKPIs(p);
   loadDocsFromAPI();
   loadShopCmp(p);
-  // Charts must be created only after the web font is fully loaded, otherwise the
-  // font swap (display=swap) re-measures the layout and Chart.js resizes the canvas
-  // (the narrow→wide flash seen only on dashboard pages). fonts.ready resolves
-  // immediately once the font is cached, so there's no delay after first load.
-  if(document.fonts && document.fonts.ready){
-    document.fonts.ready.then(function(){ loadRevChart(p); loadExpChart(p); });
-  } else {
-    loadRevChart(p); loadExpChart(p);
-  }
+  loadRevChart(p);
+  loadExpChart(p);
   loadSalaries(p);
   loadPartners(p);
   loadMovements(p);
