@@ -71,7 +71,6 @@
 
 /* ── Reset ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scrollbar-gutter:stable}
 html,body{
   font-family:'Almarai',sans-serif;
   background:var(--shop-page);
@@ -1591,7 +1590,17 @@ function configDashboardHeader(){
   if(pills) pills.style.display = isAllShopsMode ? '' : 'none';
 }
 
+function DIAGLOG(tag){
+  var de=document.documentElement, app=document.querySelector('.app'), sm=gs('sc-main');
+  var winW=window.innerWidth, docW=de.clientWidth;
+  var sbW=winW-docW; // scrollbar width (>0 means window scrollbar present)
+  var appW=app?app.getBoundingClientRect().width:'-';
+  var appLeft=app?Math.round(app.getBoundingClientRect().left):'-';
+  console.log('[DIAG2 '+tag+'] winW='+winW+' docClientW='+docW+' scrollbar='+sbW+' app.width='+Math.round(appW)+' app.left='+appLeft+' docScrollH='+de.scrollHeight+' docClientH='+de.clientHeight);
+}
+
 function goTab(tabId){
+  DIAGLOG('BEFORE-'+tabId);
   // Pre-configure dashboard header visibility before the page becomes visible
   if(tabId === 'dashboard') configDashboardHeader();
 
@@ -1608,6 +1617,10 @@ function goTab(tabId){
   if(tabId === 'summary')   loadSummary();
   if(tabId === 'history')   loadHistory();
   if(tabId === 'dashboard') loadDashboard();
+  DIAGLOG('AFTER-sync-'+tabId);
+  requestAnimationFrame(function(){ DIAGLOG('AFTER-raf-'+tabId); });
+  setTimeout(function(){ DIAGLOG('AFTER-t300-'+tabId); }, 300);
+  setTimeout(function(){ DIAGLOG('AFTER-t800-'+tabId); }, 800);
 }
 
 // ── HEADER ACTIONS ────────────────────────────────────────────────────────────
