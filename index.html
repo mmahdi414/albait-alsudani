@@ -1027,15 +1027,17 @@ input[type=file]{
   <div id="pg-dashboard" class="pg">
 <div class="dash">
 
-<div class="hdr" id="dash-hdr">
+<div class="hdr" id="dash-hdr" style="display:none">
   <div class="hdr-inner">
     <div class="hdr-top">
       <div>
-        <div class="hdr-logo">Al-Bait Al-Sudani</div>
         <div class="hdr-title">لوحة المتابعة</div>
         <div class="hdr-sub">Executive Dashboard</div>
       </div>
-      <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد</div></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="hdr-shops-btn" id="dash-back-btn">← رجوع</button>
+        <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد</div></div>
+      </div>
     </div>
     <div class="shop-pills" id="dash-shop-pills">
       <div class="sp on" onclick="setShop('all',this)">كل المحلات</div>
@@ -1045,6 +1047,7 @@ input[type=file]{
     </div>
   </div>
 </div>
+<div id="dash-thin-divider" style="display:none;height:3px;width:100%"></div>
 
 <div class="fbar">
   <div class="frow">
@@ -1097,7 +1100,7 @@ input[type=file]{
 
 <!-- Documents -->
 <div class="sec">
-  <div class="sec-hdr"><div class="sec-n" id="sn-doc" style="font-size:14px">📋</div><div class="sec-t">المستندات الحكومية</div></div>
+  <div class="sec-hdr"><div class="sec-n" id="sn-doc">2</div><div class="sec-t">المستندات الحكومية</div></div>
   <div class="card" style="padding:0;overflow:hidden">
     <div style="padding:14px 18px;border-bottom:1px solid var(--g200);display:flex;justify-content:space-between;align-items:center">
       <div class="ctitle">المستندات والتراخيص</div>
@@ -1115,7 +1118,7 @@ input[type=file]{
 
 <!-- L2: Analysis -->
 <div class="sec">
-  <div class="sec-hdr"><div class="sec-n" id="sn2">2</div><div class="sec-t">التحليل المالي</div></div>
+  <div class="sec-hdr"><div class="sec-n" id="sn2">3</div><div class="sec-t">التحليل المالي</div></div>
 
   <div class="card">
     <div class="chdr"><div class="ctitle">أداء المحلات</div><div class="cpill" id="cmp-lbl">هذا الشهر</div></div>
@@ -1159,7 +1162,7 @@ input[type=file]{
 
 <!-- L3: Details -->
 <div class="sec" style="padding-bottom:20px">
-  <div class="sec-hdr"><div class="sec-n" id="sn3">3</div><div class="sec-t">التفاصيل والحركات</div></div>
+  <div class="sec-hdr"><div class="sec-n" id="sn3">4</div><div class="sec-t">التفاصيل والحركات</div></div>
 
   <div class="card">
     <div class="chdr"><div class="ctitle">حركة الحسابات</div><div class="cpill" id="mov-lbl">هذا الشهر</div></div>
@@ -1503,6 +1506,10 @@ function enterShop(shopId){
   setShopTheme(shopId);
   buildNav();
 
+  // Restore main header + nav (may have been hidden by all-shops dashboard)
+  if(gs('hdr')) gs('hdr').style.display = '';
+  if(gs('nav')) gs('nav').style.display = '';
+
   // Reset switch button from any all-shops "back" state
   var sb = gs('hdr-switch-btn');
   if(sb){ sb.textContent = '⇄ تبديل'; sb.onclick = null; }
@@ -1842,10 +1849,8 @@ function buildEntry(){
       '<div class="fg" style="margin-bottom:10px"><label>ملاحظات</label><textarea id="tf-note" rows="2" placeholder="تفاصيل التحويل..."></textarea></div>'+
       '<div class="fg" style="margin-bottom:0">'+
         '<label>مرفق (اختياري)</label>'+
-        '<div class="file-row">'+
-          '<label class="file-btn">📎 اختر ملف<input type="file" id="tf-file-inp" accept="image/*,application/pdf" style="display:none"/></label>'+
-          '<span class="file-name" id="tf-file-name">لا يوجد مرفق</span>'+
-        '</div>'+
+        '<input type="file" id="tf-file-inp" accept="image/*,.pdf"/>'+
+        '<div class="file-attached" id="tf-file-attached" style="display:none"></div>'+
       '</div>'+
     '</div>';
   cnt.appendChild(tfCard);
@@ -1855,10 +1860,12 @@ function buildEntry(){
   document.addEventListener('change',function(e){
     if(e.target&&e.target.id==='tf-file-inp'){
       if(e.target.files&&e.target.files[0]){
-        S.tfFileObj=e.target.files[0];
-        S.tfFile=e.target.files[0].name;
-        var nm=gs('tf-file-name');
-        if(nm) nm.textContent='📄 '+S.tfFile;
+        var f=e.target.files[0];
+        if(f.size>20*1024*1024){showToast('حجم الملف يتجاوز 20MB',true);e.target.value='';return;}
+        S.tfFileObj=f;
+        S.tfFile=f.name;
+        var ind=gs('tf-file-attached');
+        if(ind){ ind.textContent='📎 '+S.tfFile; ind.style.display='flex'; }
       }
     }
   });
@@ -2023,10 +2030,8 @@ function renderSalaries(){
       '</div>'+
       '<div class="fg" style="margin-bottom:0">'+
         '<label>مرفق (اختياري)</label>'+
-        '<div class="file-row">'+
-          '<label class="file-btn">📎 اختر ملف<input type="file" class="sal-file" accept="image/*,application/pdf" style="display:none"/></label>'+
-          '<span class="file-name">'+(s.file?'📄 '+s.file:'لا يوجد مرفق')+'</span>'+
-        '</div>'+
+        '<input type="file" accept="image/*,.pdf" class="sal-file"/>'+
+        (s.file?'<div class="file-attached">📎 '+s.file+'</div>':'')+
       '</div>';
 
     div.querySelector('.edel').addEventListener('click',function(){
@@ -2063,9 +2068,11 @@ function renderSalaries(){
     }
     div.querySelector('.sal-file').addEventListener('change',function(){
       if(this.files&&this.files[0]){
-        s.fileObj=this.files[0];
-        s.file=this.files[0].name;
-        div.querySelector('.file-name').textContent='📄 '+s.file;
+        var f=this.files[0];
+        if(f.size>20*1024*1024){showToast('حجم الملف يتجاوز 20MB',true);this.value='';return;}
+        s.fileObj=f;
+        s.file=f.name;
+        renderSalaries();
       }
     });
 
@@ -2128,10 +2135,8 @@ function renderPartners(){
       '</div>'+
       '<div class="fg" style="margin-bottom:0">'+
         '<label>مرفق (اختياري)</label>'+
-        '<div class="file-row">'+
-          '<label class="file-btn">📎 اختر ملف<input type="file" class="prt-file" accept="image/*,application/pdf" style="display:none"/></label>'+
-          '<span class="file-name">'+(p.file?'📄 '+p.file:'لا يوجد مرفق')+'</span>'+
-        '</div>'+
+        '<input type="file" accept="image/*,.pdf" class="prt-file"/>'+
+        (p.file?'<div class="file-attached">📎 '+p.file+'</div>':'')+
       '</div>';
 
     div.querySelector('.edel').addEventListener('click',function(){
@@ -2151,9 +2156,11 @@ function renderPartners(){
     div.querySelector('.prt-note').addEventListener('input',function(){p.note=this.value;});
     div.querySelector('.prt-file').addEventListener('change',function(){
       if(this.files&&this.files[0]){
-        p.fileObj=this.files[0];
-        p.file=this.files[0].name;
-        div.querySelector('.file-name').textContent='📄 '+p.file;
+        var f=this.files[0];
+        if(f.size>20*1024*1024){showToast('حجم الملف يتجاوز 20MB',true);this.value='';return;}
+        p.fileObj=f;
+        p.file=f.name;
+        renderPartners();
       }
     });
 
@@ -2875,17 +2882,23 @@ function getParams(){
 
 // ── Color ─────────────────────────────────────────────────────────────────────
 function applyColor(c){
-  var ids=['dash-hdr','apbtn','pdf-btn','emp-tot','sn1','sn2','sn3'];
+  var ids=['dash-hdr','dash-thin-divider','apbtn','pdf-btn','emp-tot','sn1','sn-doc','sn2','sn3'];
   ids.forEach(function(id){ var el=gs(id); if(el) el.style.background=c; });
   document.documentElement.style.setProperty('--cur',c);
 }
 
 // ── Shop pills ────────────────────────────────────────────────────────────────
+var ALLDASH_PAGE = {page:'#EEF2F7', card:'#E1E8F0', cardBorder:'#D0DCE8'};
 function setShop(shop,el){
   curShop=shop;
   document.querySelectorAll('.sp').forEach(function(p){p.classList.remove('on');});
   el.classList.add('on');
   applyColor(SHOP_COLORS[shop]);
+  // Change 3 — page background follows selected shop (navy for 'all')
+  var pc = (shop==='all') ? ALLDASH_PAGE : (SHOP_PAGE_COLORS[shop] || ALLDASH_PAGE);
+  document.documentElement.style.setProperty('--shop-page', pc.page);
+  document.documentElement.style.setProperty('--shop-card', pc.card);
+  document.documentElement.style.setProperty('--shop-card-border', pc.cardBorder);
   loadAll();
 };
 
@@ -3575,39 +3588,36 @@ function enterAllShopsDashboard(){
   gs('sc-shops').style.display = 'none';
   gs('sc-main').style.display  = 'flex';
 
-  // Header: navy, back button
-  if(gs('hdr')) gs('hdr').style.background = '#1E3A5F';
-  if(gs('hdr-title'))      gs('hdr-title').textContent      = 'لوحة المتابعة';
-  if(gs('hdr-shop-label')) gs('hdr-shop-label').textContent = 'البيت السوداني';
-  var switchBtn = gs('hdr-switch-btn');
-  if(switchBtn){
-    switchBtn.style.display = 'flex';
-    switchBtn.textContent   = '← رجوع';
-    switchBtn.onclick = function(){
+  // Changes 1 & 2 — hide main app header + nav row; dashboard uses its own merged header
+  if(gs('hdr')) gs('hdr').style.display = 'none';
+  if(gs('nav')) gs('nav').style.display = 'none';
+
+  // Change 3 — navy page theme for all-shops
+  document.documentElement.style.setProperty('--shop-page', '#EEF2F7');
+  document.documentElement.style.setProperty('--shop-card', '#E1E8F0');
+  document.documentElement.style.setProperty('--shop-card-border', '#D0DCE8');
+
+  // Show shop pills (all-shops mode lets user switch shop)
+  var pills = gs('dash-shop-pills');
+  if(pills) pills.style.display = '';
+
+  // Back button in merged header
+  var backBtn = gs('dash-back-btn');
+  if(backBtn){
+    backBtn.style.display = 'flex';
+    backBtn.onclick = function(){
       gs('sc-main').style.display = 'none';
-      switchBtn.textContent = '⇄ تبديل';
-      switchBtn.onclick = function(){ showShopSelection(); };
+      if(gs('hdr')) gs('hdr').style.display = '';
+      if(gs('nav')) gs('nav').style.display = '';
       showShopSelection();
     };
   }
 
-  // Nav: dashboard tab only
-  var nav = gs('nav');
-  if(nav){
-    nav.style.cssText = '';
-    nav.innerHTML = '<button class="nb on" id="nb-dashboard"><span class="ico">📊</span><span>الداشبورد</span></button>';
-  }
-
-  // Show shop pills (this is all-shops mode — pills let user switch shop)
-  var pills = gs('dash-shop-pills');
-  if(pills) pills.style.display = '';
-
-  // Show dashboard page
+  // Show dashboard page only
   ['entry','summary','history'].forEach(function(t){ var pg=gs('pg-'+t); if(pg) pg.classList.remove('on'); });
   gs('pg-dashboard').classList.add('on');
   var cnt=gs('cnt'); if(cnt) cnt.style.display='none';
 
-  // Default to 'all' and load via the original unified loader
   curShop = 'all';
   loadDashboard();
 }
@@ -3622,10 +3632,25 @@ function loadDashboard(){
   var uname = gs('hdr-uname');
   if(uname) uname.textContent = DISPLAY_NAME;
 
-  // Shop pills: show only when entering as all-shops dashboard (curShop starts 'all').
-  // When entering a specific shop's dashboard, hide pills and lock to that shop.
-  var pills = gs('dash-shop-pills');
   var isAllShopsMode = (curShop === 'all');
+
+  // Change 4 — In single-shop mode the main app header already shows the shop,
+  // so dash-hdr collapses to a thin divider line matching the header color.
+  var dashHdr = gs('dash-hdr');
+  var dashDivider = gs('dash-thin-divider');
+  if(isAllShopsMode){
+    if(dashHdr) dashHdr.style.display = '';
+    if(dashDivider) dashDivider.style.display = 'none';
+  } else {
+    if(dashHdr) dashHdr.style.display = 'none';
+    if(dashDivider){
+      dashDivider.style.display = '';
+      dashDivider.style.background = SHOP_COLORS[curShop] || SHOP_COLORS['all'];
+    }
+  }
+
+  // Shop pills: only in all-shops mode
+  var pills = gs('dash-shop-pills');
   if(pills) pills.style.display = isAllShopsMode ? '' : 'none';
 
   // Activate the correct pill
