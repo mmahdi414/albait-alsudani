@@ -740,18 +740,22 @@ input[type=file]{
 }
 
 /* ALL-SHOPS DASHBOARD SCREEN */
-.sc-alldash{display:none}
+.sc-alldash{display:none;height:0;overflow:hidden;visibility:hidden}
+.sc-alldash *{visibility:hidden}
 .sc-alldash.show{
   display:flex;
+  height:auto;
+  overflow-y:auto;
+  visibility:visible;
   flex-direction:column;
   min-height:100vh;
   background:var(--g100);
-  overflow-y:auto;
 }
+.sc-alldash.show *{visibility:visible}
 .alldash-hdr{
   background:#1E3A5F;
   padding:0;
-  position:sticky;top:0;z-index:10;
+  position:relative;
   box-shadow:0 2px 12px rgba(0,0,0,0.3);
   flex-shrink:0;
 }
