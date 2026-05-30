@@ -759,6 +759,14 @@ input[type=file]{
 /* P4 */
 .dash{max-width:480px;margin:0 auto;padding-bottom:40px}
 
+/* Thin header divider for single-shop dashboard */
+#dash-thin-divider{
+  height:4px;width:100%;
+  border-radius:0 0 6px 6px;
+  margin-bottom:2px;
+  opacity:0.9;
+}
+
 /* HEADER */
 
 .hdr-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
@@ -768,6 +776,13 @@ input[type=file]{
 .hdr-dot{width:7px;height:7px;border-radius:50%;background:#1D9E75}
 .hdr-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85)}
 .shop-pills{display:flex;gap:6px;flex-wrap:wrap}
+.dash-back-btn{
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);
+  border-radius:var(--rmd);color:#fff;font-family:'Almarai',sans-serif;
+  font-size:12px;font-weight:700;padding:7px 14px;cursor:pointer;
+  display:flex;align-items:center;gap:5px;flex-shrink:0;transition:background 0.15s;
+}
+.dash-back-btn:hover{background:rgba(255,255,255,0.2)}
 .sp{padding:6px 13px;border-radius:var(--rxl);border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .sp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
 
@@ -1029,17 +1044,17 @@ input[type=file]{
 
 <div class="hdr" id="dash-hdr" style="display:none">
   <div class="hdr-inner">
-    <div class="hdr-top">
-      <div>
-        <div class="hdr-title">لوحة المتابعة</div>
-        <div class="hdr-sub">Executive Dashboard</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button class="hdr-shops-btn" id="dash-back-btn">← رجوع</button>
-        <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد</div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <button class="dash-back-btn" id="dash-back-btn">← رجوع</button>
+      <div style="text-align:right">
+        <div class="hdr-title" style="margin:0">لوحة المتابعة</div>
+        <div class="hdr-sub" style="letter-spacing:1px">EXECUTIVE DASHBOARD</div>
       </div>
     </div>
-    <div class="shop-pills" id="dash-shop-pills">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+      <div class="hdr-badge"><div class="hdr-dot"></div><div class="hdr-uname" id="hdr-uname">محمد</div></div>
+    </div>
+    <div class="shop-pills" id="dash-shop-pills" style="justify-content:flex-start">
       <div class="sp on" onclick="setShop('all',this)">كل المحلات</div>
       <div class="sp" onclick="setShop('Tailor',this)">✂️ الخياط</div>
       <div class="sp" onclick="setShop('Salon',this)">💇 الصالون</div>
@@ -1047,7 +1062,7 @@ input[type=file]{
     </div>
   </div>
 </div>
-<div id="dash-thin-divider" style="display:none;height:3px;width:100%"></div>
+<div id="dash-thin-divider" style="display:none"></div>
 
 <div class="fbar">
   <div class="frow">
@@ -1553,6 +1568,9 @@ function buildNav(){
 }
 
 function goTab(tabId){
+  // For dashboard, configure layout/theme BEFORE making it visible (prevents flash)
+  if(tabId === 'dashboard') loadDashboard();
+
   ['entry','summary','history','dashboard'].forEach(function(t){
     var pg = gs('pg-' + t);
     var nb = gs('nb-' + t);
@@ -1565,7 +1583,6 @@ function goTab(tabId){
   if(tabId === 'entry')     renderEntry();
   if(tabId === 'summary')   loadSummary();
   if(tabId === 'history')   loadHistory();
-  if(tabId === 'dashboard') loadDashboard();
 }
 
 // ── HEADER ACTIONS ────────────────────────────────────────────────────────────
@@ -1839,18 +1856,20 @@ function buildEntry(){
     '<div class="ch"><div class="ci ci-tf">↔️</div><div><div class="ct">التحويل بين الحسابات</div></div></div>'+
     '<button class="tf-toggle" id="tf-tog">➕ تفعيل التحويل</button>'+
     '<div class="tf-body" id="tf-body">'+
-      '<div class="tf-row">'+
-        '<div class="tf-box is-from" id="tf-from-box">🏦<br>البنك</div>'+
-        '<div class="tf-arrow">⇄</div>'+
-        '<div class="tf-box is-to" id="tf-to-box">🗄️<br>الصندوق</div>'+
-      '</div>'+
-      '<div class="tf-hint">اضغط على أي حساب لتبديل الاتجاه</div>'+
-      '<div class="fg"><label>المبلغ (ر.س) <span class="req">*</span></label><input type="text" id="tf-amt" placeholder="0.00" inputmode="decimal"/></div>'+
-      '<div class="fg" style="margin-bottom:10px"><label>ملاحظات</label><textarea id="tf-note" rows="2" placeholder="تفاصيل التحويل..."></textarea></div>'+
-      '<div class="fg" style="margin-bottom:0">'+
-        '<label>مرفق (اختياري)</label>'+
-        '<input type="file" id="tf-file-inp" accept="image/*,.pdf"/>'+
-        '<div class="file-attached" id="tf-file-attached" style="display:none"></div>'+
+      '<div class="ecard" style="padding:14px">'+
+        '<div class="tf-row">'+
+          '<div class="tf-box is-from" id="tf-from-box">🏦<br>البنك</div>'+
+          '<div class="tf-arrow">⇄</div>'+
+          '<div class="tf-box is-to" id="tf-to-box">🗄️<br>الصندوق</div>'+
+        '</div>'+
+        '<div class="tf-hint">اضغط على أي حساب لتبديل الاتجاه</div>'+
+        '<div class="fg"><label>المبلغ (ر.س) <span class="req">*</span></label><input type="text" id="tf-amt" placeholder="0.00" inputmode="decimal"/></div>'+
+        '<div class="fg" style="margin-bottom:10px"><label>ملاحظات</label><textarea id="tf-note" rows="2" placeholder="تفاصيل التحويل..."></textarea></div>'+
+        '<div class="fg" style="margin-bottom:0">'+
+          '<label>مرفق (اختياري)</label>'+
+          '<input type="file" id="tf-file-inp" accept="image/*,.pdf"/>'+
+          '<div class="file-attached" id="tf-file-attached" style="display:none"></div>'+
+        '</div>'+
       '</div>'+
     '</div>';
   cnt.appendChild(tfCard);
