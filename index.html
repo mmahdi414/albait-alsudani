@@ -755,17 +755,8 @@ input[type=file]{
 .kpi-table .val-bank{color:#185FA5}
 .kpi-table .val-avail{color:var(--navy);font-weight:800}
 
-/* SHOP DASHBOARD BANNER */
 /* P4 */
 .dash{max-width:480px;margin:0 auto;padding-bottom:40px}
-
-/* Thin header divider for single-shop dashboard */
-#dash-thin-divider{
-  height:4px;width:100%;
-  border-radius:0 0 6px 6px;
-  margin-bottom:2px;
-  opacity:0.9;
-}
 
 /* HEADER */
 
@@ -784,10 +775,10 @@ input[type=file]{
 }
 .dash-back-btn:hover{background:rgba(255,255,255,0.2)}
 .dash-hdr-inner{position:relative;z-index:1}
-.dash-hdr-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.dash-hdr-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.dash-hdr-actions{display:flex;align-items:center;gap:8px}
 .dash-hdr-title{font-size:19px;font-weight:800;color:#fff;line-height:1.1}
 .dash-hdr-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-top:3px}
-.dash-hdr-row2{display:flex;justify-content:flex-end;margin-bottom:12px}
 .sp{padding:6px 13px;border-radius:var(--rxl);border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .sp.on{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.38);color:#fff}
 
@@ -1060,20 +1051,20 @@ input[type=file]{
 <div class="hdr" id="dash-hdr" style="display:none">
   <div class="dash-hdr-inner">
     <div class="dash-hdr-row1">
-      <button class="dash-back-btn" id="dash-back-btn">← رجوع</button>
+      <div class="dash-hdr-actions">
+        <button class="dash-back-btn" id="dash-back-btn">← رجوع</button>
+        <div class="hdr-chip" id="dash-uchip">
+          <span style="font-size:14px">👤</span>
+          <span class="hdr-chip-name" id="dash-ulbl"></span>
+          <span class="hdr-chip-arrow">▾</span>
+        </div>
+      </div>
       <div style="text-align:right">
         <div class="dash-hdr-title">لوحة المتابعة</div>
         <div class="dash-hdr-sub">EXECUTIVE DASHBOARD</div>
       </div>
     </div>
-    <div class="dash-hdr-row2">
-      <div class="hdr-chip" id="dash-uchip">
-        <span style="font-size:15px">👤</span>
-        <span class="hdr-chip-name" id="dash-ulbl"></span>
-        <span class="hdr-chip-arrow">▾</span>
-      </div>
-    </div>
-    <div class="shop-pills" id="dash-shop-pills" style="justify-content:flex-start">
+    <div class="shop-pills" id="dash-shop-pills">
       <div class="sp on" onclick="setShop('all',this)">كل المحلات</div>
       <div class="sp" onclick="setShop('Tailor',this)">✂️ الخياط</div>
       <div class="sp" onclick="setShop('Salon',this)">💇 الصالون</div>
@@ -1081,7 +1072,6 @@ input[type=file]{
     </div>
   </div>
 </div>
-<div id="dash-thin-divider" style="display:none"></div>
 
 <div class="fbar">
   <div class="fbar-hdr"><span class="fbar-ico">📅</span><span class="fbar-ttl">الفترة الزمنية</span></div>
@@ -1588,7 +1578,8 @@ function buildNav(){
 }
 
 function goTab(tabId){
-  // For dashboard, configure layout/theme BEFORE making it visible (prevents flash)
+  // Configure dashboard layout/theme BEFORE making it visible (prevents header/layout flash);
+  // chart loading inside is deferred via rAF so canvases size correctly once visible.
   if(tabId === 'dashboard') loadDashboard();
 
   ['entry','summary','history','dashboard'].forEach(function(t){
@@ -2922,7 +2913,7 @@ function getParams(){
 
 // ── Color ─────────────────────────────────────────────────────────────────────
 function applyColor(c){
-  var ids=['dash-hdr','dash-thin-divider','apbtn','pdf-btn','emp-tot','sn1','sn-doc','sn2','sn3'];
+  var ids=['dash-hdr','apbtn','pdf-btn','emp-tot','sn1','sn-doc','sn2','sn3'];
   ids.forEach(function(id){ var el=gs(id); if(el) el.style.background=c; });
   document.documentElement.style.setProperty('--cur',c);
 }
@@ -3674,20 +3665,10 @@ function loadDashboard(){
 
   var isAllShopsMode = (curShop === 'all');
 
-  // Change 4 — In single-shop mode the main app header already shows the shop,
-  // so dash-hdr collapses to a thin divider line matching the header color.
+  // In single-shop mode the main app header already shows the shop; hide dash-hdr.
+  // In all-shops mode, show the merged dashboard header.
   var dashHdr = gs('dash-hdr');
-  var dashDivider = gs('dash-thin-divider');
-  if(isAllShopsMode){
-    if(dashHdr) dashHdr.style.display = '';
-    if(dashDivider) dashDivider.style.display = 'none';
-  } else {
-    if(dashHdr) dashHdr.style.display = 'none';
-    if(dashDivider){
-      dashDivider.style.display = '';
-      dashDivider.style.background = SHOP_COLORS[curShop] || SHOP_COLORS['all'];
-    }
-  }
+  if(dashHdr) dashHdr.style.display = isAllShopsMode ? '' : 'none';
 
   // Shop pills: only in all-shops mode
   var pills = gs('dash-shop-pills');
@@ -3711,7 +3692,9 @@ function loadDashboard(){
 
   applyColor(SHOP_COLORS[curShop] || SHOP_COLORS['all']);
   updateDates();
-  loadAll();
+  // Defer chart/data loading until after the page is painted at full size,
+  // so Chart.js measures the final container dimensions (no small→big resize flash).
+  requestAnimationFrame(function(){ loadAll(); });
 }
 
 /* ══ GLOBAL EXPORTS — expose to HTML onclick/onchange handlers ══ */
